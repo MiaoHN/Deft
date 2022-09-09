@@ -6,6 +6,7 @@
 // clang-format on
 
 #include "math/math.h"
+#include "util/obj_loader.h"
 #include "pch.h"
 
 namespace deft {
@@ -24,32 +25,14 @@ Application::Application() {
   _window  = std::make_unique<Window>(1600, 900, "Deft");
   _context = std::make_unique<GraphicContext>(_window->getHandler());
 
-  std::vector<float> vertices = {
-      -0.5f, -0.5f, 0.0f, 0.0f, 0.0f,  //
-      0.5f,  -0.5f, 0.0f, 1.0f, 0.0f,  //
-      0.5f,  0.5f,  0.0f, 1.0f, 1.0f,  //
-      -0.5f, 0.5f,  0.0f, 0.0f, 1.0f,  //
-  };
+  glfwSetInputMode(_window->getHandler(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
-  std::vector<unsigned int> indices = {
-      0, 1, 2,  //
-      0, 2, 3,  //
-  };
+  _inputManager = std::make_shared<InputManager>(_window->getHandler());
 
-  _vao = std::make_shared<VertexArray>();
-  _vbo = std::make_shared<VertexBuffer>(vertices);
-  _vbo->setElements({
-      {"aPos", ElementType::Float3},
-      {"aTexCoord", ElementType::Float2},
-  });
-  _ebo = std::make_shared<IndexBuffer>(indices);
+  _inputManager->addCallback(KeyCode::Escape,
+                             INPUT_FUNC_BIND(Application::escapePressed));
 
-  _vao->bind();
-  _vbo->bind();
-  _ebo->bind();
-  _vao->unBind();
-  _vbo->unBind();
-  _ebo->unBind();
+  _model = ObjLoader::Load("assets/model/standford-bunny.obj");
 
   _shader = std::make_shared<Shader>("assets/shader/default.vert",
                                      "assets/shader/default.frag");
@@ -76,32 +59,17 @@ void Application::run() {
     float dt = tt - t;
     t        = tt;
 
-    // Logic update
-    math::Vector3 move(0.0f);
-    if (glfwGetKey(_window->getHandler(), GLFW_KEY_A) == GLFW_PRESS) {
-      move.x -= 1.0f;
-    } else if (glfwGetKey(_window->getHandler(), GLFW_KEY_D) == GLFW_PRESS) {
-      move.x += 1.0f;
-    }
-    if (glfwGetKey(_window->getHandler(), GLFW_KEY_SPACE) == GLFW_PRESS) {
-      move.y += 1.0f;
-    } else if (glfwGetKey(_window->getHandler(), GLFW_KEY_LEFT_SHIFT) ==
-               GLFW_PRESS) {
-      move.y -= 1.0f;
-    }
-    if (glfwGetKey(_window->getHandler(), GLFW_KEY_W) == GLFW_PRESS) {
-      move.z -= 1.0f;
-    } else if (glfwGetKey(_window->getHandler(), GLFW_KEY_S) == GLFW_PRESS) {
-      move.z += 1.0f;
-    }
+    _inputManager->tick();
 
-    _cameraController->move(move, dt);
+    // Logic update
+    _cameraController->tick(dt);
 
     // Render
+    // glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
     glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
-    glClear(GL_COLOR_BUFFER_BIT);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    _vao->bind();
+    _model->bind();
     _shader->bind();
     _texture->bind();
 
@@ -110,7 +78,7 @@ void Application::run() {
     auto model = math::translate(math::Matrix4(1.0f), objectPos);
     _shader->setMatrix4("transform", proj * view * model);
 
-    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
+    glDrawElements(GL_TRIANGLES, _model->getCount(), GL_UNSIGNED_INT, nullptr);
 
     // Window update
     _window->pollEvents();
@@ -121,5 +89,9 @@ void Application::run() {
 Application& Application::Get() { return *_s_instance; }
 
 Window& Application::getWindow() { return *_window; }
+
+InputManager& Application::getInputManager() { return *_inputManager; }
+
+void Application::escapePressed() { _window->setClose(true); }
 
 }  // namespace deft

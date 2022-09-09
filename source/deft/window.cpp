@@ -2,6 +2,7 @@
 
 #include <GLFW/glfw3.h>
 
+#include "application.h"
 #include "pch.h"
 
 namespace deft {
@@ -24,7 +25,11 @@ Window::Window(int width, int height, const std::string& title)
     exit(-1);
   }
 
+  glfwSetInputMode(_window, GLFW_STICKY_KEYS, GLFW_TRUE);
+
   glfwSetErrorCallback(GLFWErrorCallback);
+
+  glfwSetWindowUserPointer(_window, &Application::Get());
 }
 
 Window::~Window() {
@@ -36,6 +41,10 @@ int Window::getWidth() const { return _width; }
 int Window::getHeight() const { return _height; }
 
 bool Window::isClosed() const { return glfwWindowShouldClose(_window); }
+
+void Window::setClose(bool flag) {
+  glfwSetWindowShouldClose(_window, flag);
+}
 
 GLFWwindow* Window::getHandler() const { return _window; }
 

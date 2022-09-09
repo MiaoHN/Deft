@@ -16,6 +16,9 @@ GraphicContext::GraphicContext(GLFWwindow* handler) : _handler(handler) {
               << std::endl;
     exit(-1);
   }
+  glEnable(GL_DEPTH_TEST);
+  glEnable(GL_CULL_FACE);
+  glfwSwapInterval(1);
 }
 
 GraphicContext::~GraphicContext() {}

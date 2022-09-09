@@ -1,5 +1,5 @@
-#include "obj_loader.h"
 #include "test.h"
+#include "util/obj_loader.h"
 
 using namespace deft;
 

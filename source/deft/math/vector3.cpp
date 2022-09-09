@@ -50,6 +50,12 @@ const Vector3 Vector3::normalized() const {
 
 float Vector3::length() const { return sqrt(dot(*this)); }
 
+void Vector3::operator-=(const Vector3& vec) {
+  x -= vec.x;
+  y -= vec.y;
+  z -= vec.z;
+}
+
 void Vector3::operator+=(const Vector3& vec) {
   x += vec.x;
   y += vec.y;

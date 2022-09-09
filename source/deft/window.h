@@ -16,6 +16,7 @@ class Window {
   int getHeight() const;
 
   bool isClosed() const;
+  void setClose(bool flag);
 
   GLFWwindow* getHandler() const;
 

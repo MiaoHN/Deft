@@ -23,6 +23,7 @@ class Vector3 {
   const float& operator[](int index) const;
 
   bool operator==(const Vector3& vec) const;
+  void operator-=(const Vector3& vec);
   void operator+=(const Vector3& vec);
 
   float   operator*(const Vector3& vec2) const;

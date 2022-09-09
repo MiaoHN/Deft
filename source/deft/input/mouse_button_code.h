@@ -1,0 +1,4 @@
+#ifndef __DEFT_MOUSE_BUTTON_CODE_H__
+#define __DEFT_MOUSE_BUTTON_CODE_H__
+
+#endif  // __DEFT_MOUSE_BUTTON_CODE_H__
