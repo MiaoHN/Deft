@@ -79,6 +79,10 @@ void Shader::setMatrix4(const std::string& name, const math::Matrix4& mat) {
                      mat.ptr());
 }
 
+void Shader::setInt(const std::string& name, int value) {
+  glUniform1i(glGetUniformLocation(_id, name.c_str()), value);
+}
+
 std::vector<char> Shader::ReadFile(const std::string& path) {
   std::ifstream file(path, std::ios::ate | std::ios::binary);
   if (!file.is_open()) {

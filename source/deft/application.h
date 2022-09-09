@@ -7,6 +7,7 @@
 #include "render/graphic_context.h"
 #include "render/index_buffer.h"
 #include "render/shader.h"
+#include "render/texture.h"
 #include "render/vertex_array.h"
 #include "render/vertex_buffer.h"
 #include "window.h"
@@ -31,6 +32,7 @@ class Application {
   std::shared_ptr<VertexArray>  _vao;
   std::shared_ptr<VertexBuffer> _vbo;
   std::shared_ptr<IndexBuffer>  _ebo;
+  std::shared_ptr<Texture>      _texture;
   std::shared_ptr<Shader>       _shader;
 
   std::shared_ptr<CameraController> _cameraController;

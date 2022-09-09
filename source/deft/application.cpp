@@ -54,6 +54,10 @@ Application::Application() {
   _shader = std::make_shared<Shader>("assets/shader/default.vert",
                                      "assets/shader/default.frag");
 
+  _shader->setInt("diffuseTexture", 0);
+
+  _texture = std::make_shared<Texture>("assets/texture/wall.jpg");
+
   _cameraController = std::make_shared<CameraController>();
 }
 
@@ -99,6 +103,7 @@ void Application::run() {
 
     _vao->bind();
     _shader->bind();
+    _texture->bind();
 
     auto proj  = _cameraController->getCamera()->getProjection();
     auto view  = _cameraController->getCamera()->getView();

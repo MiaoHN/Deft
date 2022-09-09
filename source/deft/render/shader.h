@@ -17,6 +17,7 @@ class Shader {
   void unBind() const;
 
   void setMatrix4(const std::string& name, const math::Matrix4& mat);
+  void setInt(const std::string& name, int value);
 
  private:
   static std::vector<char> ReadFile(const std::string& path);
