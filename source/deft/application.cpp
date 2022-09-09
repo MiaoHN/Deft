@@ -27,7 +27,13 @@ Application::Application() {
   std::vector<float> vertices = {
       -0.5f, -0.5f, 0.0f, 0.0f, 0.0f,  //
       0.5f,  -0.5f, 0.0f, 1.0f, 0.0f,  //
-      0.0f,  0.5f,  0.0f, 0.5f, 1.0f,  //
+      0.5f,  0.5f,  0.0f, 1.0f, 1.0f,  //
+      -0.5f, 0.5f,  0.0f, 0.0f, 1.0f,  //
+  };
+
+  std::vector<unsigned int> indices = {
+      0, 1, 2,  //
+      0, 2, 3,  //
   };
 
   _vao = std::make_shared<VertexArray>();
@@ -36,11 +42,14 @@ Application::Application() {
       {"aPos", ElementType::Float3},
       {"aTexCoord", ElementType::Float2},
   });
+  _ebo = std::make_shared<IndexBuffer>(indices);
 
   _vao->bind();
   _vbo->bind();
+  _ebo->bind();
   _vao->unBind();
   _vbo->unBind();
+  _ebo->unBind();
 
   _shader = std::make_shared<Shader>("assets/shader/default.vert",
                                      "assets/shader/default.frag");
@@ -96,7 +105,7 @@ void Application::run() {
     auto model = math::translate(math::Matrix4(1.0f), objectPos);
     _shader->setMatrix4("transform", proj * view * model);
 
-    glDrawArrays(GL_TRIANGLES, 0, 3);
+    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
 
     // Window update
     _window->pollEvents();
