@@ -22,8 +22,8 @@ target_link_libraries(
   ${VENDOR_LIBRARY}
 )
 
-#target_precompile_headers(
-#  ${PROJECT_NAME}
-#  PUBLIC
-#  ${SOURCE_ROOT}/pch.h
-#)
+target_precompile_headers(
+  ${PROJECT_NAME}
+  PUBLIC
+  ${SOURCE_ROOT}/pch.h
+)

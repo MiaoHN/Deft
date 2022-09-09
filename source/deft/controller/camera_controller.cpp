@@ -1,4 +1,4 @@
-#include "camera_controller.h"
+#include "controller/camera_controller.h"
 
 namespace deft {
 

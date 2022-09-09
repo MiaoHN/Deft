@@ -3,7 +3,7 @@
 
 #include <memory>
 
-#include "camera_controller.h"
+#include "controller/camera_controller.h"
 #include "render/graphic_context.h"
 #include "render/shader.h"
 #include "render/vertex_array.h"
