@@ -3,6 +3,7 @@
 
 #include <memory>
 
+#include "camera_controller.h"
 #include "render/graphic_context.h"
 #include "render/shader.h"
 #include "render/vertex_array.h"
@@ -20,6 +21,8 @@ class Application {
 
   static Application& Get();
 
+  Window& getWindow();
+
  private:
   std::unique_ptr<Window>         _window;
   std::unique_ptr<GraphicContext> _context;
@@ -27,6 +30,8 @@ class Application {
   std::shared_ptr<VertexArray>  _vao;
   std::shared_ptr<VertexBuffer> _vbo;
   std::shared_ptr<Shader>       _shader;
+
+  std::shared_ptr<CameraController> _cameraController;
 
   static Application* _s_instance;
 };

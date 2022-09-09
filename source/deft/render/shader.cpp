@@ -74,6 +74,11 @@ void Shader::bind() const { glUseProgram(_id); }
 
 void Shader::unBind() const { glUseProgram(0); }
 
+void Shader::setMatrix4(const std::string& name, const math::Matrix4& mat) {
+  glUniformMatrix4fv(glGetUniformLocation(_id, name.c_str()), 1, GL_FALSE,
+                     mat.ptr());
+}
+
 std::vector<char> Shader::ReadFile(const std::string& path) {
   std::ifstream file(path, std::ios::ate | std::ios::binary);
   if (!file.is_open()) {

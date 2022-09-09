@@ -4,6 +4,8 @@
 #include <string>
 #include <vector>
 
+#include "math/math.h"
+
 namespace deft {
 
 class Shader {
@@ -13,6 +15,8 @@ class Shader {
 
   void bind() const;
   void unBind() const;
+
+  void setMatrix4(const std::string& name, const math::Matrix4& mat);
 
  private:
   static std::vector<char> ReadFile(const std::string& path);
