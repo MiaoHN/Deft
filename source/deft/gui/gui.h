@@ -1,6 +1,10 @@
 #ifndef __DEFT_GUI_H__
 #define __DEFT_GUI_H__
 
+#include <memory>
+
+#include "scene/scene.h"
+
 namespace deft {
 
 class Gui {
@@ -15,6 +19,7 @@ class Gui {
   void draw();
 
  private:
+  std::shared_ptr<Scene> _scene;
 };
 
 }  // namespace deft
