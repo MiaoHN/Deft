@@ -19,8 +19,10 @@ class Scene {
   void render(Renderer& render);
 
  private:
-  std::shared_ptr<Model>   _model;
+  std::vector<std::shared_ptr<Model>> _models;
+
   std::shared_ptr<Texture> _texture;
+  std::shared_ptr<Texture> _floorTexture;
   std::shared_ptr<Shader>  _shader;
 };
 

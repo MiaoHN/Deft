@@ -29,6 +29,9 @@ Application::Application() {
   _inputManager     = std::make_unique<InputManager>(_window->getHandler());
   _gui              = std::make_unique<Gui>();
   _cameraController = std::make_shared<CameraController>();
+
+  _sceneFrameBuffer =
+      FrameBuffer::Create({_window->getWidth(), _window->getHeight()});
 }
 
 Application::~Application() {}
@@ -63,7 +66,9 @@ void Application::run() {
     _scene->tick(dt);
 
     // Render
-    // glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+    _sceneFrameBuffer->bind();
+    glEnable(GL_DEPTH_TEST);
+
     glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -72,6 +77,15 @@ void Application::run() {
     _renderer->end();
 
     _gui->update();
+
+    _sceneFrameBuffer->unBind();
+
+    glDisable(GL_DEPTH_TEST);
+    glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+    glClear(GL_COLOR_BUFFER_BIT);
+    // glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+
+    _renderer->drawFrame(_sceneFrameBuffer);
 
     // Window update
     _window->pollEvents();
