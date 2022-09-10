@@ -1,6 +1,6 @@
 #include "controller/camera_controller.h"
 
-#include "application.h"
+#include "app/application.h"
 
 namespace deft {
 

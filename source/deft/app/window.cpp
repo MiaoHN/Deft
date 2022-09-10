@@ -1,8 +1,8 @@
-#include "window.h"
+#include "app/window.h"
 
 #include <GLFW/glfw3.h>
 
-#include "application.h"
+#include "app/application.h"
 #include "pch.h"
 
 namespace deft {

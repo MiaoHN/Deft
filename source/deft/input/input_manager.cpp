@@ -2,7 +2,7 @@
 
 #include <GLFW/glfw3.h>
 
-#include "application.h"
+#include "app/application.h"
 
 namespace deft {
 

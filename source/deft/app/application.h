@@ -12,7 +12,7 @@
 #include "render/texture.h"
 #include "render/vertex_array.h"
 #include "render/vertex_buffer.h"
-#include "window.h"
+#include "app/window.h"
 
 namespace deft {
 
