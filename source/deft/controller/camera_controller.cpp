@@ -16,7 +16,7 @@ CameraController::CameraController() {
 
   _camera = std::make_shared<Camera>(_transform);
 
-  _enabled = true;
+  _enabled = false;
 
   _moveSpeed        = 0.0f;
   _maxSpeed         = 2.0f;
@@ -88,6 +88,8 @@ void CameraController::setLookDirection(const math::Vector3& direction) {
 
 void CameraController::setEnable(bool flag) { _enabled = flag; }
 
+bool CameraController::isEnable() { return _enabled; }
+
 void CameraController::handleKey() {
   _keyPressed = false;
   if (IS_KEY_PRESS(KeyCode::A)) {
@@ -114,7 +116,7 @@ void CameraController::handleKey() {
 }
 
 void CameraController::handleScroll(double x, double y) {
-  if (!_enabled) return;
+  if (!isEnable()) return;
   if (y > -1e-7 && y < 1e-7) return;
   _transform->fov -= _scrollSpeed * y;
 

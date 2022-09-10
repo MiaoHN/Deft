@@ -33,6 +33,7 @@ class CameraController {
   void setLookDirection(const math::Vector3& direction);
 
   void setEnable(bool flag);
+  bool isEnable();
 
  private:
   void handleKey();

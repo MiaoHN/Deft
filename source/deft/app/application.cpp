@@ -27,6 +27,7 @@ Application::Application() {
   _scene            = std::make_unique<Scene>();
   _renderer         = std::make_unique<Renderer>();
   _inputManager     = std::make_unique<InputManager>(_window->getHandler());
+  _gui              = std::make_unique<Gui>();
   _cameraController = std::make_shared<CameraController>();
 }
 
@@ -51,10 +52,13 @@ void Application::run() {
     if (_inputManager->isMouseButtonPress(MouseButton::Right)) {
       glfwSetInputMode(_window->getHandler(), GLFW_CURSOR,
                        GLFW_CURSOR_DISABLED);
-      _cameraController->tick(dt);
+      _cameraController->setEnable(true);
     } else {
       glfwSetInputMode(_window->getHandler(), GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+      _cameraController->setEnable(false);
     }
+
+    _cameraController->tick(dt);
 
     _scene->tick(dt);
 
@@ -66,6 +70,8 @@ void Application::run() {
     _renderer->begin(_cameraController->getCamera());
     _scene->render(*_renderer);
     _renderer->end();
+
+    _gui->update();
 
     // Window update
     _window->pollEvents();

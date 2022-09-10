@@ -5,6 +5,7 @@
 
 #include "app/window.h"
 #include "controller/camera_controller.h"
+#include "gui/gui.h"
 #include "input/input_manager.h"
 #include "render/graphic_context.h"
 #include "render/renderer.h"
@@ -31,6 +32,7 @@ class Application {
   std::unique_ptr<Scene>            _scene;
   std::unique_ptr<InputManager>     _inputManager;
   std::unique_ptr<Renderer>         _renderer;
+  std::unique_ptr<Gui>              _gui;
   std::shared_ptr<CameraController> _cameraController;
 
   static Application* _s_instance;
