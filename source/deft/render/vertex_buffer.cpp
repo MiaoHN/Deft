@@ -100,6 +100,7 @@ void VertexBuffer::setLayout() const {
     glVertexAttribPointer(index, ElementCount(element.type),
                           ElementTypeToGLType(element.type), element.normalized,
                           stride, (const void*)(intptr_t)offset);
+    offset += ElementSize(element.type);
     glEnableVertexAttribArray(index);
     ++index;
   }

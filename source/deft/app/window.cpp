@@ -1,6 +1,7 @@
 #include "app/window.h"
 
 #include <GLFW/glfw3.h>
+#include <stb_image.h>
 
 #include "app/application.h"
 #include "pch.h"
@@ -25,6 +26,14 @@ Window::Window(int width, int height, const std::string& title)
               << std::endl;
     exit(-1);
   }
+
+  int            w, h, n;
+  unsigned char* data = stbi_load("assets/logo/logo.png", &w, &h, &n, 0);
+  GLFWimage      img;
+  img.width  = w;
+  img.height = h;
+  img.pixels = data;
+  glfwSetWindowIcon(_window, 1, &img);
 
   glfwSetInputMode(_window, GLFW_STICKY_KEYS, GLFW_TRUE);
 

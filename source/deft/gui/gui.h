@@ -8,7 +8,13 @@ class Gui {
   Gui();
   ~Gui();
 
+  void init();
+
   void update();
+
+  void draw();
+
+ private:
 };
 
 }  // namespace deft

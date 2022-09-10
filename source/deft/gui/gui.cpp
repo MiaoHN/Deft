@@ -14,6 +14,18 @@
 namespace deft {
 
 Gui::Gui() {
+  init();
+  //
+}
+
+Gui::~Gui() {
+  // Cleanup
+  ImGui_ImplOpenGL3_Shutdown();
+  ImGui_ImplGlfw_Shutdown();
+  ImGui::DestroyContext();
+}
+
+void Gui::init() {
   const char* glsl_version = "#version 460";
 
   // Setup Dear ImGui context
@@ -49,8 +61,6 @@ Gui::Gui() {
   ImGui_ImplOpenGL3_Init(glsl_version);
 }
 
-Gui::~Gui() {}
-
 void Gui::update() {
   // Start the Dear ImGui frame
   ImGui_ImplOpenGL3_NewFrame();
@@ -59,7 +69,9 @@ void Gui::update() {
 
   bool flag = true;
   ImGui::ShowDemoWindow(&flag);
+}
 
+void Gui::draw() {
   // Rendering
   ImGui::Render();
   ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());

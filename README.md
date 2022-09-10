@@ -8,7 +8,7 @@
 
 ## 截图
 
-<p align=center><img width=80% src="docs/images/screenshot-20220910-1.png"/></p>
+<p align=center><img width=80% src="docs/images/screenshot.png"/></p>
 
 ## 第三方库
 

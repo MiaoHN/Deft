@@ -5,6 +5,17 @@
 
 namespace deft {
 
+Texture::Texture(int width, int height) {
+  glGenTextures(1, &_id);
+  glBindTexture(GL_TEXTURE_2D, _id);
+
+  glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB,
+               GL_UNSIGNED_BYTE, nullptr);
+
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+}
+
 Texture::Texture(const std::string& path) {
   unsigned int texture;
   glGenTextures(1, &texture);
@@ -38,6 +49,8 @@ Texture::Texture(const std::string& path) {
 
 Texture::~Texture() { glDeleteTextures(1, &_id); }
 
+unsigned int Texture::getId() { return _id; }
+
 void Texture::bind(int slot) const {
   glActiveTexture(GL_TEXTURE0 + slot);
   glBindTexture(GL_TEXTURE_2D, _id);
@@ -46,6 +59,14 @@ void Texture::bind(int slot) const {
 void Texture::unBind(int slot) const {
   glActiveTexture(GL_TEXTURE0 + slot);
   glBindTexture(GL_TEXTURE_2D, 0);
+}
+
+std::shared_ptr<Texture> Texture::Create(int width, int height) {
+  return std::make_shared<Texture>(width, height);
+}
+
+std::shared_ptr<Texture> Texture::Create(const std::string& path) {
+  return std::make_shared<Texture>(path);
 }
 
 }  // namespace deft
