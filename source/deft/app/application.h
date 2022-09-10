@@ -22,14 +22,14 @@ class Application {
 
   static Application& Get();
 
-  Window&       getWindow();
-  InputManager& getInputManager();
-  Scene&        getScene();
+  Window&                 getWindow();
+  InputManager&           getInputManager();
+  std::shared_ptr<Scene>& getScene();
 
  private:
   std::unique_ptr<Window>           _window;
   std::unique_ptr<GraphicContext>   _context;
-  std::unique_ptr<Scene>            _scene;
+  std::shared_ptr<Scene>            _scene;
   std::unique_ptr<InputManager>     _inputManager;
   std::unique_ptr<Renderer>         _renderer;
   std::unique_ptr<Gui>              _gui;

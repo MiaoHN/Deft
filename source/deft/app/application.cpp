@@ -24,7 +24,7 @@ Application::Application() {
 
   _window           = std::make_unique<Window>(1600, 900, "Deft");
   _context          = std::make_unique<GraphicContext>(_window->getHandler());
-  _scene            = std::make_unique<Scene>();
+  _scene            = std::make_shared<Scene>();
   _renderer         = std::make_unique<Renderer>();
   _inputManager     = std::make_unique<InputManager>(_window->getHandler());
   _gui              = std::make_unique<Gui>();
@@ -71,7 +71,6 @@ void Application::run() {
     glEnable(GL_DEPTH_TEST);
     glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    _renderer->drawFrame(_scene->getFrameBuffer());
     _gui->draw();
 
     // Window update
@@ -86,6 +85,6 @@ Window& Application::getWindow() { return *_window; }
 
 InputManager& Application::getInputManager() { return *_inputManager; }
 
-Scene& Application::getScene() { return *_scene; }
+std::shared_ptr<Scene>& Application::getScene() { return _scene; }
 
 }  // namespace deft
