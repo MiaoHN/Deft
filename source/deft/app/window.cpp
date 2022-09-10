@@ -17,6 +17,7 @@ Window::Window(int width, int height, const std::string& title)
   glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
   glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
   glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+  glfwWindowHint(GLFW_SAMPLES, 4);
 
   _window = glfwCreateWindow(_width, _height, _title.c_str(), nullptr, nullptr);
   if (!_window) {
@@ -42,9 +43,7 @@ int Window::getHeight() const { return _height; }
 
 bool Window::isClosed() const { return glfwWindowShouldClose(_window); }
 
-void Window::setClose(bool flag) {
-  glfwSetWindowShouldClose(_window, flag);
-}
+void Window::setClose(bool flag) { glfwSetWindowShouldClose(_window, flag); }
 
 GLFWwindow* Window::getHandler() const { return _window; }
 

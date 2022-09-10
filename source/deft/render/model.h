@@ -13,14 +13,20 @@ namespace deft {
 class Model {
  public:
   Model();
-  Model(const std::vector<float>&        vertices,
-        const std::vector<unsigned int>& indices);
+  Model(const std::vector<float>&         vertices,
+        const std::vector<BufferElement>& layouts,
+        const std::vector<unsigned int>&  indices);
   ~Model();
 
   void bind() const;
   void unBind() const;
 
   int getCount() const;
+
+  static std::shared_ptr<Model> Create(
+      const std::vector<float>&         vertices,
+      const std::vector<BufferElement>& layouts,
+      const std::vector<unsigned int>&  indices);
 
  private:
   std::shared_ptr<VertexArray>  _vao;

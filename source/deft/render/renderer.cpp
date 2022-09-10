@@ -15,6 +15,7 @@ void Renderer::submit(const std::shared_ptr<Model> &  model,
                       const math::Vector3 &           position) {
   model->bind();
   shader->bind();
+  shader->setInt("diffuseTexture", 0);
   texture->bind();
   auto modelMatrix = math::translate(math::Matrix4(1.0f), position);
   shader->setMatrix4("transform", _proj * _view * modelMatrix);

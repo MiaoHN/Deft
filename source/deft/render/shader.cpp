@@ -93,10 +93,11 @@ std::vector<char> Shader::ReadFile(const std::string& path) {
 
   size_t size = file.tellg();
 
-  std::vector<char> buffer(size);
+  std::vector<char> buffer(size + 1);
 
   file.seekg(0);
   file.read(buffer.data(), size);
+  // buffer[size] = '\0';
 
   return buffer;
 }

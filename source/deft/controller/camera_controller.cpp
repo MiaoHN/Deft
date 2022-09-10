@@ -19,7 +19,7 @@ CameraController::CameraController() {
   _enabled = true;
 
   _moveSpeed        = 0.0f;
-  _maxSpeed         = 0.5f;
+  _maxSpeed         = 2.0f;
   _deltaSpeed       = 0.5f;
   _scrollSpeed      = 2.0f;
   _mouseSensitivity = 0.1f;

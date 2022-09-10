@@ -18,7 +18,11 @@ GraphicContext::GraphicContext(GLFWwindow* handler) : _handler(handler) {
   }
   glEnable(GL_DEPTH_TEST);
   glEnable(GL_CULL_FACE);
+  glEnable(GL_MULTISAMPLE);
   glfwSwapInterval(1);
+
+  const unsigned char* str = glGetString(GL_VERSION);
+  std::cerr << "GL VERSION: " << str << std::endl;
 }
 
 GraphicContext::~GraphicContext() {}

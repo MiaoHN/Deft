@@ -8,18 +8,15 @@ namespace deft {
 Texture::Texture(const std::string& path) {
   unsigned int texture;
   glGenTextures(1, &texture);
-  glBindTexture(GL_TEXTURE_2D,
-                texture);  // all upcoming GL_TEXTURE_2D operations now have
-                           // effect on this texture object
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S,
-                  GL_REPEAT);  // set texture wrapping to GL_REPEAT (default
-                               // wrapping method)
+  glBindTexture(GL_TEXTURE_2D, texture);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER,
                   GL_LINEAR_MIPMAP_LINEAR);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
   stbi_set_flip_vertically_on_load(true);
+
   int            width, height, nrChannels;
   unsigned char* data =
       stbi_load(path.c_str(), &width, &height, &nrChannels, 0);

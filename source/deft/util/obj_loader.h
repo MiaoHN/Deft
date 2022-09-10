@@ -47,8 +47,9 @@ class ObjLoader {
       }
       lineNumber++;
     }
+    std::vector<BufferElement> layout = {{"aPos", ElementType::Float3}};
 
-    return std::make_shared<Model>(vertices, indices);
+    return std::make_shared<Model>(vertices, layout, indices);
   }
 };
 
