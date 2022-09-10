@@ -3,16 +3,12 @@
 
 #include <memory>
 
+#include "app/window.h"
 #include "controller/camera_controller.h"
 #include "input/input_manager.h"
 #include "render/graphic_context.h"
-#include "render/index_buffer.h"
-#include "render/model.h"
-#include "render/shader.h"
-#include "render/texture.h"
-#include "render/vertex_array.h"
-#include "render/vertex_buffer.h"
-#include "app/window.h"
+#include "render/renderer.h"
+#include "scene/scene.h"
 
 namespace deft {
 
@@ -27,16 +23,14 @@ class Application {
 
   Window&       getWindow();
   InputManager& getInputManager();
+  Scene&        getScene();
 
  private:
-  std::unique_ptr<Window>         _window;
-  std::unique_ptr<GraphicContext> _context;
-
-  std::shared_ptr<Model>   _model;
-  std::shared_ptr<Texture> _texture;
-  std::shared_ptr<Shader>  _shader;
-
-  std::shared_ptr<InputManager>     _inputManager;
+  std::unique_ptr<Window>           _window;
+  std::unique_ptr<GraphicContext>   _context;
+  std::unique_ptr<Scene>            _scene;
+  std::unique_ptr<InputManager>     _inputManager;
+  std::unique_ptr<Renderer>         _renderer;
   std::shared_ptr<CameraController> _cameraController;
 
   static Application* _s_instance;
