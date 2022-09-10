@@ -15,6 +15,7 @@ struct Transform {
 struct CameraTransform : public Transform {
   float         yaw;
   float         pitch;
+  float         fov;
   math::Vector3 up;
   math::Vector3 lookDirection;
 

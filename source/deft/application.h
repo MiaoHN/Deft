@@ -29,9 +29,6 @@ class Application {
   InputManager& getInputManager();
 
  private:
-  void escapePressed();
-
- private:
   std::unique_ptr<Window>         _window;
   std::unique_ptr<GraphicContext> _context;
 

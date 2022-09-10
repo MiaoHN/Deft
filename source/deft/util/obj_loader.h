@@ -47,9 +47,6 @@ class ObjLoader {
       }
       lineNumber++;
     }
-    std::cout << "Total line: " << lineNumber << std::endl;
-    std::cout << "Vertex count: " << vertices.size() / 3 << std::endl;
-    std::cout << "Index count : " << indices.size() / 3 << std::endl;
 
     return std::make_shared<Model>(vertices, indices);
   }

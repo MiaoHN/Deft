@@ -25,12 +25,7 @@ Application::Application() {
   _window  = std::make_unique<Window>(1600, 900, "Deft");
   _context = std::make_unique<GraphicContext>(_window->getHandler());
 
-  glfwSetInputMode(_window->getHandler(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-
   _inputManager = std::make_shared<InputManager>(_window->getHandler());
-
-  _inputManager->addCallback(KeyCode::Escape,
-                             INPUT_FUNC_BIND(Application::escapePressed));
 
   _model = ObjLoader::Load("assets/model/standford-bunny.obj");
 
@@ -62,7 +57,13 @@ void Application::run() {
     _inputManager->tick();
 
     // Logic update
-    _cameraController->tick(dt);
+    if (_inputManager->isMouseButtonPress(MouseButton::Right)) {
+      glfwSetInputMode(_window->getHandler(), GLFW_CURSOR,
+                       GLFW_CURSOR_DISABLED);
+      _cameraController->tick(dt);
+    } else {
+      glfwSetInputMode(_window->getHandler(), GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+    }
 
     // Render
     // glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
@@ -91,7 +92,5 @@ Application& Application::Get() { return *_s_instance; }
 Window& Application::getWindow() { return *_window; }
 
 InputManager& Application::getInputManager() { return *_inputManager; }
-
-void Application::escapePressed() { _window->setClose(true); }
 
 }  // namespace deft

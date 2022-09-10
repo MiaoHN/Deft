@@ -36,6 +36,7 @@ class CameraController {
 
  private:
   void handleKey();
+  void handleScroll(double x, double y);
   void handleMouseMove();
 
  private:
@@ -52,6 +53,7 @@ class CameraController {
   float _moveSpeed;
   float _maxSpeed;
   float _deltaSpeed;  // 镜头惯性速度大小，目前只在水平方向有效果
+  float _scrollSpeed;
   float _mouseSensitivity;
 };
 

@@ -12,6 +12,7 @@ CameraController::CameraController() {
 
   _transform->yaw   = -90.0f;
   _transform->pitch = 0.0f;
+  _transform->fov   = 45.0f;
 
   _camera = std::make_shared<Camera>(_transform);
 
@@ -20,7 +21,13 @@ CameraController::CameraController() {
   _moveSpeed        = 0.0f;
   _maxSpeed         = 0.5f;
   _deltaSpeed       = 0.5f;
+  _scrollSpeed      = 2.0f;
   _mouseSensitivity = 0.1f;
+
+  Application::Get().getInputManager().addScrollCallback(
+      "CameraController::handleScroll",
+      std::bind(CameraController::handleScroll, this, std::placeholders::_1,
+                std::placeholders::_2));
 }
 
 CameraController::~CameraController() {}
@@ -104,6 +111,15 @@ void CameraController::handleKey() {
     _keyPressed = true;
     moveDown();
   }
+}
+
+void CameraController::handleScroll(double x, double y) {
+  if (!_enabled) return;
+  if (y > -1e-7 && y < 1e-7) return;
+  _transform->fov -= _scrollSpeed * y;
+
+  if (_transform->fov < 5.0f) _transform->fov = 5.0f;
+  if (_transform->fov > 100.0f) _transform->fov = 100.0f;
 }
 
 void CameraController::handleMouseMove() {
