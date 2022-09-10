@@ -2,12 +2,16 @@
 
 #include <glad/glad.h>
 
+#include "app/application.h"
 #include "pch.h"
 
 namespace deft {
 
 Scene::Scene() {
   for (int i = 0; i < 2; ++i) {
+    _frameBuffer =
+        FrameBuffer::Create({Application::Get().getWindow().getWidth(),
+                             Application::Get().getWindow().getHeight()});
     _models.emplace_back(Model::Create(
         {
             -0.5f, -0.5f, 0.5f,  0.0f,  0.0f,  1.0f,  0.0f, 0.0f,  // 前
@@ -84,9 +88,17 @@ Scene::~Scene() {}
 void Scene::tick(float dt) {}
 
 void Scene::render(Renderer& render) {
+  _frameBuffer->bind();
+  glEnable(GL_DEPTH_TEST);
+  glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
   render.submit(_models[0], _shader, _texture, {-1.0f, 0.0f, -1.0f});
   render.submit(_models[1], _shader, _texture, {2.0f, 0.0f, 0.0f});
   render.submit(_models[2], _shader, _floorTexture, {0.0f, 0.0f, 0.0f});
+  _frameBuffer->unBind();
 }
+
+std::shared_ptr<FrameBuffer>& Scene::getFrameBuffer() { return _frameBuffer; }
 
 }  // namespace deft

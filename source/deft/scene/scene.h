@@ -3,6 +3,7 @@
 
 #include <memory>
 
+#include "render/frame_buffer.h"
 #include "render/model.h"
 #include "render/renderer.h"
 #include "render/shader.h"
@@ -18,12 +19,15 @@ class Scene {
   void tick(float dt);
   void render(Renderer& render);
 
+  std::shared_ptr<FrameBuffer>& getFrameBuffer();
+
  private:
   std::vector<std::shared_ptr<Model>> _models;
 
-  std::shared_ptr<Texture> _texture;
-  std::shared_ptr<Texture> _floorTexture;
-  std::shared_ptr<Shader>  _shader;
+  std::shared_ptr<Texture>     _texture;
+  std::shared_ptr<Texture>     _floorTexture;
+  std::shared_ptr<Shader>      _shader;
+  std::shared_ptr<FrameBuffer> _frameBuffer;
 };
 
 }  // namespace deft

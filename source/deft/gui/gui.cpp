@@ -69,7 +69,9 @@ void Gui::update() {
 
   bool flag = true;
   ImGui::ShowDemoWindow(&flag);
+}
 
+void Gui::draw() {
   // Rendering
   ImGui::Render();
   ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());

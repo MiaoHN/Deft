@@ -12,6 +12,8 @@ class Gui {
 
   void update();
 
+  void draw();
+
  private:
 };
 
