@@ -6,6 +6,7 @@
 // clang-format on
 
 #include "math/math.h"
+#include "components/component.h"
 #include "util/obj_loader.h"
 #include "pch.h"
 #include "log/log.h"
@@ -27,6 +28,7 @@ Application::Application() {
   g_registry.init();
   g_registry.registerComponent<Transform>();
   g_registry.registerComponent<CameraTransform>();
+  g_registry.registerComponent<Renderable>();
 
   _window           = std::make_unique<Window>(1600, 900, "Deft");
   _context          = std::make_unique<GraphicContext>(_window->getHandler());

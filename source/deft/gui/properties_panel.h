@@ -16,6 +16,8 @@ class PropertiesPanel {
   void update(const std::shared_ptr<HierarchyPanel>& hierarchyPanel);
 
  private:
+  void showTransform(Entity entity);
+  void showTexture(Entity entity);
 };
 
 }  // namespace deft
