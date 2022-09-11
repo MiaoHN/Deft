@@ -14,8 +14,13 @@ class SceneObject {
   SceneObject(const std::shared_ptr<Model>& model, const Transform& transform);
   ~SceneObject();
 
+  Entity& getEntityId();
+
   std::shared_ptr<Model>& getModel();
   Transform&              getTransform();
+
+  void setLight(bool flag);
+  bool isLight();
 
  private:
   Entity _entityId;

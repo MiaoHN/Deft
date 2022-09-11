@@ -18,6 +18,8 @@ class Shader {
 
   void setMatrix4(const std::string& name, const math::Matrix4& mat);
   void setInt(const std::string& name, int value);
+  void setFloat(const std::string& name, float value);
+  void setFloat3(const std::string& name, const math::Vector3& vec);
 
  private:
   static std::vector<char> ReadFile(const std::string& path);

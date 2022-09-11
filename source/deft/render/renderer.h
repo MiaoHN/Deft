@@ -3,6 +3,7 @@
 
 #include <memory>
 
+#include "ecs/ecs.h"
 #include "math/math.h"
 #include "render/camera.h"
 #include "render/frame_buffer.h"
@@ -10,6 +11,7 @@
 #include "render/model.h"
 #include "render/shader.h"
 #include "render/texture.h"
+#include "scene/scene_object.h"
 
 namespace deft {
 
@@ -31,11 +33,25 @@ class Renderer {
               const std::shared_ptr<Texture>& texture,
               const math::Vector3&            position);
 
+  void submit(const std::shared_ptr<SceneObject>& object,
+              const std::shared_ptr<Shader>&      shader,
+              const math::Vector3&                position);
+
+  void submit(const std::shared_ptr<SceneObject>& object,
+              const std::shared_ptr<Shader>&      shader,
+              const std::shared_ptr<Texture>&     texture,
+              const math::Vector3&                position);
+
+  void addLight(Entity entity);
+
   void end();
 
  private:
   math::Matrix4 _proj;
   math::Matrix4 _view;
+  math::Vector3 _cameraPos;
+
+  std::vector<Entity> _lights;
 
   std::shared_ptr<Mesh>   _frameModel;   // tmp
   std::shared_ptr<Shader> _frameShader;  // tmp

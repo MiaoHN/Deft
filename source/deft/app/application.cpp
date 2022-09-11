@@ -29,6 +29,8 @@ Application::Application() {
   g_registry.registerComponent<Transform>();
   g_registry.registerComponent<CameraTransform>();
   g_registry.registerComponent<Renderable>();
+  g_registry.registerComponent<LightDetail>();
+  g_registry.registerComponent<MaterialComp>();
 
   _window           = std::make_unique<Window>(1600, 900, "Deft");
   _context          = std::make_unique<GraphicContext>(_window->getHandler());

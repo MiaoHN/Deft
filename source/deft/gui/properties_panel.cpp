@@ -22,6 +22,24 @@ void PropertiesPanel::update(
 
     // 显示材质信息
     showTexture(entity);
+
+    if (g_registry.haveComponent<MaterialComp>(entity)) {
+      ImGui::Begin("Material");
+      auto& material = g_registry.getComponent<MaterialComp>(entity);
+      ImGui::ColorEdit3("ambient", &material.ambient.x);
+      ImGui::ColorEdit3("diffuse", &material.diffuse.x);
+      ImGui::ColorEdit3("specular", &material.specular.x);
+      ImGui::DragFloat("shininess", &material.shininess);
+      ImGui::End();
+    }
+    if (g_registry.haveComponent<LightDetail>(entity)) {
+      ImGui::Begin("Light");
+      auto& lightDetail = g_registry.getComponent<LightDetail>(entity);
+      ImGui::ColorEdit3("ambient", &lightDetail.ambient.x);
+      ImGui::ColorEdit3("diffuse", &lightDetail.diffuse.x);
+      ImGui::ColorEdit3("specular", &lightDetail.specular.x);
+      ImGui::End();
+    }
   }
   ImGui::End();
 }

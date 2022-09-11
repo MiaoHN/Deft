@@ -21,4 +21,6 @@ math::Matrix4 Camera::getProjection() {
                            10000.0f);
 }
 
+math::Vector3 Camera::getPosition() { return _transform->position; }
+
 }  // namespace deft

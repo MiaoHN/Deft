@@ -14,6 +14,7 @@ class Camera {
 
   math::Matrix4 getView();
   math::Matrix4 getProjection();
+  math::Vector3 getPosition();
 
  private:
   std::shared_ptr<CameraTransform> _transform;

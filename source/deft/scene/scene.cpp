@@ -15,10 +15,22 @@ Scene::Scene() {
 
   _objects.emplace_back(
       std::make_shared<Box>(math::Vector3(-1.0f, 0.0f, -1.0f)));
+
+  for (int i = 0; i < 5; ++i) {
+    for (int j = 0; j < 5; ++j) {
+      _objects.emplace_back(
+          std::make_shared<Box>(math::Vector3(i * 2.0f, j * 2.0f, 1.0f),
+                                math::Vector3(0.2f, 0.7f, 0.7f)));
+    }
+  }
   _objects.emplace_back(std::make_shared<Box>(math::Vector3(2.0f, 0.0f, 1.0f),
                                               math::Vector3(0.2f, 0.7f, 0.7f)));
   _objects.emplace_back(std::make_shared<Box>(math::Vector3(3.0f, 0.0f, 3.0f),
                                               math::Vector3(0.2f, 0.7f, 0.3f)));
+
+  _objects.emplace_back(std::make_shared<Box>(math::Vector3(5.0f, 5.0f, 5.0f),
+                                              math::Vector3(1.0f, 1.0f, 1.0f)));
+  _objects[28]->setLight(true);
 
   _objects.emplace_back(std::make_shared<SceneObject>(
       Model::Create(
@@ -51,11 +63,18 @@ void Scene::tick(float dt) {}
 void Scene::render(Renderer& render) {
   _frameBuffer->bind();
   glEnable(GL_DEPTH_TEST);
+  glEnable(GL_CULL_FACE);
+  glEnable(GL_MULTISAMPLE);
   glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
   for (auto& object : _objects) {
-    render.submit(object->getModel(), _shader, object->getTransform().position);
+    if (object->isLight()) {
+      render.addLight(object->getEntityId());
+    }
+  }
+  for (auto& object : _objects) {
+    render.submit(object, _shader, object->getTransform().position);
   }
 
   _frameBuffer->unBind();
