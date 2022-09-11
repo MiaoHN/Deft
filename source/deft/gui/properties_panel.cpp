@@ -39,6 +39,13 @@ void PropertiesPanel::showTexture(Entity entity) {
       unsigned int textureId = texture->getId();
       ImGui::Image(reinterpret_cast<void*>(textureId), ImVec2{80.0f, 80.0f},
                    ImVec2{0, 1}, ImVec2{1, 0});
+      if (texture->getDataType() == Texture::Color) {
+        math::Vector3 colorPrev = texture->getColor();
+        math::Vector3 color     = texture->getColor();
+        if (ImGui::ColorEdit3("color", &color.x)) {
+          texture->setColor(color);
+        }
+      }
     }
   }
 }
