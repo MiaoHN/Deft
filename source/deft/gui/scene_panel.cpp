@@ -4,7 +4,10 @@
 
 namespace deft {
 
-ScenePanel::ScenePanel() { _scene = Application::Get().getScene(); }
+ScenePanel::ScenePanel() {
+  _scene     = Application::Get().getScene();
+  _sceneSize = {992.0f, 558.0f};
+}
 
 ScenePanel::~ScenePanel() {}
 
@@ -16,8 +19,8 @@ void ScenePanel::update() {
   } else {
     _isHovered = false;
   }
-  ImGui::Image(reinterpret_cast<void*>(sceneTexture), ImVec2{800, 450},
-               ImVec2{0, 1}, ImVec2{1, 0});
+  ImGui::Image(reinterpret_cast<void*>(sceneTexture),
+               ImVec2{_sceneSize.x, _sceneSize.y}, ImVec2{0, 1}, ImVec2{1, 0});
   ImGui::End();
 }
 

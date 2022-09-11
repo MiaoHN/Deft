@@ -18,6 +18,7 @@ class ScenePanel {
 
  private:
   std::shared_ptr<Scene> _scene;
+  math::Vector2          _sceneSize;
 
   bool _isHovered;
 };
