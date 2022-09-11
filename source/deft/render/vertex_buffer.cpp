@@ -20,7 +20,7 @@ unsigned int ElementTypeToGLType(ElementType type) {
     case ElementType::Float4:
       return GL_FLOAT;
   }
-  std::cerr << "::ElementTypeToGLType UnKnown BufferElement Type" << std::endl;
+  LOG_CLIENT_ERROR("::ElementTypeToGLType UnKnown BufferElement Type");
   exit(-1);
 }
 
@@ -36,7 +36,7 @@ int ElementCount(ElementType type) {
     case ElementType::Float4:
       return 4;
   }
-  std::cerr << "::ElementCount UnKnown BufferElement Type" << std::endl;
+  LOG_CLIENT_ERROR("::ElementCount UnKnown BufferElement Type");
   exit(-1);
 }
 
@@ -51,7 +51,7 @@ int ElementSize(ElementType type) {
     case ElementType::Float4:
       return sizeof(float) * count;
   }
-  std::cerr << "::ElementSize UnKnown BufferElement Type" << std::endl;
+  LOG_CLIENT_ERROR("::ElementSize UnKnown BufferElement Type");
   exit(-1);
 }
 

@@ -11,4 +11,6 @@
 #include <unordered_map>
 #include <vector>
 
+#include "log/log.h"
+
 #endif  // __DEFT_PCH_H__

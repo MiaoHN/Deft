@@ -12,8 +12,7 @@ namespace deft {
 GraphicContext::GraphicContext(GLFWwindow* handler) : _handler(handler) {
   glfwMakeContextCurrent(_handler);
   if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
-    std::cerr << "GraphicContext::GraphicContext Failed to initialize GLAD!"
-              << std::endl;
+    LOG_CORE_FATAL("GraphicContext::GraphicContext Failed to initialize GLAD!");
     exit(-1);
   }
   glEnable(GL_DEPTH_TEST);
@@ -23,8 +22,8 @@ GraphicContext::GraphicContext(GLFWwindow* handler) : _handler(handler) {
 
   const unsigned char* str1 = glGetString(GL_VERSION);
   const unsigned char* str2 = glGetString(GL_VENDOR);
-  std::cerr << "Version: " << str1 << std::endl;
-  std::cerr << "Vendor:  " << str2 << std::endl;
+  LOG_CLIENT_INFO("Version: %s", str1);
+  LOG_CLIENT_INFO("Vendor:  %s", str2);
 }
 
 GraphicContext::~GraphicContext() {}

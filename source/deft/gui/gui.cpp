@@ -15,7 +15,8 @@ namespace deft {
 
 Gui::Gui() {
   init();
-  _scene = Application::Get().getScene();
+  _scene    = Application::Get().getScene();
+  _logPanel = std::make_shared<LogPanel>();
 }
 
 Gui::~Gui() {
@@ -228,6 +229,9 @@ void Gui::update() {
   ImGui::Begin("Style");
   ImGui::ShowStyleEditor();
   ImGui::End();
+
+  _logPanel->update();
+  _logPanel->draw("Log");
 
   ImGui::End();
 

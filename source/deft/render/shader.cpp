@@ -25,9 +25,9 @@ Shader::Shader(const std::string& vertPath, const std::string& fragPath)
   glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &success);
   if (!success) {
     glGetShaderInfoLog(vertexShader, 512, nullptr, infoLog);
-    std::cerr
-        << "Shader::Shader Failed compilation for vertex shader! detail:\n"
-        << infoLog << std::endl;
+    LOG_CLIENT_ERROR(
+        "Shader::Shader Failed compilation for vertex shader! detail:\n%s",
+        infoLog);
     glDeleteShader(vertexShader);
     return;
   }
@@ -39,9 +39,9 @@ Shader::Shader(const std::string& vertPath, const std::string& fragPath)
   glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &success);
   if (!success) {
     glGetShaderInfoLog(fragmentShader, 512, nullptr, infoLog);
-    std::cerr
-        << "Shader::Shader Failed compilation for fragment shader! detail:\n"
-        << infoLog << std::endl;
+    LOG_CLIENT_ERROR(
+        "Shader::Shader Failed compilation for fragment shader! detail:\n%s",
+        infoLog);
     glDeleteShader(vertexShader);
     glDeleteShader(fragmentShader);
     return;
@@ -56,8 +56,8 @@ Shader::Shader(const std::string& vertPath, const std::string& fragPath)
   glGetProgramiv(shaderProgram, GL_LINK_STATUS, &success);
   if (!success) {
     glGetProgramInfoLog(shaderProgram, 512, nullptr, infoLog);
-    std::cerr << "Shader::Shader Failed link for program! detail:\n"
-              << infoLog << std::endl;
+    LOG_CLIENT_ERROR("Shader::Shader Failed link for program! detail:\n%s",
+                     infoLog);
     glDeleteShader(vertexShader);
     glDeleteShader(fragmentShader);
     glDeleteProgram(shaderProgram);
@@ -86,8 +86,8 @@ void Shader::setInt(const std::string& name, int value) {
 std::vector<char> Shader::ReadFile(const std::string& path) {
   std::ifstream file(path, std::ios::ate | std::ios::binary);
   if (!file.is_open()) {
-    std::cerr << "Shader::ReadFile Can't open file '" << path << "'"
-              << std::endl;
+    LOG_CLIENT_ERROR("Shader::ReadFile Can't open file '%s'", path.c_str());
+    file.close();
     return {};
   }
 
@@ -97,7 +97,7 @@ std::vector<char> Shader::ReadFile(const std::string& path) {
 
   file.seekg(0);
   file.read(buffer.data(), size);
-  // buffer[size] = '\0';
+  buffer[size] = '\0';
 
   return buffer;
 }
