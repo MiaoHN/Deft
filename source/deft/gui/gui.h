@@ -3,6 +3,7 @@
 
 #include <memory>
 
+#include "gui/log_panel.h"
 #include "scene/scene.h"
 
 namespace deft {
@@ -20,6 +21,8 @@ class Gui {
 
  private:
   std::shared_ptr<Scene> _scene;
+
+  std::shared_ptr<LogPanel> _logPanel;
 };
 
 }  // namespace deft

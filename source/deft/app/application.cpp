@@ -8,6 +8,7 @@
 #include "math/math.h"
 #include "util/obj_loader.h"
 #include "pch.h"
+#include "log/log.h"
 
 namespace deft {
 
@@ -15,9 +16,8 @@ Application* Application::_s_instance;
 
 Application::Application() {
   if (_s_instance) {
-    std::cerr
-        << "Application::Application There is already a running application!"
-        << std::endl;
+    LOG_CORE_FATAL(
+        "Application::Application There is already a running application!");
     return;
   }
   _s_instance = this;

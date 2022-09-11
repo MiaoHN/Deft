@@ -41,7 +41,7 @@ Texture::Texture(const std::string& path) {
     }
     glGenerateMipmap(GL_TEXTURE_2D);
   } else {
-    std::cerr << "Texture::Texture Failed to load texture" << std::endl;
+    LOG_CLIENT_ERROR("Texture::Texture Failed to load texture");
   }
   stbi_image_free(data);
   _id = texture;

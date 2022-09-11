@@ -41,8 +41,7 @@ FrameBuffer::FrameBuffer(const FrameBufferData& data) {
                             GL_RENDERBUFFER, _rbo);
 
   if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
-    std::cerr << "FrameBuffer::FrameBuffer FrameBuffer is not complete!"
-              << std::endl;
+    LOG_CLIENT_ERROR("FrameBuffer::FrameBuffer FrameBuffer is not complete!");
   }
   glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }

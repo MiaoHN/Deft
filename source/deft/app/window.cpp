@@ -9,7 +9,8 @@
 namespace deft {
 
 void GLFWErrorCallback(int error_code, const char* description) {
-  std::cerr << "GLFW Error(" << error_code << "): " << description << std::endl;
+  LOG_CORE_ERROR("GLFW Error(%d): %s", error_code, description);
+  LOG_CLIENT_ERROR("GLFW Error(%d): %s", error_code, description);
 }
 
 Window::Window(int width, int height, const std::string& title)
@@ -22,8 +23,7 @@ Window::Window(int width, int height, const std::string& title)
 
   _window = glfwCreateWindow(_width, _height, _title.c_str(), nullptr, nullptr);
   if (!_window) {
-    std::cerr << "Window::Window Error occur when create GLFWwindow!"
-              << std::endl;
+    LOG_CORE_FATAL("Window::Window Error occur when create GLFWwindow!");
     exit(-1);
   }
 

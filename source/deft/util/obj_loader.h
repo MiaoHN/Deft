@@ -6,6 +6,7 @@
 #include <memory>
 #include <string>
 
+#include "log/log.h"
 #include "render/model.h"
 
 namespace deft {
@@ -19,9 +20,8 @@ class ObjLoader {
     std::ifstream file(path, std::ios::binary);
 
     if (!file.is_open()) {
-      // TODO 处理文件不存在
-      std::cerr << "ObjLoader::Load Failed to open file'" << path << "'"
-                << std::endl;
+      LOG_CLIENT_ERROR("ObjLoader::Load Failed to open file '%s'",
+                       path.c_str());
       return nullptr;
     }
     int lineNumber = 0;
