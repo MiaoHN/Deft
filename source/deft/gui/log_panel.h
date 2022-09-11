@@ -15,8 +15,6 @@ class LogPanel {
 
   void update();
 
-  void draw(const char* title, bool* p_open = NULL);
-
  private:
   std::shared_ptr<Log> _logPtr;
   ImGuiTextBuffer      _buffer;
