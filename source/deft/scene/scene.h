@@ -4,10 +4,11 @@
 #include <memory>
 
 #include "render/frame_buffer.h"
-#include "render/model.h"
+#include "render/mesh.h"
 #include "render/renderer.h"
 #include "render/shader.h"
 #include "render/texture.h"
+#include "scene/scene_object.h"
 
 namespace deft {
 
@@ -22,10 +23,8 @@ class Scene {
   std::shared_ptr<FrameBuffer>& getFrameBuffer();
 
  private:
-  std::vector<std::shared_ptr<Model>> _models;
+  std::vector<std::shared_ptr<SceneObject>> _objects;
 
-  std::shared_ptr<Texture>     _texture;
-  std::shared_ptr<Texture>     _floorTexture;
   std::shared_ptr<Shader>      _shader;
   std::shared_ptr<FrameBuffer> _frameBuffer;
 };

@@ -4,34 +4,27 @@
 #include <memory>
 #include <vector>
 
-#include "render/index_buffer.h"
-#include "render/vertex_array.h"
-#include "render/vertex_buffer.h"
+#include "render/mesh.h"
+#include "render/texture.h"
 
 namespace deft {
 
 class Model {
  public:
-  Model();
-  Model(const std::vector<float>&         vertices,
-        const std::vector<BufferElement>& layouts,
-        const std::vector<unsigned int>&  indices);
+  Model(const std::shared_ptr<Mesh>&    mesh,
+        const std::shared_ptr<Texture>& texture);
   ~Model();
 
-  void bind() const;
-  void unBind() const;
+  std::shared_ptr<Mesh>&                 getMesh();
+  std::vector<std::shared_ptr<Texture>>& getTextures();
 
-  int getCount() const;
-
-  static std::shared_ptr<Model> Create(
-      const std::vector<float>&         vertices,
-      const std::vector<BufferElement>& layouts,
-      const std::vector<unsigned int>&  indices);
+  static std::shared_ptr<Model> Create(const std::shared_ptr<Mesh>&    mesh,
+                                       const std::shared_ptr<Texture>& texture);
 
  private:
-  std::shared_ptr<VertexArray>  _vao;
-  std::shared_ptr<VertexBuffer> _vbo;
-  std::shared_ptr<IndexBuffer>  _ebo;
+  std::shared_ptr<Mesh> _mesh;
+
+  std::vector<std::shared_ptr<Texture>> _textures;
 };
 
 }  // namespace deft
