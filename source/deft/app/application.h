@@ -5,6 +5,7 @@
 
 #include "app/window.h"
 #include "controller/camera_controller.h"
+#include "ecs/ecs.h"
 #include "gui/gui.h"
 #include "input/input_manager.h"
 #include "render/graphic_context.h"
@@ -25,6 +26,7 @@ class Application {
   Window&                 getWindow();
   InputManager&           getInputManager();
   std::shared_ptr<Scene>& getScene();
+  Registry&               getRegistry();
 
  private:
   std::unique_ptr<Window>           _window;
@@ -34,6 +36,8 @@ class Application {
   std::unique_ptr<Renderer>         _renderer;
   std::unique_ptr<Gui>              _gui;
   std::shared_ptr<CameraController> _cameraController;
+
+  Registry _registry;
 
   static Application* _s_instance;
 };

@@ -29,6 +29,10 @@ Application::Application() {
   _inputManager     = std::make_unique<InputManager>(_window->getHandler());
   _gui              = std::make_unique<Gui>();
   _cameraController = std::make_shared<CameraController>();
+
+  _registry.init();
+  _registry.registerComponent<Transform>();
+  _registry.registerComponent<CameraTransform>();
 }
 
 Application::~Application() {}
@@ -93,5 +97,7 @@ Window& Application::getWindow() { return *_window; }
 InputManager& Application::getInputManager() { return *_inputManager; }
 
 std::shared_ptr<Scene>& Application::getScene() { return _scene; }
+
+Registry& Application::getRegistry() { return _registry; }
 
 }  // namespace deft
