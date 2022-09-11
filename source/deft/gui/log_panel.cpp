@@ -24,10 +24,8 @@ void LogPanel::update() {
     _buffer.append(msg.c_str());
     _lineOffsets.push_back(_buffer.size());
   }
-}
 
-void LogPanel::draw(const char* title, bool* p_open) {
-  if (!ImGui::Begin(title, p_open)) {
+  if (!ImGui::Begin("Log")) {
     ImGui::End();
     return;
   }

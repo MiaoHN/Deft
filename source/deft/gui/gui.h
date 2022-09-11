@@ -4,6 +4,8 @@
 #include <memory>
 
 #include "gui/log_panel.h"
+#include "gui/menu_bar.h"
+#include "gui/scene_panel.h"
 #include "scene/scene.h"
 
 namespace deft {
@@ -19,10 +21,15 @@ class Gui {
 
   void draw();
 
- private:
-  std::shared_ptr<Scene> _scene;
+  bool isScenePanelHovered();
 
-  std::shared_ptr<LogPanel> _logPanel;
+ private:
+  void initStyle();
+
+ private:
+  std::shared_ptr<LogPanel>   _logPanel;
+  std::shared_ptr<ScenePanel> _scenePanel;
+  std::shared_ptr<MenuBar>    _menuBar;
 };
 
 }  // namespace deft

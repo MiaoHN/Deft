@@ -14,3 +14,11 @@ add_custom_command(
   ${PROJECT_SOURCE_DIR}/assets
   $<TARGET_FILE_DIR:editor>/assets
 )
+
+add_custom_command(
+  TARGET editor
+  POST_BUILD
+  COMMAND ${CMAKE_COMMAND} -E copy
+  ${PROJECT_SOURCE_DIR}/assets/layout/imgui.ini
+  $<TARGET_FILE_DIR:editor>/imgui.ini
+)

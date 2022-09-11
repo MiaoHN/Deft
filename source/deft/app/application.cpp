@@ -49,12 +49,19 @@ void Application::run() {
     _inputManager->tick();
 
     // Logic update
-    if (_inputManager->isMouseButtonPress(MouseButton::Right)) {
-      glfwSetInputMode(_window->getHandler(), GLFW_CURSOR,
-                       GLFW_CURSOR_DISABLED);
-      _cameraController->setEnable(true);
+    if (_gui->isScenePanelHovered()) {
+      if (_inputManager->isMouseButtonPress(MouseButton::Right)) {
+        // glfwSetInputMode(_window->getHandler(), GLFW_CURSOR,
+        //                  GLFW_CURSOR_DISABLED);
+        _cameraController->setEnable(true);
+      } else {
+        // glfwSetInputMode(_window->getHandler(), GLFW_CURSOR,
+        //                  GLFW_CURSOR_NORMAL);
+        _cameraController->setEnable(false);
+      }
     } else {
-      glfwSetInputMode(_window->getHandler(), GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+      // glfwSetInputMode(_window->getHandler(), GLFW_CURSOR,
+      //                  GLFW_CURSOR_NORMAL);
       _cameraController->setEnable(false);
     }
 
