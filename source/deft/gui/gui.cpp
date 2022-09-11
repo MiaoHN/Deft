@@ -144,6 +144,8 @@ void Gui::draw() {
   }
 }
 
+bool Gui::isScenePanelHovered() { return _scenePanel->isHovered(); }
+
 void Gui::initStyle() {
   // Setup Dear ImGui style
   ImGui::StyleColorsDark();

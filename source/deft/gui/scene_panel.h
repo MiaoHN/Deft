@@ -14,8 +14,12 @@ class ScenePanel {
 
   void update();
 
+  bool isHovered();
+
  private:
   std::shared_ptr<Scene> _scene;
+
+  bool _isHovered;
 };
 
 }  // namespace deft

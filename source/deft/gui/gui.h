@@ -21,6 +21,8 @@ class Gui {
 
   void draw();
 
+  bool isScenePanelHovered();
+
  private:
   void initStyle();
 
