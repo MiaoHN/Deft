@@ -135,6 +135,10 @@ class ComponentArray : public IComponentArray {
     return _componentArray[_entityToIndexMap[entity]];
   }
 
+  bool exist(Entity entity) {
+    return _entityToIndexMap.find(entity) != _entityToIndexMap.end();
+  }
+
   void entityDestroyed(Entity entity) override {
     if (_entityToIndexMap.find(entity) != _entityToIndexMap.end()) {
       // Remove the entity's component if it existed
@@ -206,6 +210,11 @@ class ComponentManager {
   T& getComponent(Entity entity) {
     // Get a reference to a component from the array for an entity
     return getComponentArray<T>()->getData(entity);
+  }
+
+  template <typename T>
+  bool haveComponent(Entity entity) {
+    return getComponentArray<T>()->exist(entity);
   }
 
   void entityDestroyed(Entity entity) {
@@ -369,6 +378,11 @@ class Registry {
   template <typename T>
   T& getComponent(Entity entity) {
     return _componentManager->getComponent<T>(entity);
+  }
+
+  template <typename T>
+  bool haveComponent(Entity entity) {
+    return _componentManager->haveComponent<T>(entity);
   }
 
   template <typename T>
