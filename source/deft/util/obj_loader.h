@@ -7,13 +7,13 @@
 #include <string>
 
 #include "log/log.h"
-#include "render/model.h"
+#include "render/mesh.h"
 
 namespace deft {
 
 class ObjLoader {
  public:
-  static std::shared_ptr<Model> Load(const std::string& path) {
+  static std::shared_ptr<Mesh> Load(const std::string& path) {
     std::vector<float>        vertices;
     std::vector<unsigned int> indices;
 
@@ -49,7 +49,7 @@ class ObjLoader {
     }
     std::vector<BufferElement> layout = {{"aPos", ElementType::Float3}};
 
-    return std::make_shared<Model>(vertices, layout, indices);
+    return std::make_shared<Mesh>(vertices, layout, indices);
   }
 };
 

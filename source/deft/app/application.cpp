@@ -14,6 +14,8 @@ namespace deft {
 
 Application* Application::_s_instance;
 
+Registry g_registry;
+
 Application::Application() {
   if (_s_instance) {
     LOG_CORE_FATAL(
@@ -21,6 +23,10 @@ Application::Application() {
     return;
   }
   _s_instance = this;
+
+  g_registry.init();
+  g_registry.registerComponent<Transform>();
+  g_registry.registerComponent<CameraTransform>();
 
   _window           = std::make_unique<Window>(1600, 900, "Deft");
   _context          = std::make_unique<GraphicContext>(_window->getHandler());

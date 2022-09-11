@@ -5,7 +5,7 @@
 namespace deft {
 
 Renderer::Renderer() {
-  _frameModel = Model::Create(
+  _frameModel = Mesh::Create(
       {
           -1.0f, -1.0f, 0.0f, 0.0f,  //
           1.0f, -1.0f, 1.0f, 0.0f,   //
@@ -41,18 +41,36 @@ void Renderer::drawFrame(std::shared_ptr<FrameBuffer>& frameBuffer) {
                  nullptr);
 }
 
-void Renderer::submit(const std::shared_ptr<Model>&   model,
+void Renderer::submit(const std::shared_ptr<Model>&  model,
+                      const std::shared_ptr<Shader>& shader,
+                      const math::Vector3&           position) {
+  auto& mesh     = model->getMesh();
+  auto& textures = model->getTextures();
+
+  mesh->bind();
+  shader->bind();
+  for (int i = 0; i < textures.size(); ++i) {
+    shader->setInt("diffuseTexture", i);
+    textures[i]->bind(i);
+  }
+  auto modelMatrix = math::translate(math::Matrix4(1.0f), position);
+  shader->setMatrix4("transform", _proj * _view * modelMatrix);
+
+  glDrawElements(GL_TRIANGLES, mesh->getCount(), GL_UNSIGNED_INT, nullptr);
+}
+
+void Renderer::submit(const std::shared_ptr<Mesh>&    mesh,
                       const std::shared_ptr<Shader>&  shader,
                       const std::shared_ptr<Texture>& texture,
                       const math::Vector3&            position) {
-  model->bind();
+  mesh->bind();
   shader->bind();
   shader->setInt("diffuseTexture", 0);
   texture->bind();
   auto modelMatrix = math::translate(math::Matrix4(1.0f), position);
   shader->setMatrix4("transform", _proj * _view * modelMatrix);
 
-  glDrawElements(GL_TRIANGLES, model->getCount(), GL_UNSIGNED_INT, nullptr);
+  glDrawElements(GL_TRIANGLES, mesh->getCount(), GL_UNSIGNED_INT, nullptr);
 }
 
 void Renderer::end() {}

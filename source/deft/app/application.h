@@ -5,6 +5,7 @@
 
 #include "app/window.h"
 #include "controller/camera_controller.h"
+#include "ecs/ecs.h"
 #include "gui/gui.h"
 #include "input/input_manager.h"
 #include "render/graphic_context.h"

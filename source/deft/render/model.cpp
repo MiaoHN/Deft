@@ -2,32 +2,23 @@
 
 namespace deft {
 
-Model::Model() = default;
-
-Model::Model(const std::vector<float>&         vertices,
-             const std::vector<BufferElement>& layouts,
-             const std::vector<unsigned int>&  indices) {
-  _vao = std::make_shared<VertexArray>();
-  _vbo = std::make_shared<VertexBuffer>(vertices);
-  _vbo->setElements(layouts);
-  _ebo = std::make_shared<IndexBuffer>(indices);
+Model::Model(const std::shared_ptr<Mesh>&    mesh,
+             const std::shared_ptr<Texture>& texture) {
+  _mesh = mesh;
+  _textures.push_back(texture);
 }
 
 Model::~Model() {}
 
-void Model::bind() const {
-  _vao->bind();
-  _vbo->bind();
-  _ebo->bind();
+std::shared_ptr<Mesh>& Model::getMesh() { return _mesh; }
+
+std::vector<std::shared_ptr<Texture>>& Model::getTextures() {
+  return _textures;
 }
 
-void Model::unBind() const { _vao->unBind(); }
-
-int Model::getCount() const { return _ebo->getCount(); }
-
-std::shared_ptr<Model> Model::Create(const std::vector<float>&         vertices,
-                                     const std::vector<BufferElement>& layouts,
-                                     const std::vector<unsigned int>& indices) {
-  return std::make_shared<Model>(vertices, layouts, indices);
+std::shared_ptr<Model> Model::Create(const std::shared_ptr<Mesh>&    mesh,
+                                     const std::shared_ptr<Texture>& texture) {
+  return std::make_shared<Model>(mesh, texture);
 }
+
 }  // namespace deft
