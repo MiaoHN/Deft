@@ -3,8 +3,10 @@
 
 #include <memory>
 
+#include "gui/hierarchy_panel.h"
 #include "gui/log_panel.h"
 #include "gui/menu_bar.h"
+#include "gui/properties_panel.h"
 #include "gui/scene_panel.h"
 #include "scene/scene.h"
 
@@ -27,9 +29,14 @@ class Gui {
   void initStyle();
 
  private:
-  std::shared_ptr<LogPanel>   _logPanel;
-  std::shared_ptr<ScenePanel> _scenePanel;
-  std::shared_ptr<MenuBar>    _menuBar;
+  std::shared_ptr<LogPanel>        _logPanel;
+  std::shared_ptr<ScenePanel>      _scenePanel;
+  std::shared_ptr<MenuBar>         _menuBar;
+  std::shared_ptr<HierarchyPanel>  _hierarchyPanel;
+  std::shared_ptr<PropertiesPanel> _propertiesPanel;
+
+  Entity _selectedEntity;
+  bool   selected = false;
 };
 
 }  // namespace deft

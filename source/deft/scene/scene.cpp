@@ -61,7 +61,7 @@ Scene::Scene() {
 
               }),
           Texture::Create("assets/texture/container.jpg")),
-      std::make_shared<Transform>(math::Vector3(-1.0f, 0.0f, -1.0f))));
+      Transform(math::Vector3(-1.0f, 0.0f, -1.0f))));
 
   _objects.emplace_back(std::make_shared<SceneObject>(
       Model::Create(
@@ -112,7 +112,7 @@ Scene::Scene() {
 
               }),
           Texture::Create("assets/texture/container.jpg")),
-      std::make_shared<Transform>(math::Vector3(2.0f, 0.0f, 1.0f))));
+      Transform(math::Vector3(2.0f, 0.0f, 1.0f))));
 
   _objects.emplace_back(std::make_shared<SceneObject>(
       Model::Create(
@@ -132,7 +132,7 @@ Scene::Scene() {
                   0, 1, 2, 0, 2, 3,  //
               }),
           Texture::Create("assets/texture/metal.png")),
-      std::make_shared<Transform>(math::Vector3(0.0f, 0.0f, 0.0f))));
+      Transform(math::Vector3(0.0f, 0.0f, 0.0f))));
 
   _shader = std::make_shared<Shader>("assets/shader/default.vert",
                                      "assets/shader/default.frag");
@@ -149,8 +149,7 @@ void Scene::render(Renderer& render) {
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
   for (auto& object : _objects) {
-    render.submit(object->getModel(), _shader,
-                  object->getTransform()->position);
+    render.submit(object->getModel(), _shader, object->getTransform().position);
   }
 
   _frameBuffer->unBind();

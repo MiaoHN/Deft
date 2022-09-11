@@ -14,6 +14,8 @@ namespace deft {
 
 Application* Application::_s_instance;
 
+Registry g_registry;
+
 Application::Application() {
   if (_s_instance) {
     LOG_CORE_FATAL(
@@ -22,6 +24,10 @@ Application::Application() {
   }
   _s_instance = this;
 
+  g_registry.init();
+  g_registry.registerComponent<Transform>();
+  g_registry.registerComponent<CameraTransform>();
+
   _window           = std::make_unique<Window>(1600, 900, "Deft");
   _context          = std::make_unique<GraphicContext>(_window->getHandler());
   _scene            = std::make_shared<Scene>();
@@ -29,10 +35,6 @@ Application::Application() {
   _inputManager     = std::make_unique<InputManager>(_window->getHandler());
   _gui              = std::make_unique<Gui>();
   _cameraController = std::make_shared<CameraController>();
-
-  _registry.init();
-  _registry.registerComponent<Transform>();
-  _registry.registerComponent<CameraTransform>();
 }
 
 Application::~Application() {}
@@ -97,7 +99,5 @@ Window& Application::getWindow() { return *_window; }
 InputManager& Application::getInputManager() { return *_inputManager; }
 
 std::shared_ptr<Scene>& Application::getScene() { return _scene; }
-
-Registry& Application::getRegistry() { return _registry; }
 
 }  // namespace deft

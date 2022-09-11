@@ -10,6 +10,8 @@
 // clang-format on
 
 #include "app/application.h"
+#include "log/log.h"
+#include "ecs/ecs.h"
 
 namespace deft {
 
@@ -17,9 +19,11 @@ Gui::Gui() {
   init();
   initStyle();
 
-  _logPanel   = std::make_shared<LogPanel>();
-  _scenePanel = std::make_shared<ScenePanel>();
-  _menuBar    = std::make_shared<MenuBar>();
+  _logPanel        = std::make_shared<LogPanel>();
+  _scenePanel      = std::make_shared<ScenePanel>();
+  _menuBar         = std::make_shared<MenuBar>();
+  _hierarchyPanel  = std::make_shared<HierarchyPanel>();
+  _propertiesPanel = std::make_shared<PropertiesPanel>();
 }
 
 Gui::~Gui() {
@@ -103,11 +107,11 @@ void Gui::update() {
   // 绘制日志
   _logPanel->update();
 
-  ImGui::Begin("Properties");
-  ImGui::End();
+  // 绘制实体列表
+  _hierarchyPanel->update();
 
-  ImGui::Begin("Scene Hierarchy");
-  ImGui::End();
+  // 绘制实体属性
+  _propertiesPanel->update(_hierarchyPanel);
 
   ImGui::End();
 }

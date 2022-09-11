@@ -26,7 +26,6 @@ class Application {
   Window&                 getWindow();
   InputManager&           getInputManager();
   std::shared_ptr<Scene>& getScene();
-  Registry&               getRegistry();
 
  private:
   std::unique_ptr<Window>           _window;
@@ -36,8 +35,6 @@ class Application {
   std::unique_ptr<Renderer>         _renderer;
   std::unique_ptr<Gui>              _gui;
   std::shared_ptr<CameraController> _cameraController;
-
-  Registry _registry;
 
   static Application* _s_instance;
 };

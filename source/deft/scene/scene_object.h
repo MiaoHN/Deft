@@ -4,23 +4,23 @@
 #include <memory>
 
 #include "components/transform.h"
+#include "ecs/ecs.h"
 #include "render/model.h"
 
 namespace deft {
 
 class SceneObject {
  public:
-  SceneObject(const std::shared_ptr<Model>&     model,
-              const std::shared_ptr<Transform>& transform);
+  SceneObject(const std::shared_ptr<Model>& model, const Transform& transform);
   ~SceneObject();
 
-  std::shared_ptr<Model>&     getModel();
-  std::shared_ptr<Transform>& getTransform();
+  std::shared_ptr<Model>& getModel();
+  Transform&              getTransform();
 
  private:
-  std::shared_ptr<Model> _model;
+  Entity _entityId;
 
-  std::shared_ptr<Transform> _transform;
+  std::shared_ptr<Model> _model;
 };
 
 }  // namespace deft

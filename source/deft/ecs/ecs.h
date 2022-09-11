@@ -11,6 +11,7 @@
 #include <queue>
 #include <set>
 #include <unordered_map>
+#include <vector>
 
 namespace deft {
 
@@ -320,9 +321,16 @@ class Registry {
   }
 
   // Entity methods
-  Entity createEntity() { return _entityManager->createEntity(); }
+  Entity createEntity() {
+    Entity entity = _entityManager->createEntity();
+    _entities.push_back(entity);
+    return entity;
+  }
 
   void destroyEntity(Entity entity) {
+    auto iter = std::find(_entities.begin(), _entities.end(), entity);
+    _entities.erase(iter);
+
     _entityManager->destroyEntity(entity);
 
     _componentManager->entityDestroyed(entity);
@@ -379,11 +387,17 @@ class Registry {
     _systemManager->setSignature<T>(signature);
   }
 
+  std::vector<Entity>& getEntiesUsed() { return _entities; }
+
  private:
   std::unique_ptr<ComponentManager> _componentManager;
   std::unique_ptr<EntityManager>    _entityManager;
   std::unique_ptr<SystemManager>    _systemManager;
+
+  std::vector<Entity> _entities;
 };
+
+extern Registry g_registry;
 
 }  // namespace deft
 

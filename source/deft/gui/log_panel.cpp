@@ -22,7 +22,7 @@ void LogPanel::update() {
 
   for (auto& msg : logs) {
     _buffer.append(msg.c_str());
-    _lineOffsets.push_back(_buffer.size());
+    _lineOffsets.push_back(_buffer.size() + 1);
   }
 
   if (!ImGui::Begin("Log")) {
