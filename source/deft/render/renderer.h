@@ -37,11 +37,6 @@ class Renderer {
               const std::shared_ptr<Shader>&      shader,
               const math::Vector3&                position);
 
-  void submit(const std::shared_ptr<SceneObject>& object,
-              const std::shared_ptr<Shader>&      shader,
-              const std::shared_ptr<Texture>&     texture,
-              const math::Vector3&                position);
-
   void addLight(Entity entity);
 
   void end();

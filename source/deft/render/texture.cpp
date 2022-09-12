@@ -5,7 +5,8 @@
 
 namespace deft {
 
-Texture::Texture(int width, int height) : _dataType(Blank) {
+Texture::Texture(int width, int height, TextureType type)
+    : _dataType(Blank), _type(type) {
   glGenTextures(1, &_id);
   glBindTexture(GL_TEXTURE_2D, _id);
 
@@ -16,7 +17,8 @@ Texture::Texture(int width, int height) : _dataType(Blank) {
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 }
 
-Texture::Texture(const math::Vector3& color) : _dataType(Color), _color(color) {
+Texture::Texture(const math::Vector3& color, TextureType type)
+    : _dataType(Color), _color(color), _type(type) {
   glGenTextures(1, &_id);
   glBindTexture(GL_TEXTURE_2D, _id);
 
@@ -35,7 +37,8 @@ Texture::Texture(const math::Vector3& color) : _dataType(Color), _color(color) {
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 }
 
-Texture::Texture(const std::string& path) : _dataType(Image) {
+Texture::Texture(const std::string& path, TextureType type)
+    : _dataType(Image), _type(type) {
   unsigned int texture;
   glGenTextures(1, &texture);
   glBindTexture(GL_TEXTURE_2D, texture);
@@ -82,6 +85,10 @@ void Texture::unBind(int slot) const {
 
 Texture::DataType Texture::getDataType() { return _dataType; }
 
+TextureType Texture::getType() { return _type; }
+
+void Texture::setType(TextureType type) { _type = type; }
+
 void Texture::setColor(const math::Vector3& color) {
   bind();
 
@@ -106,16 +113,19 @@ void Texture::setColor(const math::Vector3& color) {
 
 math::Vector3& Texture::getColor() { return _color; }
 
-std::shared_ptr<Texture> Texture::Create(int width, int height) {
-  return std::make_shared<Texture>(width, height);
+std::shared_ptr<Texture> Texture::Create(int width, int height,
+                                         TextureType type) {
+  return std::make_shared<Texture>(width, height, type);
 }
 
-std::shared_ptr<Texture> Texture::Create(const math::Vector3& color) {
-  return std::make_shared<Texture>(color);
+std::shared_ptr<Texture> Texture::Create(const math::Vector3& color,
+                                         TextureType          type) {
+  return std::make_shared<Texture>(color, type);
 }
 
-std::shared_ptr<Texture> Texture::Create(const std::string& path) {
-  return std::make_shared<Texture>(path);
+std::shared_ptr<Texture> Texture::Create(const std::string& path,
+                                         TextureType        type) {
+  return std::make_shared<Texture>(path, type);
 }
 
 }  // namespace deft

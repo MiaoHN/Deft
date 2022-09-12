@@ -13,6 +13,8 @@ class Model {
  public:
   Model(const std::shared_ptr<Mesh>&    mesh,
         const std::shared_ptr<Texture>& texture);
+  Model(const std::shared_ptr<Mesh>&                 mesh,
+        const std::vector<std::shared_ptr<Texture>>& textures);
   ~Model();
 
   std::shared_ptr<Mesh>&                 getMesh();
@@ -20,6 +22,9 @@ class Model {
 
   static std::shared_ptr<Model> Create(const std::shared_ptr<Mesh>&    mesh,
                                        const std::shared_ptr<Texture>& texture);
+  static std::shared_ptr<Model> Create(
+      const std::shared_ptr<Mesh>&                 mesh,
+      const std::vector<std::shared_ptr<Texture>>& textures);
 
  private:
   std::shared_ptr<Mesh> _mesh;
