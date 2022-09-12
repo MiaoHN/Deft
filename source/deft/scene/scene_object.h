@@ -11,7 +11,8 @@ namespace deft {
 
 class SceneObject {
  public:
-  SceneObject(const std::shared_ptr<Model>& model, const Transform& transform);
+  SceneObject(const std::shared_ptr<Model>& model, const Transform& transform,
+              bool isLight = false);
   ~SceneObject();
 
   Entity& getEntityId();

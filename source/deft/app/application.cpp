@@ -25,6 +25,10 @@ Application::Application() {
   }
   _s_instance = this;
 
+  _lastSecond = 0.0f;
+  _frameCount = 0;
+  _fps        = 0;
+
   g_registry.init();
   g_registry.registerComponent<Transform>();
   g_registry.registerComponent<CameraTransform>();
@@ -55,6 +59,14 @@ void Application::run() {
     float tt = (float)glfwGetTime();
     float dt = tt - t;
     t        = tt;
+
+    // fps calculate
+    if (tt - _lastSecond >= 1.0f) {
+      _lastSecond = tt;
+      _fps        = _frameCount;
+      _frameCount = 0;
+    }
+    ++_frameCount;
 
     _inputManager->tick();
 
@@ -103,5 +115,7 @@ Window& Application::getWindow() { return *_window; }
 InputManager& Application::getInputManager() { return *_inputManager; }
 
 std::shared_ptr<Scene>& Application::getScene() { return _scene; }
+
+int Application::getFps() { return _fps; }
 
 }  // namespace deft

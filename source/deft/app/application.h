@@ -27,6 +27,8 @@ class Application {
   InputManager&           getInputManager();
   std::shared_ptr<Scene>& getScene();
 
+  int getFps();
+
  private:
   std::unique_ptr<Window>           _window;
   std::unique_ptr<GraphicContext>   _context;
@@ -35,6 +37,10 @@ class Application {
   std::unique_ptr<Renderer>         _renderer;
   std::unique_ptr<Gui>              _gui;
   std::shared_ptr<CameraController> _cameraController;
+
+  float _lastSecond;
+  int   _frameCount;
+  int   _fps;
 
   static Application* _s_instance;
 };

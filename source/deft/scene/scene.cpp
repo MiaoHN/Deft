@@ -16,8 +16,8 @@ Scene::Scene() {
   _objects.emplace_back(
       std::make_shared<Box>(math::Vector3(-1.0f, 0.0f, -1.0f)));
 
-  for (int i = 0; i < 5; ++i) {
-    for (int j = 0; j < 5; ++j) {
+  for (int i = -10; i < 10; ++i) {
+    for (int j = -10; j < 10; ++j) {
       _objects.emplace_back(
           std::make_shared<Box>(math::Vector3(i * 2.0f, j * 2.0f, 1.0f),
                                 math::Vector3(0.2f, 0.7f, 0.7f)));
@@ -28,9 +28,12 @@ Scene::Scene() {
   _objects.emplace_back(std::make_shared<Box>(math::Vector3(3.0f, 0.0f, 3.0f),
                                               math::Vector3(0.2f, 0.7f, 0.3f)));
 
-  _objects.emplace_back(std::make_shared<Box>(math::Vector3(5.0f, 5.0f, 5.0f),
-                                              math::Vector3(1.0f, 1.0f, 1.0f)));
-  _objects[28]->setLight(true);
+  _objects.emplace_back(std::make_shared<Box>(
+      math::Vector3(5.0f, 5.0f, 5.0f), math::Vector3(1.0f, 1.0f, 1.0f), true));
+
+  // _objects.emplace_back(
+  //     std::make_shared<Box>(math::Vector3(-10.0f, -2.0f, 13.0f),
+  //                           math::Vector3(1.0f, 1.0f, 1.0f), true));
 
   _objects.emplace_back(std::make_shared<SceneObject>(
       Model::Create(

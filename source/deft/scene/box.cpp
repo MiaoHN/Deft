@@ -2,7 +2,7 @@
 
 namespace deft {
 
-Box::Box(const math::Vector3& position)
+Box::Box(const math::Vector3& position, bool isLight)
     : SceneObject(
           Model::Create(Mesh::Create(
                             {
@@ -75,9 +75,10 @@ Box::Box(const math::Vector3& position)
 
                             }),
                         Texture::Create("assets/texture/container.jpg")),
-          Transform(position)) {}
+          Transform(position), isLight) {}
 
-Box::Box(const math::Vector3& position, const math::Vector3& color)
+Box::Box(const math::Vector3& position, const math::Vector3& color,
+         bool isLight)
     : SceneObject(Model::Create(Mesh::Create(
                                     {
                                         -0.5f, -0.5f, 0.5f,  0.0f,
@@ -149,7 +150,7 @@ Box::Box(const math::Vector3& position, const math::Vector3& color)
 
                                     }),
                                 Texture::Create(color)),
-                  Transform(position)) {}
+                  Transform(position), isLight) {}
 
 Box::~Box() {}
 
