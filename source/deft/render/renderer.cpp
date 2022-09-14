@@ -2,7 +2,7 @@
 
 #include <glad/glad.h>
 
-#include "components/component.h"
+#include "ecs/components/component.h"
 
 namespace deft {
 

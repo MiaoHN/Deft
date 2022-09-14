@@ -3,7 +3,7 @@
 
 #include <memory>
 
-#include "components/component.h"
+#include "ecs/components/component.h"
 #include "ecs/ecs.h"
 #include "render/model.h"
 

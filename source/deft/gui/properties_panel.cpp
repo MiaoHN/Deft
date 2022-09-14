@@ -3,7 +3,7 @@
 #include <imgui.h>
 
 #include "app/application.h"
-#include "components/component.h"
+#include "ecs/components/component.h"
 
 namespace deft {
 

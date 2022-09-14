@@ -6,7 +6,7 @@
 // clang-format on
 
 #include "math/math.h"
-#include "components/component.h"
+#include "ecs/components/component.h"
 #include "util/obj_loader.h"
 #include "pch.h"
 #include "log/log.h"

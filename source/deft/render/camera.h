@@ -3,7 +3,7 @@
 
 #include <memory>
 
-#include "components/transform.h"
+#include "ecs/components/transform.h"
 #include "math/math.h"
 
 namespace deft {
