@@ -23,9 +23,14 @@ class Scene {
   std::shared_ptr<FrameBuffer>& getFrameBuffer();
 
  private:
+  std::vector<std::shared_ptr<SceneObject>> _boxObjects;
+
   std::vector<std::shared_ptr<SceneObject>> _objects;
 
-  std::shared_ptr<Shader>      _shader;
+  std::vector<std::shared_ptr<SceneObject>> _lightObjects;
+
+  std::shared_ptr<Shader>      _boxShader;
+  std::shared_ptr<Shader>      _lightShader;
   std::shared_ptr<FrameBuffer> _frameBuffer;
 };
 

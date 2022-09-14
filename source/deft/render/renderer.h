@@ -24,6 +24,9 @@ class Renderer {
 
   void drawFrame(std::shared_ptr<FrameBuffer>& frameBuffer);
 
+  void drawMesh(const std::shared_ptr<Mesh>&   mesh,
+                const std::shared_ptr<Shader>& shader);
+
   void submit(const std::shared_ptr<Model>&  model,
               const std::shared_ptr<Shader>& shader,
               const math::Vector3&           position);

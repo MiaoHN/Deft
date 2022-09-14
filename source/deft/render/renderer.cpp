@@ -44,6 +44,13 @@ void Renderer::drawFrame(std::shared_ptr<FrameBuffer>& frameBuffer) {
                  nullptr);
 }
 
+void Renderer::drawMesh(const std::shared_ptr<Mesh>&   mesh,
+                        const std::shared_ptr<Shader>& shader) {
+  mesh->bind();
+  shader->bind();
+  glDrawElements(GL_TRIANGLES, mesh->getCount(), GL_UNSIGNED_INT, nullptr);
+}
+
 void Renderer::submit(const std::shared_ptr<Model>&  model,
                       const std::shared_ptr<Shader>& shader,
                       const math::Vector3&           position) {

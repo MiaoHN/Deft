@@ -13,50 +13,27 @@ Scene::Scene() {
       FrameBuffer::Create({Application::Get().getWindow().getWidth(),
                            Application::Get().getWindow().getHeight()});
 
-  _objects.emplace_back(
+  _boxObjects.emplace_back(
       std::make_shared<Box>(math::Vector3(-1.0f, 0.0f, -1.0f)));
 
-  for (int i = -10; i < 10; ++i) {
-    for (int j = -10; j < 10; ++j) {
-      _objects.emplace_back(
-          std::make_shared<Box>(math::Vector3(i * 2.0f, j * 2.0f, 1.0f),
-                                math::Vector3(0.2f, 0.7f, 0.7f)));
-    }
-  }
-  _objects.emplace_back(std::make_shared<Box>(math::Vector3(2.0f, 0.0f, 1.0f),
-                                              math::Vector3(0.2f, 0.7f, 0.7f)));
-  _objects.emplace_back(std::make_shared<Box>(math::Vector3(3.0f, 0.0f, 3.0f),
-                                              math::Vector3(0.2f, 0.7f, 0.3f)));
+  _boxObjects.emplace_back(std::make_shared<Box>(
+      math::Vector3(2.0f, 2.0f, 1.0f), math::Vector3(0.2f, 0.7f, 0.7f)));
 
-  _objects.emplace_back(std::make_shared<Box>(
-      math::Vector3(5.0f, 5.0f, 5.0f), math::Vector3(1.0f, 1.0f, 1.0f), true));
+  _boxObjects.emplace_back(std::make_shared<Box>(
+      math::Vector3(2.0f, 0.0f, 1.0f), math::Vector3(0.2f, 0.7f, 0.7f)));
+  _boxObjects.emplace_back(std::make_shared<Box>(
+      math::Vector3(3.0f, 0.0f, 3.0f), math::Vector3(0.2f, 0.7f, 0.3f)));
 
-  // _objects.emplace_back(
-  //     std::make_shared<Box>(math::Vector3(-10.0f, -2.0f, 13.0f),
-  //                           math::Vector3(1.0f, 1.0f, 1.0f), true));
+  auto lightBox = std::make_shared<Box>(math::Vector3(5.0f, 5.0f, 5.0f),
+                                        math::Vector3(1.0f, 1.0f, 1.0f), true);
 
-  _objects.emplace_back(std::make_shared<SceneObject>(
-      Model::Create(
-          Mesh::Create(
-              {
-                  -5.0f, -0.5f, 5.0f,  0.0f, 1.0f, 0.0f, 0.0f, 0.0f,  // 上
-                  5.0f,  -0.5f, 5.0f,  0.0f, 1.0f, 0.0f, 2.0f, 0.0f,  // 上
-                  5.0f,  -0.5f, -5.0f, 0.0f, 1.0f, 0.0f, 2.0f, 2.0f,  // 上
-                  -5.0f, -0.5f, -5.0f, 0.0f, 1.0f, 0.0f, 0.0f, 2.0f,  // 上
-              },
-              {
-                  {"aPos", ElementType::Float3},
-                  {"aNormal", ElementType::Float3},
-                  {"aTexCoord", ElementType::Float2},
-              },
-              {
-                  0, 1, 2, 0, 2, 3,  //
-              }),
-          Texture::Create("assets/texture/metal.png")),
-      Transform(math::Vector3(0.0f, 0.0f, 0.0f))));
+  _lightObjects.emplace_back(lightBox);
 
-  _shader = std::make_shared<Shader>("assets/shader/default.vert",
-                                     "assets/shader/default.frag");
+  _lightShader = std::make_shared<Shader>("assets/shader/light.vert",
+                                          "assets/shader/light.frag");
+
+  _boxShader = std::make_shared<Shader>("assets/shader/default.vert",
+                                        "assets/shader/default.frag");
 }
 
 Scene::~Scene() {}
@@ -71,13 +48,17 @@ void Scene::render(Renderer& render) {
   glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-  for (auto& object : _objects) {
-    if (object->isLight()) {
-      render.addLight(object->getEntityId());
-    }
+  for (auto& lightObject : _lightObjects) {
+    render.addLight(lightObject->getEntityId());
   }
-  for (auto& object : _objects) {
-    render.submit(object, _shader, object->getTransform().position);
+
+  for (auto& lightObject : _lightObjects) {
+    render.submit(lightObject, _lightShader,
+                  lightObject->getTransform().position);
+  }
+
+  for (auto& boxObject : _boxObjects) {
+    render.submit(boxObject, _boxShader, boxObject->getTransform().position);
   }
 
   _frameBuffer->unBind();
