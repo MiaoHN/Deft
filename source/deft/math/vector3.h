@@ -26,6 +26,8 @@ class Vector3 {
   void operator-=(const Vector3& vec);
   void operator+=(const Vector3& vec);
 
+  Vector3 operator-() const;
+
   float   operator*(const Vector3& vec2) const;
   Vector3 operator*(float k) const;
   Vector3 operator/(float k) const;

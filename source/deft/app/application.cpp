@@ -8,7 +8,7 @@
 #include "render/uniform_buffer.h"
 #include "math/math.h"
 #include "ecs/components/transform.h"
-#include "ecs/components/renderable.h"
+#include "ecs/components/mesh.h"
 #include "util/obj_loader.h"
 #include "pch.h"
 #include "log/log.h"

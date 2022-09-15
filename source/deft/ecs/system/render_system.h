@@ -20,7 +20,8 @@ class RenderSystem : public System {
 
     for (auto& entity : entities) {
       if (entity.haveComponent<MeshComponent>()) {
-        Transform&     transform     = entity.getComponent<Transform>();
+        TransformComponent& transform =
+            entity.getComponent<TransformComponent>();
         MeshComponent& meshComponent = entity.getComponent<MeshComponent>();
 
         Renderer::Submit(transform, meshComponent, ShaderLib::Get("default"),

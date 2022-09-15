@@ -20,7 +20,7 @@ void Renderer::Begin(std::shared_ptr<Camera> camera) {
   cameraUniform->setData(&cameraData, sizeof(cameraData));
 }
 
-void Renderer::Submit(const Transform&               transform,
+void Renderer::Submit(const TransformComponent&               transform,
                       const MeshComponent&           meshComponent,
                       const std::shared_ptr<Shader>& shader,
                       const Entity&                  entity) {

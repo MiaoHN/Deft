@@ -24,7 +24,7 @@ class Mesh {
   void bind() const;
   void unBind() const;
 
-  void draw(const Transform& transform, const std::shared_ptr<Shader>& shader,
+  void draw(const TransformComponent& transform, const std::shared_ptr<Shader>& shader,
             Entity entity);
 
   int getCount() const;

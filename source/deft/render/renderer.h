@@ -3,7 +3,7 @@
 
 #include <memory>
 
-#include "ecs/components/renderable.h"
+#include "ecs/components/mesh.h"
 #include "ecs/components/transform.h"
 #include "ecs/ecs.h"
 #include "math/math.h"
@@ -20,7 +20,7 @@ class Renderer {
  public:
   static void Begin(std::shared_ptr<Camera> camera);
 
-  static void Submit(const Transform&               transform,
+  static void Submit(const TransformComponent&               transform,
                      const MeshComponent&           meshComponent,
                      const std::shared_ptr<Shader>& shader,
                      const Entity&                  entity);

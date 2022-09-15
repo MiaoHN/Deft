@@ -1,20 +1,22 @@
 #ifndef __DEFT_TRANSFORM_H__
 #define __DEFT_TRANSFORM_H__
 
+#include "ecs/components/component.h"
 #include "math/math.h"
 
 namespace deft {
 
-struct Transform {
+class TransformComponent : public Component {
+ public:
   math::Vector3 position;
   math::Vector3 rotation;
   math::Vector3 scale;
 
-  Transform() = default;
-  Transform(const math::Vector3& position_) : position(position_) {}
+  TransformComponent() = default;
+  TransformComponent(const math::Vector3& position_) : position(position_) {}
 };
 
-struct CameraTransform : public Transform {
+struct CameraTransform : public TransformComponent {
   float         yaw;
   float         pitch;
   float         fov;
@@ -39,7 +41,7 @@ struct CameraTransform : public Transform {
 
                   const math::Vector3& up_            = {0.0f, 1.0f, 0.0f},
                   const math::Vector3& lookDirection_ = {0.0f, 0.0f, -1.0f})
-      : Transform(position_),
+      : TransformComponent(position_),
         yaw(yaw_),
         pitch(pitch_),
         up(up_),

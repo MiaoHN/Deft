@@ -3,7 +3,8 @@
 #include <glad/glad.h>
 
 #include "app/application.h"
-#include "ecs/components/renderable.h"
+#include "ecs/components/light.h"
+#include "ecs/components/mesh.h"
 #include "ecs/components/transform.h"
 #include "pch.h"
 
@@ -13,14 +14,19 @@ Scene::Scene() {
   _registry.init();
 
   _registry.registerComponent<MeshComponent>();
-  _registry.registerComponent<LightDetail>();
-  _registry.registerComponent<Transform>();
+  _registry.registerComponent<TransformComponent>();
+  _registry.registerComponent<LightComponent>();
 
   _renderSystem = _registry.registerSystem<RenderSystem>();
 
-  Entity    entity = _registry.createEntity();
-  Transform transform;
-  transform.position = {0.0f, 0.0f, -1.0f};
+  Entity box = _registry.createEntity("Box");
+
+  TransformComponent transform;
+  transform.position = {0.0f, 0.0f, 0.0f};
+  transform.scale    = {1.0f, 1.0f, 1.0f};
+  transform.rotation = {0.0f, 0.0f, 0.0f};
+  box.addComponent(transform);
+
   MeshComponent meshComponent;
   meshComponent.mesh = Mesh::Create(
       {
@@ -71,9 +77,7 @@ Scene::Scene() {
 
   meshComponent.mesh->addTexture(
       Texture::Create("assets/texture/container.jpg"));
-
-  entity.addComponent(meshComponent);
-  entity.addComponent(transform);
+  box.addComponent(meshComponent);
 }
 
 Scene::~Scene() {}

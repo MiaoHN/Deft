@@ -31,6 +31,9 @@ class Entity {
   EntityId getId() const { return _id; }
   void     setId(EntityId id) { _id = id; }
 
+  std::string getName() const { return _name; }
+  void        setName(const std::string& name) { _name = name; }
+
   template <typename T>
   T& getComponent();
 
@@ -45,6 +48,8 @@ class Entity {
  private:
   EntityId  _id;
   Registry* _handled;
+
+  std::string _name = "Unknown Entity";
 };
 
 using ComponentType = std::uint8_t;
@@ -391,8 +396,9 @@ class Registry {
   }
 
   // EntityId methods
-  Entity createEntity() {
-    Entity entity   = _entityManager->createEntity();
+  Entity createEntity(const std::string& name = "Unknown Entity") {
+    Entity entity = _entityManager->createEntity();
+    entity.setName(name);
     entity._handled = this;
     _entities.push_back(entity);
     return entity;

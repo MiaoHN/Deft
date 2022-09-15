@@ -62,6 +62,8 @@ void Vector3::operator+=(const Vector3& vec) {
   z += vec.z;
 }
 
+Vector3 Vector3::operator-() const { return {-x, -y, -z}; }
+
 std::string Vector3::toString() const {
   std::stringstream ss;
   ss << "(" << x << ", " << y << ", " << z << ")";

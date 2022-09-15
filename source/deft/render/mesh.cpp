@@ -25,12 +25,22 @@ void Mesh::bind() const {
 
 void Mesh::unBind() const { _vao->unBind(); }
 
-void Mesh::draw(const Transform&               transform,
+void Mesh::draw(const TransformComponent&      transform,
                 const std::shared_ptr<Shader>& shader, Entity entity) {
   bind();
   shader->bind();
-  math::Matrix4 model =
-      math::translate(math::Matrix4(1.0f), transform.position);
+  math::Matrix4 model = math::Matrix4(1.0f);
+
+  model = math::rotate(model, math::radians(transform.rotation.x),
+                       math::Vector3(1, 0, 0));
+  model = math::rotate(model, math::radians(transform.rotation.y),
+                       math::Vector3(0, 1, 0));
+  model = math::rotate(model, math::radians(transform.rotation.z),
+                       math::Vector3(0, 0, 1));
+
+  model = math::scale(model, transform.scale);
+
+  model = math::translate(model, transform.position);
 
   shader->setMatrix4("model", model);
   for (int i = 0; i < _textures.size(); ++i) {
