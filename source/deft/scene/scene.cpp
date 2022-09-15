@@ -28,56 +28,45 @@ Scene::Scene() {
   box.addComponent(transform);
 
   MeshComponent meshComponent;
-  meshComponent.mesh = Mesh::Create(
-      {
-          -0.5f, -0.5f, 0.5f,  0.0f,  0.0f,  1.0f,  0.0f, 0.0f,  // 前
-          0.5f,  -0.5f, 0.5f,  0.0f,  0.0f,  1.0f,  1.0f, 0.0f,  // 前
-          0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  1.0f, 1.0f,  // 前
-          -0.5f, 0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  0.0f, 1.0f,  // 前
-
-          0.5f,  -0.5f, -0.5f, 0.0f,  0.0f,  -1.0f, 0.0f, 0.0f,  // 后
-          -0.5f, -0.5f, -0.5f, 0.0f,  0.0f,  -1.0f, 1.0f, 0.0f,  // 后
-          -0.5f, 0.5f,  -0.5f, 0.0f,  0.0f,  -1.0f, 1.0f, 1.0f,  // 后
-          0.5f,  0.5f,  -0.5f, 0.0f,  0.0f,  -1.0f, 0.0f, 1.0f,  // 后
-
-          -0.5f, -0.5f, -0.5f, -1.0f, 0.0f,  0.0f,  0.0f, 0.0f,  // 左
-          -0.5f, -0.5f, 0.5f,  -1.0f, 0.0f,  0.0f,  1.0f, 0.0f,  // 左
-          -0.5f, 0.5f,  0.5f,  -1.0f, 0.0f,  0.0f,  1.0f, 1.0f,  // 左
-          -0.5f, 0.5f,  -0.5f, -1.0f, 0.0f,  0.0f,  0.0f, 1.0f,  // 左
-
-          0.5f,  -0.5f, 0.5f,  1.0f,  0.0f,  0.0f,  0.0f, 0.0f,  // 右
-          0.5f,  -0.5f, -0.5f, 1.0f,  0.0f,  0.0f,  1.0f, 0.0f,  // 右
-          0.5f,  0.5f,  -0.5f, 1.0f,  0.0f,  0.0f,  1.0f, 1.0f,  // 右
-          0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  0.0f, 1.0f,  // 右
-
-          -0.5f, 0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  0.0f, 0.0f,  // 上
-          0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  1.0f, 0.0f,  // 上
-          0.5f,  0.5f,  -0.5f, 0.0f,  1.0f,  0.0f,  1.0f, 1.0f,  // 上
-          -0.5f, 0.5f,  -0.5f, 0.0f,  1.0f,  0.0f,  0.0f, 1.0f,  // 上
-
-          -0.5f, -0.5f, -0.5f, 0.0f,  -1.0f, 0.0f,  0.0f, 0.0f,  // 下
-          0.5f,  -0.5f, -0.5f, 0.0f,  -1.0f, 0.0f,  1.0f, 0.0f,  // 下
-          0.5f,  -0.5f, 0.5f,  0.0f,  -1.0f, 0.0f,  1.0f, 1.0f,  // 下
-          -0.5f, -0.5f, 0.5f,  0.0f,  -1.0f, 0.0f,  0.0f, 1.0f,  // 下
-      },
-      {
-          {"aPos", ElementType::Float3},
-          {"aNormal", ElementType::Float3},
-          {"aTexCoord", ElementType::Float2},
-      },
-      {
-          0,  1,  2,  0,  2,  3,   //
-          4,  5,  6,  4,  6,  7,   //
-          8,  9,  10, 8,  10, 11,  //
-          12, 13, 14, 12, 14, 15,  //
-          16, 17, 18, 16, 18, 19,  //
-          20, 21, 22, 20, 22, 23,  //
-
-      });
+  meshComponent.mesh = Mesh::Cube();
 
   meshComponent.mesh->addTexture(
-      Texture::Create("assets/texture/container.jpg"));
+      Texture::Create("assets/texture/container.jpg", TextureType::Diffuse));
+  meshComponent.mesh->addTexture(
+      Texture::Create(math::Vector3(1.0f, 1.0f, 1.0f), TextureType::Specular));
   box.addComponent(meshComponent);
+
+  Entity directionLight = _registry.createEntity("Direction Light");
+
+  LightComponent lightComponent;
+  lightComponent.type      = LightType::Direction;
+  lightComponent.direction = math::Vector3(-1.0f, -1.0f, -1.0f);
+  lightComponent.ambient   = math::Vector3(0.05f, 0.05f, 0.05f);
+  lightComponent.diffuse   = math::Vector3(0.4f, 0.4f, 0.4f);
+  lightComponent.specular  = math::Vector3(0.5f, 0.5f, 0.5f);
+
+  directionLight.addComponent(lightComponent);
+
+  Entity pointLight        = _registry.createEntity("Point Light");
+  lightComponent.type      = LightType::Point;
+  lightComponent.ambient   = math::Vector3(0.05f, 0.05f, 0.05f);
+  lightComponent.diffuse   = math::Vector3(0.8f, 0.8f, 0.8f);
+  lightComponent.specular  = math::Vector3(1.0f, 1.0f, 1.0f);
+  lightComponent.constant  = 1.0f;
+  lightComponent.linear    = 0.09f;
+  lightComponent.quadratic = 0.032f;
+
+  pointLight.addComponent(lightComponent);
+  transform.position = math::Vector3(-2.0f, -4.0f, 3.0f);
+  transform.rotation = math::Vector3(0.0f, 0.0f, 0.0f);
+  transform.scale    = math::Vector3(0.2f, 0.2f, 0.2f);
+
+  pointLight.addComponent(transform);
+  MeshComponent pointLightMeshComponent;
+  pointLightMeshComponent.mesh = Mesh::Cube();
+  pointLightMeshComponent.mesh->addTexture(
+      Texture::Create(math::Vector3(1.0f, 1.0f, 1.0f), TextureType::Diffuse));
+  pointLight.addComponent(pointLightMeshComponent);
 }
 
 Scene::~Scene() {}

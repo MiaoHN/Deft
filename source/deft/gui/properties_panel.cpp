@@ -27,6 +27,9 @@ void PropertiesPanel::update(
 
     // 显示材质信息
     showMesh(entity);
+
+    // 显示光照信息
+    showLight(entity);
   }
   ImGui::End();
 }
@@ -39,15 +42,20 @@ void PropertiesPanel::showSceneDetail() {
 }
 
 void PropertiesPanel::showTransform(Entity entity) {
-  auto& transform = Application::Get()
-                        .getScene()
-                        ->getRegistry()
-                        .getComponent<TransformComponent>(entity);
-  if (ImGui::TreeNode("Transform")) {
-    ImGui::SliderFloat3("Position", &transform.position.x, -10, 10);
-    ImGui::SliderFloat3("Rotation", &transform.rotation.x, 0, 180);
-    ImGui::SliderFloat3("Scale", &transform.scale.x, 0.1, 10);
-    ImGui::TreePop();
+  if (Application::Get()
+          .getScene()
+          ->getRegistry()
+          .haveComponent<TransformComponent>(entity)) {
+    auto& transform = Application::Get()
+                          .getScene()
+                          ->getRegistry()
+                          .getComponent<TransformComponent>(entity);
+    if (ImGui::TreeNode("Transform")) {
+      ImGui::DragFloat3("Position", &transform.position.x);
+      ImGui::DragFloat3("Rotation", &transform.rotation.x);
+      ImGui::DragFloat3("Scale", &transform.scale.x);
+      ImGui::TreePop();
+    }
   }
 }
 
@@ -62,6 +70,14 @@ void PropertiesPanel::showMesh(Entity entity) {
       auto& textures = meshComponent.mesh->getTextures();
       for (auto& texture : textures) {
         unsigned int textureId = texture->getId();
+        switch (texture->getType()) {
+          case TextureType::Diffuse:
+            ImGui::Text("Diffuse");
+            break;
+          case TextureType::Specular:
+            ImGui::Text("Specular");
+            break;
+        }
         ImGui::Image(reinterpret_cast<void*>(textureId), ImVec2{80.0f, 80.0f},
                      ImVec2{0, 1}, ImVec2{1, 0});
         if (texture->getDataType() == Texture::Color) {
@@ -73,6 +89,43 @@ void PropertiesPanel::showMesh(Entity entity) {
         }
         ImGui::Separator();
       }
+      ImGui::TreePop();
+    }
+  }
+}
+
+void PropertiesPanel::showLight(Entity entity) {
+  if (Application::Get()
+          .getScene()
+          ->getRegistry()
+          .haveComponent<LightComponent>(entity)) {
+    if (ImGui::TreeNode("Light")) {
+      auto& lightComponent = entity.getComponent<LightComponent>();
+      switch (lightComponent.type) {
+        case LightType::Direction: {
+          ImGui::DragFloat3("direction", &lightComponent.direction.x);
+          break;
+        }
+        case LightType::Point: {
+          ImGui::DragFloat("constant", &lightComponent.constant, 0.05, 0, 1);
+          ImGui::DragFloat("linear", &lightComponent.linear, 0.05, 0, 1);
+          ImGui::DragFloat("quadratic", &lightComponent.quadratic, 0.05, 0, 1);
+          break;
+        }
+        case LightType::Spot: {
+          ImGui::DragFloat3("direction", &lightComponent.direction.x);
+          ImGui::DragFloat("cutOff", &lightComponent.cutOff);
+          ImGui::DragFloat("outerCutOff", &lightComponent.outerCutOff);
+          ImGui::DragFloat("constant", &lightComponent.constant, 0.05, 0, 1);
+          ImGui::DragFloat("linear", &lightComponent.linear, 0.05, 0, 1);
+          ImGui::DragFloat("quadratic", &lightComponent.quadratic, 0.05, 0, 1);
+          break;
+        }
+      }
+      ImGui::DragFloat3("ambient", &lightComponent.ambient.x, 0.05, 0, 1);
+      ImGui::DragFloat3("diffuse", &lightComponent.diffuse.x, 0.05, 0, 1);
+      ImGui::DragFloat3("specular", &lightComponent.specular.x, 0.05, 0, 1);
+
       ImGui::TreePop();
     }
   }

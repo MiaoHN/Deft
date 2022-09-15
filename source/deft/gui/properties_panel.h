@@ -19,6 +19,7 @@ class PropertiesPanel {
   void showSceneDetail();
   void showTransform(Entity entity);
   void showMesh(Entity entity);
+  void showLight(Entity entity);
 };
 
 }  // namespace deft

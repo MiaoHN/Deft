@@ -18,6 +18,8 @@ class LightComponent : public Component {
 
   LightType type;
 
+  math::Vector3 direction;
+
   math::Vector3 ambient;
   math::Vector3 diffuse;
   math::Vector3 specular;

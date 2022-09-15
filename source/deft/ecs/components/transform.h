@@ -16,6 +16,7 @@ class TransformComponent : public Component {
   TransformComponent(const math::Vector3& position_) : position(position_) {}
 };
 
+/// @brief Editor Camera 有用到，未来将移除
 struct CameraTransform : public TransformComponent {
   float         yaw;
   float         pitch;

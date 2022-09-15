@@ -24,8 +24,8 @@ class Mesh {
   void bind() const;
   void unBind() const;
 
-  void draw(const TransformComponent& transform, const std::shared_ptr<Shader>& shader,
-            Entity entity);
+  void draw(const TransformComponent&      transform,
+            const std::shared_ptr<Shader>& shader, Entity entity);
 
   int getCount() const;
 
@@ -36,6 +36,8 @@ class Mesh {
   static std::shared_ptr<Mesh> Create(const std::vector<float>& vertices,
                                       const std::vector<BufferElement>& layouts,
                                       const std::vector<unsigned int>& indices);
+
+  static std::shared_ptr<Mesh> Cube();
 
  private:
   std::shared_ptr<VertexArray>  _vao;
