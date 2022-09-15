@@ -16,7 +16,6 @@ class PropertiesPanel {
   void update(const std::shared_ptr<HierarchyPanel>& hierarchyPanel);
 
  private:
-  void showSceneDetail();
   void showTransform(Entity entity);
   void showMesh(Entity entity);
   void showLight(Entity entity);

@@ -12,11 +12,11 @@ class HierarchyPanel {
 
   void update();
 
-  Entity getSelectedEntity();
-  bool   haveSelectedEntity();
+  Entity* getSelectedEntity();
+  bool    haveSelectedEntity();
 
  private:
-  Entity _selectedEntity;
+  Entity* _selectedEntity;
   bool   _selected = false;
 };
 

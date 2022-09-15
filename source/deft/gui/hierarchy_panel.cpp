@@ -12,18 +12,22 @@ HierarchyPanel::~HierarchyPanel() {}
 
 void HierarchyPanel::update() {
   ImGui::Begin("Scene Hierarchy");
+  if (ImGui::Button("Add")) {
+    Application::Get().getScene()->getRegistry().createEntity();
+  }
+
   for (auto& entity :
        Application::Get().getScene()->getRegistry().getEntiesUsed()) {
     if (ImGui::Button(entity.getName().c_str())) {
       _selected       = true;
-      _selectedEntity = entity;
+      _selectedEntity = &entity;
     }
   }
 
   ImGui::End();
 }
 
-Entity HierarchyPanel::getSelectedEntity() { return _selectedEntity; }
+Entity* HierarchyPanel::getSelectedEntity() { return _selectedEntity; }
 
 bool HierarchyPanel::haveSelectedEntity() { return _selected; }
 

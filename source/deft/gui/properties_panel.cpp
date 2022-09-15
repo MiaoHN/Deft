@@ -5,6 +5,7 @@
 #include "app/application.h"
 #include "ecs/components/mesh.h"
 #include "ecs/components/transform.h"
+#include "pch.h"
 
 namespace deft {
 
@@ -16,29 +17,30 @@ void PropertiesPanel::update(
     const std::shared_ptr<HierarchyPanel>& hierarchyPanel) {
   ImGui::Begin("Properties");
 
-  // 显示场景总体信息
-  showSceneDetail();
-
   if (hierarchyPanel->haveSelectedEntity()) {
-    Entity entity = hierarchyPanel->getSelectedEntity();
+    Entity* entity = hierarchyPanel->getSelectedEntity();
+
+    ImGui::LabelText("Entity Name", entity->getName().c_str());
+
+    char buf[128] = "";
+    if (ImGui::InputText("Rename", buf, 128)) {
+      std::string newName = std::string(buf, strlen(buf));
+      entity->setName(newName);
+    }
+
+    // if (ImGui::Button("Add Component")) {
+    // }
 
     // 显示位置信息
-    showTransform(entity);
+    showTransform(*entity);
 
     // 显示材质信息
-    showMesh(entity);
+    showMesh(*entity);
 
     // 显示光照信息
-    showLight(entity);
+    showLight(*entity);
   }
   ImGui::End();
-}
-
-void PropertiesPanel::showSceneDetail() {
-  if (ImGui::TreeNode("Scene Detail")) {
-    ImGui::Text("Scene fps: %d", Application::Get().getFps());
-    ImGui::TreePop();
-  }
 }
 
 void PropertiesPanel::showTransform(Entity entity) {

@@ -98,6 +98,10 @@ void Gui::update() {
     ImGui::DockSpace(dockspace_id, ImVec2(0.0f, 0.0f), dockspace_flags);
   }
 
+  ImGui::Begin("Scene Detail");
+  ImGui::Text("Scene fps: %d", Application::Get().getFps());
+  ImGui::End();
+
   // 绘制菜单栏
   _menuBar->update();
 
