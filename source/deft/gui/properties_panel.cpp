@@ -3,7 +3,8 @@
 #include <imgui.h>
 
 #include "app/application.h"
-#include "ecs/components/component.h"
+#include "ecs/components/renderable.h"
+#include "ecs/components/transform.h"
 
 namespace deft {
 
@@ -25,13 +26,13 @@ void PropertiesPanel::update(
     showTransform(entity);
 
     // 显示材质信息
-    showTexture(entity);
+    showMesh(entity);
 
     // 显示物体光照属性
-    showMaterial(entity);
+    // showMaterial(entity);
 
     // 显示光源属性
-    showLight(entity);
+    // showLight(entity);
   }
   ImGui::End();
 }
@@ -44,7 +45,9 @@ void PropertiesPanel::showSceneDetail() {
 }
 
 void PropertiesPanel::showTransform(Entity entity) {
-  auto& transform = g_registry.getComponent<Transform>(entity);
+  auto& transform =
+      Application::Get().getScene()->getRegistry().getComponent<Transform>(
+          entity);
   if (ImGui::TreeNode("Transform")) {
     ImGui::InputFloat3("Position", &transform.position.x);
     // ImGui::SliderFloat3("Position", &transform.position.x, -5.0f, 5.0f);
@@ -52,12 +55,16 @@ void PropertiesPanel::showTransform(Entity entity) {
   }
 }
 
-void PropertiesPanel::showTexture(Entity entity) {
-  if (g_registry.haveComponent<Renderable>(entity)) {
-    auto& renderable = g_registry.getComponent<Renderable>(entity);
-
-    if (ImGui::TreeNode("Texture")) {
-      for (auto& texture : renderable.model->getTextures()) {
+void PropertiesPanel::showMesh(Entity entity) {
+  if (Application::Get().getScene()->getRegistry().haveComponent<MeshComponent>(
+          entity)) {
+    auto& meshComponent = Application::Get()
+                              .getScene()
+                              ->getRegistry()
+                              .getComponent<MeshComponent>(entity);
+    if (ImGui::TreeNode("Mesh")) {
+      auto& textures = meshComponent.mesh->getTextures();
+      for (auto& texture : textures) {
         unsigned int textureId = texture->getId();
         ImGui::Image(reinterpret_cast<void*>(textureId), ImVec2{80.0f, 80.0f},
                      ImVec2{0, 1}, ImVec2{1, 0});
@@ -75,9 +82,13 @@ void PropertiesPanel::showTexture(Entity entity) {
 }
 
 void PropertiesPanel::showMaterial(Entity entity) {
-  if (g_registry.haveComponent<MaterialComp>(entity)) {
+  if (Application::Get().getScene()->getRegistry().haveComponent<MaterialComp>(
+          entity)) {
     if (ImGui::TreeNode("Material")) {
-      auto& material = g_registry.getComponent<MaterialComp>(entity);
+      auto& material = Application::Get()
+                           .getScene()
+                           ->getRegistry()
+                           .getComponent<MaterialComp>(entity);
       ImGui::ColorEdit3("ambient", &material.ambient.x);
       ImGui::ColorEdit3("diffuse", &material.diffuse.x);
       ImGui::ColorEdit3("specular", &material.specular.x);
@@ -88,9 +99,13 @@ void PropertiesPanel::showMaterial(Entity entity) {
 }
 
 void PropertiesPanel::showLight(Entity entity) {
-  if (g_registry.haveComponent<LightDetail>(entity)) {
+  if (Application::Get().getScene()->getRegistry().haveComponent<LightDetail>(
+          entity)) {
     if (ImGui::TreeNode("Light")) {
-      auto& lightDetail = g_registry.getComponent<LightDetail>(entity);
+      auto& lightDetail = Application::Get()
+                              .getScene()
+                              ->getRegistry()
+                              .getComponent<LightDetail>(entity);
       ImGui::ColorEdit3("ambient", &lightDetail.ambient.x);
       ImGui::ColorEdit3("diffuse", &lightDetail.diffuse.x);
       ImGui::ColorEdit3("specular", &lightDetail.specular.x);

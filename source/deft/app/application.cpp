@@ -5,8 +5,10 @@
 #include <GLFW/glfw3.h>
 // clang-format on
 
+#include "render/uniform_buffer.h"
 #include "math/math.h"
-#include "ecs/components/component.h"
+#include "ecs/components/transform.h"
+#include "ecs/components/renderable.h"
 #include "util/obj_loader.h"
 #include "pch.h"
 #include "log/log.h"
@@ -14,8 +16,6 @@
 namespace deft {
 
 Application* Application::_s_instance;
-
-Registry g_registry;
 
 Application::Application() {
   if (_s_instance) {
@@ -29,20 +29,21 @@ Application::Application() {
   _frameCount = 0;
   _fps        = 0;
 
-  g_registry.init();
-  g_registry.registerComponent<Transform>();
-  g_registry.registerComponent<CameraTransform>();
-  g_registry.registerComponent<Renderable>();
-  g_registry.registerComponent<LightDetail>();
-  g_registry.registerComponent<MaterialComp>();
-
   _window           = std::make_unique<Window>(1600, 900, "Deft");
   _context          = std::make_unique<GraphicContext>(_window->getHandler());
   _scene            = std::make_shared<Scene>();
-  _renderer         = std::make_unique<Renderer>();
   _inputManager     = std::make_unique<InputManager>(_window->getHandler());
   _gui              = std::make_unique<Gui>();
   _cameraController = std::make_shared<CameraController>();
+
+  _frameBuffer =
+      FrameBuffer::Create({getWindow().getWidth(), getWindow().getHeight()});
+
+  ShaderLib::Add("default",
+                 std::make_shared<Shader>("assets/shader/default.vert",
+                                          "assets/shader/default.frag"));
+  UniformBufferLib::Add("cameraUniform",
+                        std::make_shared<UniformBuffer>(sizeof(CameraData), 0));
 }
 
 Application::~Application() {}
@@ -90,16 +91,16 @@ void Application::run() {
     _cameraController->tick(dt);
     _gui->update();
 
-    _scene->tick(dt);
-
-    // Render Scene
-    _renderer->begin(_cameraController->getCamera());
-    _scene->render(*_renderer);
-    _renderer->end();
-
+    _frameBuffer->bind();
     glEnable(GL_DEPTH_TEST);
+    glEnable(GL_CULL_FACE);
+    glEnable(GL_MULTISAMPLE);
     glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+    _scene->updateEditMode(dt, _cameraController->getCamera());
+    _frameBuffer->unBind();
+
     _gui->draw();
 
     // Window update
@@ -115,6 +116,10 @@ Window& Application::getWindow() { return *_window; }
 InputManager& Application::getInputManager() { return *_inputManager; }
 
 std::shared_ptr<Scene>& Application::getScene() { return _scene; }
+
+std::shared_ptr<FrameBuffer>& Application::getFrameBuffer() {
+  return _frameBuffer;
+}
 
 int Application::getFps() { return _fps; }
 

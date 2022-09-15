@@ -18,7 +18,7 @@ class PropertiesPanel {
  private:
   void showSceneDetail();
   void showTransform(Entity entity);
-  void showTexture(Entity entity);
+  void showMesh(Entity entity);
   void showMaterial(Entity entity);
   void showLight(Entity entity);
 };

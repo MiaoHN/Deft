@@ -38,6 +38,12 @@ struct Renderable {
   Renderable(const std::shared_ptr<Model> &model) : model(model) {}
 };
 
+struct MeshComponent {
+  std::shared_ptr<Mesh> mesh;
+
+  MeshComponent() = default;
+};
+
 }  // namespace deft
 
 #endif  // __DEFT_RENDERABLE_H__

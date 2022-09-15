@@ -35,7 +35,7 @@ class Gui {
   std::shared_ptr<HierarchyPanel>  _hierarchyPanel;
   std::shared_ptr<PropertiesPanel> _propertiesPanel;
 
-  Entity _selectedEntity;
+  EntityId _selectedEntity;
   bool   selected = false;
 };
 

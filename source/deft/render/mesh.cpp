@@ -1,12 +1,14 @@
 #include "render/mesh.h"
 
+#include <glad/glad.h>
+
 namespace deft {
 
 Mesh::Mesh() = default;
 
 Mesh::Mesh(const std::vector<float>&         vertices,
-             const std::vector<BufferElement>& layouts,
-             const std::vector<unsigned int>&  indices) {
+           const std::vector<BufferElement>& layouts,
+           const std::vector<unsigned int>&  indices) {
   _vao = std::make_shared<VertexArray>();
   _vbo = std::make_shared<VertexBuffer>(vertices);
   _vbo->setElements(layouts);
@@ -23,11 +25,32 @@ void Mesh::bind() const {
 
 void Mesh::unBind() const { _vao->unBind(); }
 
+void Mesh::draw(const Transform&               transform,
+                const std::shared_ptr<Shader>& shader, Entity entity) {
+  bind();
+  shader->bind();
+  math::Matrix4 model =
+      math::translate(math::Matrix4(1.0f), transform.position);
+
+  shader->setMatrix4("model", model);
+  for (int i = 0; i < _textures.size(); ++i) {
+    _textures[i]->bind(i);
+    shader->setInt("textureDiffuse", i);
+  }
+  glDrawElements(GL_TRIANGLES, getCount(), GL_UNSIGNED_INT, nullptr);
+}
+
 int Mesh::getCount() const { return _ebo->getCount(); }
 
+void Mesh::addTexture(const std::shared_ptr<Texture>& texture) {
+  _textures.push_back(texture);
+}
+
+std::vector<std::shared_ptr<Texture>>& Mesh::getTextures() { return _textures; }
+
 std::shared_ptr<Mesh> Mesh::Create(const std::vector<float>&         vertices,
-                                     const std::vector<BufferElement>& layouts,
-                                     const std::vector<unsigned int>& indices) {
+                                   const std::vector<BufferElement>& layouts,
+                                   const std::vector<unsigned int>&  indices) {
   return std::make_shared<Mesh>(vertices, layouts, indices);
 }
 }  // namespace deft

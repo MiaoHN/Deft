@@ -3,6 +3,7 @@
 
 // https://austinmorlan.com/posts/entity_component_system/#the-entity
 
+#include <algorithm>
 #include <array>
 #include <bitset>
 #include <cassert>
@@ -13,11 +14,38 @@
 #include <unordered_map>
 #include <vector>
 
+#include "render/camera.h"
+
 namespace deft {
 
-using Entity = std::uint32_t;
+using EntityId = std::uint32_t;
 
-const Entity MAX_ENTITIES = 5000;
+const EntityId MAX_ENTITIES = 5000;
+
+class Registry;
+
+class Entity {
+  friend class Registry;
+
+ public:
+  EntityId getId() const { return _id; }
+  void     setId(EntityId id) { _id = id; }
+
+  template <typename T>
+  T& getComponent();
+
+  template <typename T>
+  void addComponent(T arg);
+
+  template <typename T>
+  bool haveComponent();
+
+  bool operator==(const Entity& entity) const { return _id == entity.getId(); }
+
+ private:
+  EntityId  _id;
+  Registry* _handled;
+};
 
 using ComponentType = std::uint8_t;
 
@@ -29,7 +57,7 @@ class EntityManager {
  public:
   EntityManager() {
     // Initialize the queue with all possible entity IDs
-    for (Entity entity = 0; entity < MAX_ENTITIES; ++entity) {
+    for (EntityId entity = 0; entity < MAX_ENTITIES; ++entity) {
       _availableEntities.push(entity);
     }
   }
@@ -39,41 +67,43 @@ class EntityManager {
            "Too many entities in existence.");
 
     // Take an ID from the front of the queue
-    Entity id = _availableEntities.front();
+    EntityId id = _availableEntities.front();
+    Entity   entity;
+    entity.setId(id);
     _availableEntities.pop();
     ++_livingEntityCount;
 
-    return id;
+    return entity;
   }
 
   void destroyEntity(Entity entity) {
-    assert(entity < MAX_ENTITIES && "Entity out of range.");
+    assert(entity.getId() < MAX_ENTITIES && "EntityId out of range.");
 
     // Invalidate the destroyed entity's signature
-    _signatures[entity].reset();
+    _signatures[entity.getId()].reset();
 
     // Put the destroyed ID at the back of the queue
-    _availableEntities.push(entity);
+    _availableEntities.push(entity.getId());
     --_livingEntityCount;
   }
 
   void setSignature(Entity entity, Signature signature) {
-    assert(entity < MAX_ENTITIES && "Entity out of range.");
+    assert(entity.getId() < MAX_ENTITIES && "EntityId out of range.");
 
     // Put this entity's signature into the array
-    _signatures[entity] = signature;
+    _signatures[entity.getId()] = signature;
   }
 
   Signature getSignature(Entity entity) {
-    assert(entity < MAX_ENTITIES && "Entity out of range.");
+    assert(entity.getId() < MAX_ENTITIES && "EntityId out of range.");
 
     // Get this entity's signature from the array
-    return _signatures[entity];
+    return _signatures[entity.getId()];
   }
 
  private:
   // Queue of unused entity IDs
-  std::queue<Entity> _availableEntities{};
+  std::queue<EntityId> _availableEntities{};
 
   // Array of signatures where the index corresponds to the entity ID
   std::array<Signature, MAX_ENTITIES> _signatures{};
@@ -96,51 +126,57 @@ template <typename T>
 class ComponentArray : public IComponentArray {
  public:
   void insertData(Entity entity, T component) {
-    assert(_entityToIndexMap.find(entity) == _entityToIndexMap.end() &&
+    assert(_entityToIndexMap.find(entity.getId()) == _entityToIndexMap.end() &&
            "Component added to same entity more than once.");
 
     // Put new entry at end and update the maps
-    size_t newIndex             = _size;
-    _entityToIndexMap[entity]   = newIndex;
-    _indexToEntityMap[newIndex] = entity;
-    _componentArray[newIndex]   = component;
+    size_t newIndex                   = _size;
+    _entityToIndexMap[entity.getId()] = newIndex;
+    _indexToEntityMap[newIndex]       = entity.getId();
+    _componentArray[newIndex]         = component;
     ++_size;
   }
 
   void removeData(Entity entity) {
-    assert(_entityToIndexMap.find(entity) != _entityToIndexMap.end() &&
+    assert(_entityToIndexMap.find(entity.getId()) != _entityToIndexMap.end() &&
            "Removing non-existent component.");
 
     // Copy element at end into deleted element's place to maintain density
-    size_t indexOfRemovedEntity           = _entityToIndexMap[entity];
+    size_t indexOfRemovedEntity           = _entityToIndexMap[entity.getId()];
     size_t indexOfLastElement             = _size - 1;
     _componentArray[indexOfRemovedEntity] = _componentArray[indexOfLastElement];
 
     // Update map to point to moved spot
-    Entity entityOfLastElement = _indexToEntityMap[indexOfLastElement];
+    EntityId entityOfLastElement = _indexToEntityMap[indexOfLastElement];
     _entityToIndexMap[entityOfLastElement]  = indexOfRemovedEntity;
     _indexToEntityMap[indexOfRemovedEntity] = entityOfLastElement;
 
-    _entityToIndexMap.erase(entity);
+    _entityToIndexMap.erase(entity.getId());
     _indexToEntityMap.erase(indexOfLastElement);
 
     --_size;
   }
 
   T& getData(Entity entity) {
-    assert(_entityToIndexMap.find(entity) != _entityToIndexMap.end() &&
-           "Retrieving non-existent component.");
+    if (_entityToIndexMap.find(entity.getId()) == _entityToIndexMap.end()) {
+      LOG_CORE_ERROR("Retrieving non-existent component '%s'",
+                     typeid(T).name());
+      assert(false);
+    }
+    // assert(_entityToIndexMap.find(entity.getId()) != _entityToIndexMap.end()
+    // &&
+    //        "Retrieving non-existent component.");
 
     // Return a reference to the entity's component
-    return _componentArray[_entityToIndexMap[entity]];
+    return _componentArray[_entityToIndexMap[entity.getId()]];
   }
 
   bool exist(Entity entity) {
-    return _entityToIndexMap.find(entity) != _entityToIndexMap.end();
+    return _entityToIndexMap.find(entity.getId()) != _entityToIndexMap.end();
   }
 
   void entityDestroyed(Entity entity) override {
-    if (_entityToIndexMap.find(entity) != _entityToIndexMap.end()) {
+    if (_entityToIndexMap.find(entity.getId()) != _entityToIndexMap.end()) {
       // Remove the entity's component if it existed
       removeData(entity);
     }
@@ -154,10 +190,10 @@ class ComponentArray : public IComponentArray {
   std::array<T, MAX_ENTITIES> _componentArray;
 
   // Map from an entity ID to an array index.
-  std::unordered_map<Entity, size_t> _entityToIndexMap;
+  std::unordered_map<EntityId, size_t> _entityToIndexMap;
 
   // Map from an array index to an entity ID.
-  std::unordered_map<size_t, Entity> _indexToEntityMap;
+  std::unordered_map<size_t, EntityId> _indexToEntityMap;
 
   // Total size of valid entries in the array.
   size_t _size;
@@ -187,8 +223,10 @@ class ComponentManager {
   ComponentType getComponentType() {
     const char* typeName = typeid(T).name();
 
-    assert(_componentTypes.find(typeName) != _componentTypes.end() &&
-           "Component not registered before use.");
+    if (_componentTypes.find(typeName) == _componentTypes.end()) {
+      LOG_CLIENT_ERROR("Component '%s' not registered before use.", typeName);
+      return {};
+    }
 
     // Return this component's type - used for creating signatures
     return _componentTypes[typeName];
@@ -245,8 +283,10 @@ class ComponentManager {
   std::shared_ptr<ComponentArray<T>> getComponentArray() {
     const char* typeName = typeid(T).name();
 
-    assert(_componentTypes.find(typeName) != _componentTypes.end() &&
-           "Component not registered before use.");
+    if (_componentTypes.find(typeName) == _componentTypes.end()) {
+      LOG_CLIENT_ERROR("Component '%s' not registered before use.", typeName);
+      return {};
+    }
 
     return std::static_pointer_cast<ComponentArray<T>>(
         _componentArrays[typeName]);
@@ -254,8 +294,29 @@ class ComponentManager {
 };
 
 class System {
+  friend class Registry;
+
  public:
-  std::set<Entity> _entities;
+  std::vector<Entity> _entities;
+
+  void addEntity(Entity entity) {
+    auto iter = find(_entities.begin(), _entities.end(), entity);
+    if (iter != _entities.end()) return;
+    _entities.push_back(entity);
+  }
+
+  void removeEntity(Entity entity) {
+    auto iter = find(_entities.begin(), _entities.end(), entity);
+    if (iter != _entities.end()) {
+      _entities.erase(iter);
+    }
+  }
+
+  virtual void updateEditMode(float                          dt,
+                              const std::shared_ptr<Camera>& camera) = 0;
+
+ protected:
+  Registry* _handled;
 };
 
 class SystemManager {
@@ -290,7 +351,7 @@ class SystemManager {
     for (auto const& pair : _systems) {
       auto const& system = pair.second;
 
-      system->_entities.erase(entity);
+      system->removeEntity(entity);
     }
   }
 
@@ -301,13 +362,13 @@ class SystemManager {
       auto const& system          = pair.second;
       auto const& systemSignature = _signatures[type];
 
-      // Entity signature matches system signature - insert into set
+      // EntityId signature matches system signature - insert into set
       if ((entitySignature & systemSignature) == systemSignature) {
-        system->_entities.insert(entity);
+        system->addEntity(entity);
       }
-      // Entity signature does not match system signature - erase from set
+      // EntityId signature does not match system signature - erase from set
       else {
-        system->_entities.erase(entity);
+        system->removeEntity(entity);
       }
     }
   }
@@ -329,9 +390,10 @@ class Registry {
     _systemManager    = std::make_unique<SystemManager>();
   }
 
-  // Entity methods
+  // EntityId methods
   Entity createEntity() {
-    Entity entity = _entityManager->createEntity();
+    Entity entity   = _entityManager->createEntity();
+    entity._handled = this;
     _entities.push_back(entity);
     return entity;
   }
@@ -393,7 +455,9 @@ class Registry {
   // System methods
   template <typename T>
   std::shared_ptr<T> registerSystem() {
-    return _systemManager->registerSystem<T>();
+    auto system      = _systemManager->registerSystem<T>();
+    system->_handled = this;
+    return system;
   }
 
   template <typename T>
@@ -411,7 +475,20 @@ class Registry {
   std::vector<Entity> _entities;
 };
 
-extern Registry g_registry;
+template <typename T>
+T& Entity::getComponent() {
+  return _handled->getComponent<T>(*this);
+}
+
+template <typename T>
+bool Entity::haveComponent() {
+  return _handled->haveComponent<T>(*this);
+}
+
+template <typename T>
+void Entity::addComponent(T arg) {
+  _handled->addComponent(*this, arg);
+}
 
 }  // namespace deft
 

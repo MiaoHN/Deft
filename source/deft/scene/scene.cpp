@@ -3,67 +3,85 @@
 #include <glad/glad.h>
 
 #include "app/application.h"
+#include "ecs/components/renderable.h"
+#include "ecs/components/transform.h"
 #include "pch.h"
-#include "scene/box.h"
 
 namespace deft {
 
 Scene::Scene() {
-  _frameBuffer =
-      FrameBuffer::Create({Application::Get().getWindow().getWidth(),
-                           Application::Get().getWindow().getHeight()});
+  _registry.init();
 
-  _boxObjects.emplace_back(
-      std::make_shared<Box>(math::Vector3(-1.0f, 0.0f, -1.0f)));
+  _registry.registerComponent<MeshComponent>();
+  _registry.registerComponent<LightDetail>();
+  _registry.registerComponent<Transform>();
 
-  _boxObjects.emplace_back(std::make_shared<Box>(
-      math::Vector3(2.0f, 2.0f, 1.0f), math::Vector3(0.2f, 0.7f, 0.7f)));
+  _renderSystem = _registry.registerSystem<RenderSystem>();
 
-  _boxObjects.emplace_back(std::make_shared<Box>(
-      math::Vector3(2.0f, 0.0f, 1.0f), math::Vector3(0.2f, 0.7f, 0.7f)));
-  _boxObjects.emplace_back(std::make_shared<Box>(
-      math::Vector3(3.0f, 0.0f, 3.0f), math::Vector3(0.2f, 0.7f, 0.3f)));
+  Entity    entity = _registry.createEntity();
+  Transform transform;
+  transform.position = {0.0f, 0.0f, -1.0f};
+  MeshComponent meshComponent;
+  meshComponent.mesh = Mesh::Create(
+      {
+          -0.5f, -0.5f, 0.5f,  0.0f,  0.0f,  1.0f,  0.0f, 0.0f,  // 前
+          0.5f,  -0.5f, 0.5f,  0.0f,  0.0f,  1.0f,  1.0f, 0.0f,  // 前
+          0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  1.0f, 1.0f,  // 前
+          -0.5f, 0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  0.0f, 1.0f,  // 前
 
-  auto lightBox = std::make_shared<Box>(math::Vector3(5.0f, 5.0f, 5.0f),
-                                        math::Vector3(1.0f, 1.0f, 1.0f), true);
+          0.5f,  -0.5f, -0.5f, 0.0f,  0.0f,  -1.0f, 0.0f, 0.0f,  // 后
+          -0.5f, -0.5f, -0.5f, 0.0f,  0.0f,  -1.0f, 1.0f, 0.0f,  // 后
+          -0.5f, 0.5f,  -0.5f, 0.0f,  0.0f,  -1.0f, 1.0f, 1.0f,  // 后
+          0.5f,  0.5f,  -0.5f, 0.0f,  0.0f,  -1.0f, 0.0f, 1.0f,  // 后
 
-  _lightObjects.emplace_back(lightBox);
+          -0.5f, -0.5f, -0.5f, -1.0f, 0.0f,  0.0f,  0.0f, 0.0f,  // 左
+          -0.5f, -0.5f, 0.5f,  -1.0f, 0.0f,  0.0f,  1.0f, 0.0f,  // 左
+          -0.5f, 0.5f,  0.5f,  -1.0f, 0.0f,  0.0f,  1.0f, 1.0f,  // 左
+          -0.5f, 0.5f,  -0.5f, -1.0f, 0.0f,  0.0f,  0.0f, 1.0f,  // 左
 
-  _lightShader = std::make_shared<Shader>("assets/shader/light.vert",
-                                          "assets/shader/light.frag");
+          0.5f,  -0.5f, 0.5f,  1.0f,  0.0f,  0.0f,  0.0f, 0.0f,  // 右
+          0.5f,  -0.5f, -0.5f, 1.0f,  0.0f,  0.0f,  1.0f, 0.0f,  // 右
+          0.5f,  0.5f,  -0.5f, 1.0f,  0.0f,  0.0f,  1.0f, 1.0f,  // 右
+          0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  0.0f, 1.0f,  // 右
 
-  _boxShader = std::make_shared<Shader>("assets/shader/default.vert",
-                                        "assets/shader/default.frag");
+          -0.5f, 0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  0.0f, 0.0f,  // 上
+          0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  1.0f, 0.0f,  // 上
+          0.5f,  0.5f,  -0.5f, 0.0f,  1.0f,  0.0f,  1.0f, 1.0f,  // 上
+          -0.5f, 0.5f,  -0.5f, 0.0f,  1.0f,  0.0f,  0.0f, 1.0f,  // 上
+
+          -0.5f, -0.5f, -0.5f, 0.0f,  -1.0f, 0.0f,  0.0f, 0.0f,  // 下
+          0.5f,  -0.5f, -0.5f, 0.0f,  -1.0f, 0.0f,  1.0f, 0.0f,  // 下
+          0.5f,  -0.5f, 0.5f,  0.0f,  -1.0f, 0.0f,  1.0f, 1.0f,  // 下
+          -0.5f, -0.5f, 0.5f,  0.0f,  -1.0f, 0.0f,  0.0f, 1.0f,  // 下
+      },
+      {
+          {"aPos", ElementType::Float3},
+          {"aNormal", ElementType::Float3},
+          {"aTexCoord", ElementType::Float2},
+      },
+      {
+          0,  1,  2,  0,  2,  3,   //
+          4,  5,  6,  4,  6,  7,   //
+          8,  9,  10, 8,  10, 11,  //
+          12, 13, 14, 12, 14, 15,  //
+          16, 17, 18, 16, 18, 19,  //
+          20, 21, 22, 20, 22, 23,  //
+
+      });
+
+  meshComponent.mesh->addTexture(
+      Texture::Create("assets/texture/container.jpg"));
+
+  entity.addComponent(meshComponent);
+  entity.addComponent(transform);
 }
 
 Scene::~Scene() {}
 
-void Scene::tick(float dt) {}
-
-void Scene::render(Renderer& render) {
-  _frameBuffer->bind();
-  glEnable(GL_DEPTH_TEST);
-  glEnable(GL_CULL_FACE);
-  glEnable(GL_MULTISAMPLE);
-  glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
-  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-  for (auto& lightObject : _lightObjects) {
-    render.addLight(lightObject->getEntityId());
-  }
-
-  for (auto& lightObject : _lightObjects) {
-    render.submit(lightObject, _lightShader,
-                  lightObject->getTransform().position);
-  }
-
-  for (auto& boxObject : _boxObjects) {
-    render.submit(boxObject, _boxShader, boxObject->getTransform().position);
-  }
-
-  _frameBuffer->unBind();
+void Scene::updateEditMode(float dt, const std::shared_ptr<Camera>& camera) {
+  _renderSystem->updateEditMode(dt, camera);
 }
 
-std::shared_ptr<FrameBuffer>& Scene::getFrameBuffer() { return _frameBuffer; }
+Registry& Scene::getRegistry() { return _registry; }
 
 }  // namespace deft

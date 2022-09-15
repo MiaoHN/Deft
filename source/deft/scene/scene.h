@@ -3,12 +3,12 @@
 
 #include <memory>
 
+#include "ecs/system/render_system.h"
 #include "render/frame_buffer.h"
 #include "render/mesh.h"
 #include "render/renderer.h"
 #include "render/shader.h"
 #include "render/texture.h"
-#include "scene/scene_object.h"
 
 namespace deft {
 
@@ -17,21 +17,14 @@ class Scene {
   Scene();
   ~Scene();
 
-  void tick(float dt);
-  void render(Renderer& render);
+  void updateEditMode(float dt, const std::shared_ptr<Camera>& camera);
 
-  std::shared_ptr<FrameBuffer>& getFrameBuffer();
+  Registry& getRegistry();
 
  private:
-  std::vector<std::shared_ptr<SceneObject>> _boxObjects;
+  std::shared_ptr<RenderSystem> _renderSystem;
 
-  std::vector<std::shared_ptr<SceneObject>> _objects;
-
-  std::vector<std::shared_ptr<SceneObject>> _lightObjects;
-
-  std::shared_ptr<Shader>      _boxShader;
-  std::shared_ptr<Shader>      _lightShader;
-  std::shared_ptr<FrameBuffer> _frameBuffer;
+  Registry _registry;
 };
 
 }  // namespace deft

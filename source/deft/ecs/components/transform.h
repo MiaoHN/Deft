@@ -7,6 +7,8 @@ namespace deft {
 
 struct Transform {
   math::Vector3 position;
+  math::Vector3 rotation;
+  math::Vector3 scale;
 
   Transform() = default;
   Transform(const math::Vector3& position_) : position(position_) {}

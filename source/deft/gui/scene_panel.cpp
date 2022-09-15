@@ -12,7 +12,8 @@ ScenePanel::ScenePanel() {
 ScenePanel::~ScenePanel() {}
 
 void ScenePanel::update() {
-  unsigned int sceneTexture = _scene->getFrameBuffer()->getColorAttachment();
+  unsigned int sceneTexture =
+      Application::Get().getFrameBuffer()->getColorAttachment();
   ImGui::Begin("Scene");
   if (ImGui::IsWindowHovered()) {
     _isHovered = true;

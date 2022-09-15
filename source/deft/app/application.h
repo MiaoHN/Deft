@@ -8,6 +8,7 @@
 #include "ecs/ecs.h"
 #include "gui/gui.h"
 #include "input/input_manager.h"
+#include "render/frame_buffer.h"
 #include "render/graphic_context.h"
 #include "render/renderer.h"
 #include "scene/scene.h"
@@ -27,6 +28,8 @@ class Application {
   InputManager&           getInputManager();
   std::shared_ptr<Scene>& getScene();
 
+  std::shared_ptr<FrameBuffer>& getFrameBuffer();
+
   int getFps();
 
  private:
@@ -34,9 +37,10 @@ class Application {
   std::unique_ptr<GraphicContext>   _context;
   std::shared_ptr<Scene>            _scene;
   std::unique_ptr<InputManager>     _inputManager;
-  std::unique_ptr<Renderer>         _renderer;
   std::unique_ptr<Gui>              _gui;
   std::shared_ptr<CameraController> _cameraController;
+
+  std::shared_ptr<FrameBuffer> _frameBuffer;
 
   float _lastSecond;
   int   _frameCount;
