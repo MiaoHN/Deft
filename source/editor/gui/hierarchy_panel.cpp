@@ -2,22 +2,21 @@
 
 #include <imgui.h>
 
-#include "app/application.h"
+#include "core/application.h"
 
 namespace deft {
 
-HierarchyPanel::HierarchyPanel() {}
+HierarchyPanel::HierarchyPanel(Registry* registry) : _registry(registry) {}
 
 HierarchyPanel::~HierarchyPanel() {}
 
 void HierarchyPanel::update() {
   ImGui::Begin("Scene Hierarchy");
   if (ImGui::Button("Add")) {
-    Application::Get().getScene()->getRegistry().createEntity();
+    _registry->createEntity();
   }
 
-  for (auto& entity :
-       Application::Get().getScene()->getRegistry().getEntiesUsed()) {
+  for (auto& entity : _registry->getEntiesUsed()) {
     if (ImGui::Button(entity.getName().c_str())) {
       _selected       = true;
       _selectedEntity = &entity;

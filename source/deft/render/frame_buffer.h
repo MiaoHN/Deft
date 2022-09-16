@@ -10,6 +10,8 @@ namespace deft {
 struct FrameBufferData {
   int width;
   int height;
+
+  FrameBufferData(int width_, int height_) : width(width_), height(height_) {}
 };
 
 class FrameBuffer {

@@ -1,13 +1,13 @@
 #ifndef __DEFT_HIERARCHY_PANEL_H__
 #define __DEFT_HIERARCHY_PANEL_H__
 
-#include "ecs/ecs.h"
+#include "deft.h"
 
 namespace deft {
 
 class HierarchyPanel {
  public:
-  HierarchyPanel();
+  HierarchyPanel(Registry* registry);
   ~HierarchyPanel();
 
   void update();
@@ -16,8 +16,9 @@ class HierarchyPanel {
   bool    haveSelectedEntity();
 
  private:
-  Entity* _selectedEntity;
-  bool   _selected = false;
+  Entity*   _selectedEntity;
+  Registry* _registry;
+  bool      _selected = false;
 };
 
 }  // namespace deft

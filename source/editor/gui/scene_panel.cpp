@@ -1,19 +1,17 @@
 #include "gui/scene_panel.h"
 
-#include "app/application.h"
+#include "core/application.h"
 
 namespace deft {
 
-ScenePanel::ScenePanel() {
-  _scene     = Application::Get().getScene();
+ScenePanel::ScenePanel(Registry* registry) : _registry(registry) {
   _sceneSize = {992.0f, 558.0f};
 }
 
 ScenePanel::~ScenePanel() {}
 
-void ScenePanel::update() {
-  unsigned int sceneTexture =
-      Application::Get().getFrameBuffer()->getColorAttachment();
+void ScenePanel::update(std::shared_ptr<FrameBuffer> buffer) {
+  unsigned int sceneTexture = buffer->getColorAttachment();
   ImGui::Begin("Scene");
   if (ImGui::IsWindowHovered()) {
     _isHovered = true;

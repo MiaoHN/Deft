@@ -3,16 +3,17 @@
 
 #include <memory>
 
+#include "deft.h"
 #include "scene/scene.h"
 
 namespace deft {
 
 class ScenePanel {
  public:
-  ScenePanel();
+  ScenePanel(Registry* registry);
   ~ScenePanel();
 
-  void update();
+  void update(std::shared_ptr<FrameBuffer> buffer);
 
   bool isHovered();
 
@@ -21,6 +22,8 @@ class ScenePanel {
   math::Vector2          _sceneSize;
 
   bool _isHovered;
+
+  Registry* _registry;
 };
 
 }  // namespace deft

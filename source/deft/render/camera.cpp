@@ -1,6 +1,6 @@
 #include "render/camera.h"
 
-#include "app/application.h"
+#include "core/application.h"
 #include "pch.h"
 
 namespace deft {

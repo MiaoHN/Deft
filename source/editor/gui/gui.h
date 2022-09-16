@@ -14,25 +14,23 @@ namespace deft {
 
 class Gui {
  public:
-  Gui();
+  Gui(Registry* registry);
   ~Gui();
 
   void init();
 
-  void update();
+  void update(std::shared_ptr<FrameBuffer> buffer);
 
   void draw();
-
-  bool isScenePanelHovered();
 
  private:
   void initStyle();
 
  private:
   std::shared_ptr<LogPanel>        _logPanel;
-  std::shared_ptr<ScenePanel>      _scenePanel;
   std::shared_ptr<MenuBar>         _menuBar;
   std::shared_ptr<HierarchyPanel>  _hierarchyPanel;
+  std::shared_ptr<ScenePanel>      _scenePanel;
   std::shared_ptr<PropertiesPanel> _propertiesPanel;
 
   EntityId _selectedEntity;

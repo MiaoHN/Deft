@@ -1,6 +1,7 @@
 #include "controller/camera_controller.h"
 
-#include "app/application.h"
+#include "core/application.h"
+#include "input/input.h"
 
 namespace deft {
 
@@ -24,10 +25,10 @@ CameraController::CameraController() {
   _scrollSpeed      = 2.0f;
   _mouseSensitivity = 0.1f;
 
-  Application::Get().getInputManager().addScrollCallback(
-      "CameraController::handleScroll",
-      std::bind(CameraController::handleScroll, this, std::placeholders::_1,
-                std::placeholders::_2));
+  // Application::Get().getInputManager().addScrollCallback(
+  //     "CameraController::handleScroll",
+  //     std::bind(CameraController::handleScroll, this, std::placeholders::_1,
+  //               std::placeholders::_2));
 }
 
 CameraController::~CameraController() {}
@@ -51,10 +52,11 @@ void CameraController::moveUp() { _moveDir += _transform->up; }
 void CameraController::moveDown() { _moveDir -= _transform->up; }
 
 void CameraController::tick(float dt) {
+  handleMouseMove();
+
   if (!_enabled) return;
 
   handleKey();
-  handleMouseMove();
 
   move(dt);
   if (_keyPressed) {
@@ -92,24 +94,24 @@ bool CameraController::isEnable() { return _enabled; }
 
 void CameraController::handleKey() {
   _keyPressed = false;
-  if (IS_KEY_PRESS(KeyCode::A)) {
+  if (Input::IsKeyPress(KeyCode::A)) {
     _keyPressed = true;
     moveLeft();
-  } else if (IS_KEY_PRESS(KeyCode::D)) {
+  } else if (Input::IsKeyPress(KeyCode::D)) {
     _keyPressed = true;
     moveRight();
   }
-  if (IS_KEY_PRESS(KeyCode::W)) {
+  if (Input::IsKeyPress(KeyCode::W)) {
     _keyPressed = true;
     moveFront();
-  } else if (IS_KEY_PRESS(KeyCode::S)) {
+  } else if (Input::IsKeyPress(KeyCode::S)) {
     _keyPressed = true;
     moveBack();
   }
-  if (IS_KEY_PRESS(KeyCode::Space)) {
+  if (Input::IsKeyPress(KeyCode::Space)) {
     _keyPressed = true;
     moveUp();
-  } else if (IS_KEY_PRESS(KeyCode::LeftShift)) {
+  } else if (Input::IsKeyPress(KeyCode::LeftShift)) {
     _keyPressed = true;
     moveDown();
   }
@@ -125,7 +127,14 @@ void CameraController::handleScroll(double x, double y) {
 }
 
 void CameraController::handleMouseMove() {
-  math::Vector2 offset = GET_CURSOR_OFFSET();
+  static math::Vector2 currentPos = Input::GetMousePosition();
+  auto                 newPos     = Input::GetMousePosition();
+
+  math::Vector2 offset = newPos - currentPos;
+  currentPos           = newPos;
+
+  if (!_enabled) return;
+
   _transform->yaw += offset.x * _mouseSensitivity;
   _transform->pitch -= offset.y * _mouseSensitivity;
 

@@ -9,21 +9,21 @@
 #include <GLFW/glfw3.h>
 // clang-format on
 
-#include "app/application.h"
+#include "core/application.h"
 #include "log/log.h"
 #include "ecs/ecs.h"
 
 namespace deft {
 
-Gui::Gui() {
+Gui::Gui(Registry* registry) {
   init();
   initStyle();
 
   _logPanel        = std::make_shared<LogPanel>();
-  _scenePanel      = std::make_shared<ScenePanel>();
   _menuBar         = std::make_shared<MenuBar>();
-  _hierarchyPanel  = std::make_shared<HierarchyPanel>();
-  _propertiesPanel = std::make_shared<PropertiesPanel>();
+  _hierarchyPanel  = std::make_shared<HierarchyPanel>(registry);
+  _scenePanel      = std::make_shared<ScenePanel>(registry);
+  _propertiesPanel = std::make_shared<PropertiesPanel>(registry);
 }
 
 Gui::~Gui() {
@@ -57,7 +57,7 @@ void Gui::init() {
   ImGui_ImplOpenGL3_Init(glsl_version);
 }
 
-void Gui::update() {
+void Gui::update(std::shared_ptr<FrameBuffer> buffer) {
   // Start the Dear ImGui frame
   ImGui_ImplOpenGL3_NewFrame();
   ImGui_ImplGlfw_NewFrame();
@@ -103,13 +103,9 @@ void Gui::update() {
   ImGui::End();
 
   // 绘制菜单栏
-  _menuBar->update();
-
-  // 绘制场景
-  _scenePanel->update();
-
-  // 绘制日志
   _logPanel->update();
+
+  _scenePanel->update(buffer);
 
   // 绘制实体列表
   _hierarchyPanel->update();
@@ -133,8 +129,6 @@ void Gui::draw() {
     glfwMakeContextCurrent(backup_current_context);
   }
 }
-
-bool Gui::isScenePanelHovered() { return _scenePanel->isHovered(); }
 
 void Gui::initStyle() {
   // Setup Dear ImGui style

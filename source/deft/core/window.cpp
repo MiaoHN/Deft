@@ -1,9 +1,9 @@
-#include "app/window.h"
+#include "core/window.h"
 
 #include <GLFW/glfw3.h>
 #include <stb_image.h>
 
-#include "app/application.h"
+#include "core/application.h"
 #include "pch.h"
 
 namespace deft {

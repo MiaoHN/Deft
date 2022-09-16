@@ -2,14 +2,14 @@
 
 #include <imgui.h>
 
-#include "app/application.h"
+#include "core/application.h"
 #include "ecs/components/mesh.h"
 #include "ecs/components/transform.h"
 #include "pch.h"
 
 namespace deft {
 
-PropertiesPanel::PropertiesPanel() {}
+PropertiesPanel::PropertiesPanel(Registry* registry) : _registry(registry) {}
 
 PropertiesPanel::~PropertiesPanel() {}
 
@@ -44,14 +44,8 @@ void PropertiesPanel::update(
 }
 
 void PropertiesPanel::showTransform(Entity entity) {
-  if (Application::Get()
-          .getScene()
-          ->getRegistry()
-          .haveComponent<TransformComponent>(entity)) {
-    auto& transform = Application::Get()
-                          .getScene()
-                          ->getRegistry()
-                          .getComponent<TransformComponent>(entity);
+  if (_registry->haveComponent<TransformComponent>(entity)) {
+    auto& transform = _registry->getComponent<TransformComponent>(entity);
     if (ImGui::TreeNode("Transform")) {
       ImGui::DragFloat3("Position", &transform.position.x);
       ImGui::DragFloat3("Rotation", &transform.rotation.x);
@@ -62,12 +56,8 @@ void PropertiesPanel::showTransform(Entity entity) {
 }
 
 void PropertiesPanel::showMesh(Entity entity) {
-  if (Application::Get().getScene()->getRegistry().haveComponent<MeshComponent>(
-          entity)) {
-    auto& meshComponent = Application::Get()
-                              .getScene()
-                              ->getRegistry()
-                              .getComponent<MeshComponent>(entity);
+  if (_registry->haveComponent<MeshComponent>(entity)) {
+    auto& meshComponent = _registry->getComponent<MeshComponent>(entity);
     if (ImGui::TreeNode("Mesh")) {
       auto& textures = meshComponent.mesh->getTextures();
       for (auto& texture : textures) {
@@ -97,10 +87,7 @@ void PropertiesPanel::showMesh(Entity entity) {
 }
 
 void PropertiesPanel::showLight(Entity entity) {
-  if (Application::Get()
-          .getScene()
-          ->getRegistry()
-          .haveComponent<LightComponent>(entity)) {
+  if (_registry->haveComponent<LightComponent>(entity)) {
     if (ImGui::TreeNode("Light")) {
       auto& lightComponent = entity.getComponent<LightComponent>();
       switch (lightComponent.type) {

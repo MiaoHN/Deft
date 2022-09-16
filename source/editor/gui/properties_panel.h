@@ -3,6 +3,7 @@
 
 #include <memory>
 
+#include "deft.h"
 #include "ecs/ecs.h"
 #include "gui/hierarchy_panel.h"
 
@@ -10,7 +11,7 @@ namespace deft {
 
 class PropertiesPanel {
  public:
-  PropertiesPanel();
+  PropertiesPanel(Registry* registry);
   ~PropertiesPanel();
 
   void update(const std::shared_ptr<HierarchyPanel>& hierarchyPanel);
@@ -19,6 +20,8 @@ class PropertiesPanel {
   void showTransform(Entity entity);
   void showMesh(Entity entity);
   void showLight(Entity entity);
+
+  Registry* _registry;
 };
 
 }  // namespace deft

@@ -2,7 +2,7 @@
 
 #include <glad/glad.h>
 
-#include "app/application.h"
+#include "core/application.h"
 #include "ecs/components/light.h"
 #include "ecs/components/mesh.h"
 #include "ecs/components/transform.h"
