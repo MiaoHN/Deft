@@ -1,27 +1,29 @@
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG ${PROJECT_SOURCE_DIR}/bin/editor/debug)
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE ${PROJECT_SOURCE_DIR}/bin/editor/release)
+set(EDITOR_NAME DeftEditor)
+
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG ${PROJECT_SOURCE_DIR}/bin/debug/${EDITOR_NAME})
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE ${PROJECT_SOURCE_DIR}/bin/debug/${EDITOR_NAME})
 
 file(GLOB_RECURSE
   EDITOR_SOURCE
   ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp
 )
 
-add_executable(editor ${EDITOR_SOURCE})
-target_link_libraries(editor PUBLIC ${PROJECT_NAME})
-target_include_directories(editor PUBLIC ${SOURCE_ROOT} ${CMAKE_CURRENT_SOURCE_DIR})
+add_executable(${EDITOR_NAME} ${EDITOR_SOURCE})
+target_link_libraries(${EDITOR_NAME} PUBLIC ${PROJECT_NAME})
+target_include_directories(${EDITOR_NAME} PUBLIC ${SOURCE_ROOT} ${CMAKE_CURRENT_SOURCE_DIR})
 
 add_custom_command(
-  TARGET editor
+  TARGET ${EDITOR_NAME}
   POST_BUILD
   COMMAND ${CMAKE_COMMAND} -E copy_directory
   ${PROJECT_SOURCE_DIR}/assets
-  $<TARGET_FILE_DIR:editor>/assets
+  $<TARGET_FILE_DIR:${EDITOR_NAME}>/assets
 )
 
 add_custom_command(
-  TARGET editor
+  TARGET ${EDITOR_NAME}
   POST_BUILD
   COMMAND ${CMAKE_COMMAND} -E copy
   ${PROJECT_SOURCE_DIR}/assets/layout/imgui.ini
-  $<TARGET_FILE_DIR:editor>/imgui.ini
+  $<TARGET_FILE_DIR:${EDITOR_NAME}>/imgui.ini
 )
