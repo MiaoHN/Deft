@@ -1,12 +1,5 @@
 #include "gui/properties_panel.h"
 
-#include <imgui.h>
-
-#include "core/application.h"
-#include "ecs/components/mesh.h"
-#include "ecs/components/transform.h"
-#include "pch.h"
-
 namespace deft {
 
 PropertiesPanel::PropertiesPanel(Registry* registry) : _registry(registry) {}

@@ -1,7 +1,5 @@
 #include "gui/log_panel.h"
 
-#include "pch.h"
-
 namespace deft {
 
 LogPanel::LogPanel() {

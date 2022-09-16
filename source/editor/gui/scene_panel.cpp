@@ -1,7 +1,5 @@
 #include "gui/scene_panel.h"
 
-#include "core/application.h"
-
 namespace deft {
 
 ScenePanel::ScenePanel(Registry* registry) : _registry(registry) {

@@ -1,6 +1,6 @@
 #include "gui/menu_bar.h"
 
-#include <imgui.h>
+#include "deft.h"
 
 namespace deft {
 

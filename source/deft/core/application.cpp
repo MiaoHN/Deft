@@ -6,7 +6,6 @@
 // clang-format on
 
 #include "pch.h"
-#include "log/log.h"
 
 namespace deft {
 

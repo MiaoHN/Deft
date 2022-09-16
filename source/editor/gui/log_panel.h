@@ -1,9 +1,7 @@
 #ifndef __DEFT_LOG_PANEL_H__
 #define __DEFT_LOG_PANEL_H__
 
-#include <imgui.h>
-
-#include "log/log.h"
+#include "deft.h"
 
 namespace deft {
 

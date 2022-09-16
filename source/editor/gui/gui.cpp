@@ -1,17 +1,8 @@
 #include "gui/gui.h"
 
-#include <imgui.h>
+#include <GLFW/glfw3.h>
 #include <imgui_impl_glfw.h>
 #include <imgui_impl_opengl3.h>
-
-// clang-format off
-#include <glad/glad.h>
-#include <GLFW/glfw3.h>
-// clang-format on
-
-#include "core/application.h"
-#include "log/log.h"
-#include "ecs/ecs.h"
 
 namespace deft {
 

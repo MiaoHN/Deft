@@ -1,9 +1,5 @@
 #include "gui/hierarchy_panel.h"
 
-#include <imgui.h>
-
-#include "core/application.h"
-
 namespace deft {
 
 HierarchyPanel::HierarchyPanel(Registry* registry) : _registry(registry) {}

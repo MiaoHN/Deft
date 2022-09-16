@@ -3,12 +3,12 @@
 
 #include <memory>
 
+#include "deft.h"
 #include "gui/hierarchy_panel.h"
 #include "gui/log_panel.h"
 #include "gui/menu_bar.h"
 #include "gui/properties_panel.h"
 #include "gui/scene_panel.h"
-#include "scene/scene.h"
 
 namespace deft {
 

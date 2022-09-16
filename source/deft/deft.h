@@ -24,5 +24,6 @@
 #include "render/uniform_buffer.h"
 #include "render/vertex_array.h"
 #include "render/vertex_buffer.h"
+#include "scene/scene.h"
 
 #endif  // __DEFT_H__

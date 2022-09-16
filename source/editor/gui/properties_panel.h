@@ -4,7 +4,6 @@
 #include <memory>
 
 #include "deft.h"
-#include "ecs/ecs.h"
 #include "gui/hierarchy_panel.h"
 
 namespace deft {

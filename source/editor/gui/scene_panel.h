@@ -4,7 +4,6 @@
 #include <memory>
 
 #include "deft.h"
-#include "scene/scene.h"
 
 namespace deft {
 
