@@ -15,9 +15,7 @@ GraphicContext::GraphicContext(GLFWwindow* handler) : _handler(handler) {
     LOG_CORE_FATAL("GraphicContext::GraphicContext Failed to initialize GLAD!");
     exit(-1);
   }
-  glEnable(GL_DEPTH_TEST);
-  glEnable(GL_CULL_FACE);
-  glEnable(GL_MULTISAMPLE);
+
   glfwSwapInterval(1);
 
   const unsigned char* str1 = glGetString(GL_VERSION);

@@ -1,6 +1,6 @@
 #include "render/mesh.h"
 
-#include <glad/glad.h>
+#include "render/render_command.h"
 
 namespace deft {
 
@@ -58,7 +58,7 @@ void Mesh::draw(const TransformComponent&      transform,
   }
   shader->setFloat("material.shininess", 32);
 
-  glDrawElements(GL_TRIANGLES, getCount(), GL_UNSIGNED_INT, nullptr);
+  RenderCommand::DrawIndex(_vao, getCount());
 }
 
 int Mesh::getCount() const { return _ebo->getCount(); }

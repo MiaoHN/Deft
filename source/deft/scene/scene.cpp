@@ -19,13 +19,18 @@ Scene::Scene() {
 
   _renderSystem = _registry.registerSystem<RenderSystem>();
 
-  Entity box = _registry.createEntity("Box");
+  Entity box1 = _registry.createEntity("Box1");
+  Entity box2 = _registry.createEntity("Box2");
 
   TransformComponent transform;
   transform.position = {0.0f, 0.0f, 0.0f};
   transform.scale    = {1.0f, 1.0f, 1.0f};
   transform.rotation = {0.0f, 0.0f, 0.0f};
-  box.addComponent(transform);
+  box1.addComponent(transform);
+  transform.position = {2.0f, 1.0f, -1.5f};
+  transform.scale    = {1.0f, 1.0f, 1.0f};
+  transform.rotation = {0.0f, 0.0f, 0.0f};
+  box2.addComponent(transform);
 
   MeshComponent meshComponent;
   meshComponent.mesh = Mesh::Cube();
@@ -34,7 +39,8 @@ Scene::Scene() {
       Texture::Create("assets/texture/container.jpg", TextureType::Diffuse));
   meshComponent.mesh->addTexture(
       Texture::Create(math::Vector3(1.0f, 1.0f, 1.0f), TextureType::Specular));
-  box.addComponent(meshComponent);
+  box1.addComponent(meshComponent);
+  box2.addComponent(meshComponent);
 
   Entity directionLight = _registry.createEntity("Direction Light");
 

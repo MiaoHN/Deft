@@ -30,6 +30,8 @@ class Application {
 
   std::shared_ptr<FrameBuffer>& getFrameBuffer();
 
+  std::shared_ptr<Camera> getEditCamera();
+
   int getFps();
 
  private:
@@ -38,7 +40,7 @@ class Application {
   std::shared_ptr<Scene>            _scene;
   std::unique_ptr<InputManager>     _inputManager;
   std::unique_ptr<Gui>              _gui;
-  std::shared_ptr<CameraController> _cameraController;
+  std::shared_ptr<CameraController> _editorCameraController;
 
   std::shared_ptr<FrameBuffer> _frameBuffer;
 

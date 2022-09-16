@@ -5,3 +5,6 @@
 	path = vendor/imgui
 	branch = docking
 	url = https://github.com/ocornut/imgui.git
+[submodule "vendor/imgui_zmo"]
+	path = vendor/imgui_zmo
+	url = https://github.com/CedricGuillemet/ImGuizmo.git

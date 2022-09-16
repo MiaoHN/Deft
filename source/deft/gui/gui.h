@@ -36,7 +36,7 @@ class Gui {
   std::shared_ptr<PropertiesPanel> _propertiesPanel;
 
   EntityId _selectedEntity;
-  bool   selected = false;
+  bool     selected = false;
 };
 
 }  // namespace deft

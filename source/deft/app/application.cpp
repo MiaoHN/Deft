@@ -5,6 +5,7 @@
 #include <GLFW/glfw3.h>
 // clang-format on
 
+#include "render/render_command.h"
 #include "render/uniform_buffer.h"
 #include "math/math.h"
 #include "ecs/components/transform.h"
@@ -29,12 +30,12 @@ Application::Application() {
   _frameCount = 0;
   _fps        = 0;
 
-  _window           = std::make_unique<Window>(1600, 900, "Deft");
-  _context          = std::make_unique<GraphicContext>(_window->getHandler());
-  _scene            = std::make_shared<Scene>();
-  _inputManager     = std::make_unique<InputManager>(_window->getHandler());
-  _gui              = std::make_unique<Gui>();
-  _cameraController = std::make_shared<CameraController>();
+  _window       = std::make_unique<Window>(1600, 900, "Deft");
+  _context      = std::make_unique<GraphicContext>(_window->getHandler());
+  _scene        = std::make_shared<Scene>();
+  _inputManager = std::make_unique<InputManager>(_window->getHandler());
+  _gui          = std::make_unique<Gui>();
+  _editorCameraController = std::make_shared<CameraController>();
 
   _frameBuffer =
       FrameBuffer::Create({getWindow().getWidth(), getWindow().getHeight()});
@@ -74,31 +75,26 @@ void Application::run() {
     // Logic update
     if (_gui->isScenePanelHovered()) {
       if (_inputManager->isMouseButtonPress(MouseButton::Right)) {
-        // glfwSetInputMode(_window->getHandler(), GLFW_CURSOR,
-        //                  GLFW_CURSOR_DISABLED);
-        _cameraController->setEnable(true);
+        _editorCameraController->setEnable(true);
       } else {
-        // glfwSetInputMode(_window->getHandler(), GLFW_CURSOR,
-        //                  GLFW_CURSOR_NORMAL);
-        _cameraController->setEnable(false);
+        _editorCameraController->setEnable(false);
       }
     } else {
-      // glfwSetInputMode(_window->getHandler(), GLFW_CURSOR,
-      //                  GLFW_CURSOR_NORMAL);
-      _cameraController->setEnable(false);
+      _editorCameraController->setEnable(false);
     }
 
-    _cameraController->tick(dt);
+    _editorCameraController->tick(dt);
     _gui->update();
 
     _frameBuffer->bind();
-    glEnable(GL_DEPTH_TEST);
-    glEnable(GL_CULL_FACE);
-    glEnable(GL_MULTISAMPLE);
-    glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    _scene->updateEditMode(dt, _cameraController->getCamera());
+    RenderCommand::DepthTest(true);
+    RenderCommand::CullFace(true);
+    RenderCommand::Multisample(true);
+    RenderCommand::ClearColor(math::Vector4(0.2f, 0.2f, 0.2f, 1.0f));
+    RenderCommand::Clear();
+
+    _scene->updateEditMode(dt, _editorCameraController->getCamera());
     _frameBuffer->unBind();
 
     _gui->draw();
@@ -119,6 +115,10 @@ std::shared_ptr<Scene>& Application::getScene() { return _scene; }
 
 std::shared_ptr<FrameBuffer>& Application::getFrameBuffer() {
   return _frameBuffer;
+}
+
+std::shared_ptr<Camera> Application::getEditCamera() {
+  return _editorCameraController->getCamera();
 }
 
 int Application::getFps() { return _fps; }
