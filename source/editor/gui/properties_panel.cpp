@@ -53,25 +53,18 @@ void PropertiesPanel::showMesh(Entity entity) {
     auto& meshComponent = _registry->getComponent<MeshComponent>(entity);
     if (ImGui::TreeNode("Mesh")) {
       auto& textures = meshComponent.mesh->getTextures();
-      for (auto& texture : textures) {
-        unsigned int textureId = texture->getId();
-        switch (texture->getType()) {
-          case TextureType::Diffuse:
-            ImGui::Text("Diffuse");
-            break;
-          case TextureType::Specular:
-            ImGui::Text("Specular");
-            break;
-        }
+      if (textures.find(TextureType::Diffuse) != textures.end()) {
+        unsigned int textureId = textures[TextureType::Diffuse]->getId();
+        ImGui::Text("Diffuse");
         ImGui::Image(reinterpret_cast<void*>(textureId), ImVec2{80.0f, 80.0f},
                      ImVec2{0, 1}, ImVec2{1, 0});
-        if (texture->getDataType() == Texture::Color) {
-          math::Vector3 colorPrev = texture->getColor();
-          math::Vector3 color     = texture->getColor();
-          if (ImGui::ColorEdit3("color", &color.x)) {
-            texture->setColor(color);
-          }
-        }
+        ImGui::Separator();
+      }
+      if (textures.find(TextureType::Specular) != textures.end()) {
+        unsigned int textureId = textures[TextureType::Specular]->getId();
+        ImGui::Text("Specular");
+        ImGui::Image(reinterpret_cast<void*>(textureId), ImVec2{80.0f, 80.0f},
+                     ImVec2{0, 1}, ImVec2{1, 0});
         ImGui::Separator();
       }
       ImGui::TreePop();

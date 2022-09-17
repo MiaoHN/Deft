@@ -16,22 +16,14 @@ struct FrameBufferData {
 
 class FrameBuffer {
  public:
-  FrameBuffer(const FrameBufferData& data);
-  ~FrameBuffer();
+  virtual ~FrameBuffer() = default;
 
-  void bind() const;
-  void unBind() const;
+  virtual void bind() const   = 0;
+  virtual void unBind() const = 0;
 
-  unsigned int getColorAttachment();
+  virtual unsigned int getColorAttachment() = 0;
 
   static std::shared_ptr<FrameBuffer> Create(const FrameBufferData& data);
-
- private:
-  unsigned int _id;
-  unsigned int _rbo;
-
-  unsigned int _colorAttachment;
-  unsigned int _depthAttachment;
 };
 
 }  // namespace deft

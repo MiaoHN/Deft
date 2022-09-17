@@ -1,7 +1,5 @@
 #include "scene/scene.h"
 
-#include <glad/glad.h>
-
 #include "core/application.h"
 #include "ecs/components/light.h"
 #include "ecs/components/mesh.h"

@@ -26,26 +26,17 @@ struct BufferElement {
 
 class VertexBuffer {
  public:
-  VertexBuffer(const std::vector<float>& data);
+  virtual ~VertexBuffer() = default;
 
-  void bind() const;
-  void unBind() const;
+  virtual void bind() const   = 0;
+  virtual void unBind() const = 0;
 
-  std::vector<float> getData() const;
+  virtual std::vector<float> getData() const = 0;
 
-  void setData(const std::vector<float>& data);
-  void setElements(const std::vector<BufferElement>& element);
+  virtual void setData(const std::vector<float>& data)                = 0;
+  virtual void setElements(const std::vector<BufferElement>& element) = 0;
 
- private:
-  void genVbo() const;
-  void setLayout() const;
-  void clearVbo() const;
-
- private:
-  mutable unsigned int _id;
-
-  std::vector<float>         _data;
-  std::vector<BufferElement> _elements;
+  static std::shared_ptr<VertexBuffer> Create(const std::vector<float>& data);
 };
 
 }  // namespace deft

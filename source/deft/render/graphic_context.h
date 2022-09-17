@@ -1,19 +1,17 @@
 #ifndef __DEFT_GRAPHIC_CONTEXT_H__
 #define __DEFT_GRAPHIC_CONTEXT_H__
 
-struct GLFWwindow;
-
 namespace deft {
 
 class GraphicContext {
  public:
-  GraphicContext(GLFWwindow* handler);
-  ~GraphicContext();
+  virtual ~GraphicContext() = default;
 
-  void swapBuffers();
+  virtual void init() = 0;
 
- private:
-  GLFWwindow* _handler;
+  virtual void swapBuffers() = 0;
+
+  static std::unique_ptr<GraphicContext> Create(void* handler);
 };
 
 }  // namespace deft

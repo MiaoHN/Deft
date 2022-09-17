@@ -1,11 +1,8 @@
 #include "core/application.h"
 
-// clang-format off
-#include <glad/glad.h>
-#include <GLFW/glfw3.h>
-// clang-format on
-
 #include "pch.h"
+#include "render/render_api.h"
+#include "render/renderer.h"
 
 namespace deft {
 
@@ -14,10 +11,14 @@ Application* Application::_s_instance;
 Application::Application() {
   makeInstance();
 
+  RenderAPI::Set(RenderAPI::OpenGL);
+
   _window = std::make_unique<Window>(1600, 900, "Deft");
   _timer  = std::make_unique<Timer>();
 
   _timer->initialize();
+
+  Renderer::Init();
 }
 
 Application::~Application() {}

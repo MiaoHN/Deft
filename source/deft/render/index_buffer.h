@@ -1,33 +1,26 @@
 #ifndef __DEFT_INDEX_BUFFER_H__
 #define __DEFT_INDEX_BUFFER_H__
 
+#include <memory>
 #include <vector>
 
 namespace deft {
 
 class IndexBuffer {
  public:
-  IndexBuffer();
-  IndexBuffer(const std::vector<unsigned int> &indices);
-  IndexBuffer(int count);
-  ~IndexBuffer();
+  virtual ~IndexBuffer() = default;
 
-  void addIndices(const std::vector<unsigned int> &indices);
-  void addIndices(int count);
+  virtual void addIndices(const std::vector<unsigned int> &indices) = 0;
+  virtual void addIndices(int count)                                = 0;
 
-  int getCount() const;
+  virtual int getCount() const = 0;
 
-  void bind() const;
-  void unBind() const;
+  virtual void bind() const   = 0;
+  virtual void unBind() const = 0;
 
- private:
-  void generateEbo() const;
-  void clearEbo() const;
-
- private:
-  mutable unsigned int _id;
-
-  std::vector<unsigned int> _indices;
+  static std::shared_ptr<IndexBuffer> Create(
+      const std::vector<unsigned int> &indices);
+  static std::shared_ptr<IndexBuffer> Create(int count);
 };
 
 }  // namespace deft

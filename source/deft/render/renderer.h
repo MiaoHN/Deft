@@ -18,9 +18,11 @@ namespace deft {
 
 class Renderer {
  public:
+  static void Init();
+
   static void Begin(std::shared_ptr<Camera> camera);
 
-  static void Submit(const TransformComponent&               transform,
+  static void Submit(const TransformComponent&      transform,
                      const MeshComponent&           meshComponent,
                      const std::shared_ptr<Shader>& shader,
                      const Entity&                  entity);

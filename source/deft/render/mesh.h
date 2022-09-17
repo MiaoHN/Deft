@@ -2,6 +2,7 @@
 #define __DEFT_MESH_H__
 
 #include <memory>
+#include <unordered_map>
 #include <vector>
 
 #include "ecs/ecs.h"
@@ -12,6 +13,11 @@
 #include "render/vertex_buffer.h"
 
 namespace deft {
+
+enum class TextureType {
+  Diffuse = 0,
+  Specular,
+};
 
 class Mesh {
  public:
@@ -29,9 +35,9 @@ class Mesh {
 
   int getCount() const;
 
-  void addTexture(const std::shared_ptr<Texture>& texture);
+  void addTexture(TextureType type, const std::shared_ptr<Texture>& texture);
 
-  std::vector<std::shared_ptr<Texture>>& getTextures();
+  std::unordered_map<TextureType, std::shared_ptr<Texture>>& getTextures();
 
   static std::shared_ptr<Mesh> Create(const std::vector<float>& vertices,
                                       const std::vector<BufferElement>& layouts,
@@ -44,7 +50,7 @@ class Mesh {
   std::shared_ptr<VertexBuffer> _vbo;
   std::shared_ptr<IndexBuffer>  _ebo;
 
-  std::vector<std::shared_ptr<Texture>> _textures;
+  std::unordered_map<TextureType, std::shared_ptr<Texture>> _textures;
 };
 
 }  // namespace deft

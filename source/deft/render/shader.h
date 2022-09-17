@@ -11,22 +11,19 @@ namespace deft {
 
 class Shader {
  public:
-  Shader(const std::string& vertPath, const std::string& fragPath);
-  ~Shader();
+  virtual ~Shader() = default;
 
-  void bind() const;
-  void unBind() const;
+  virtual void bind() const   = 0;
+  virtual void unBind() const = 0;
 
-  void setMatrix4(const std::string& name, const math::Matrix4& mat);
-  void setInt(const std::string& name, int value);
-  void setFloat(const std::string& name, float value);
-  void setFloat3(const std::string& name, const math::Vector3& vec);
+  virtual void setMatrix4(const std::string&   name,
+                          const math::Matrix4& mat)                         = 0;
+  virtual void setInt(const std::string& name, int value)                   = 0;
+  virtual void setFloat(const std::string& name, float value)               = 0;
+  virtual void setFloat3(const std::string& name, const math::Vector3& vec) = 0;
 
- private:
-  static std::vector<char> ReadFile(const std::string& path);
-
- private:
-  unsigned int _id;
+  static std::shared_ptr<Shader> Create(const std::string& vertPath,
+                                        const std::string& fragPath);
 };
 
 class ShaderLib {

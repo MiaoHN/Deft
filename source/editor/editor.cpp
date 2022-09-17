@@ -3,17 +3,18 @@
 namespace deft {
 
 void Editor::initialize() {
+  RenderAPI::Set(RenderAPI::OpenGL);
+
   _scene                  = std::make_shared<Scene>();
   _gui                    = std::make_unique<Gui>(&_scene->getRegistry());
   _editorCameraController = std::make_shared<CameraController>();
 
   _frameBuffer = FrameBuffer::Create(FrameBufferData(1600.0f, 900.0f));
 
-  ShaderLib::Add("default",
-                 std::make_shared<Shader>("assets/shader/default.vert",
-                                          "assets/shader/default.frag"));
+  ShaderLib::Add("default", Shader::Create("assets/shader/default.vert",
+                                           "assets/shader/default.frag"));
   UniformBufferLib::Add("cameraUniform",
-                        std::make_shared<UniformBuffer>(sizeof(CameraData), 0));
+                        UniformBuffer::Create(sizeof(CameraData), 0));
 
   auto& _registry = _scene->getRegistry();
 
@@ -34,9 +35,13 @@ void Editor::initialize() {
   meshComponent.mesh = Mesh::Cube();
 
   meshComponent.mesh->addTexture(
-      Texture::Create("assets/texture/container.jpg", TextureType::Diffuse));
-  meshComponent.mesh->addTexture(
-      Texture::Create(math::Vector3(1.0f, 1.0f, 1.0f), TextureType::Specular));
+      TextureType::Diffuse, Texture::Create("assets/texture/container.jpg"));
+
+  auto texture1 = Texture::Create(1, 1);
+
+  unsigned int color = 0xffffffff;
+  texture1->setData(&color, sizeof(color));
+  meshComponent.mesh->addTexture(TextureType::Specular, texture1);
   box1.addComponent(meshComponent);
   box2.addComponent(meshComponent);
 
@@ -68,8 +73,11 @@ void Editor::initialize() {
   pointLight.addComponent(transform);
   MeshComponent pointLightMeshComponent;
   pointLightMeshComponent.mesh = Mesh::Cube();
-  pointLightMeshComponent.mesh->addTexture(
-      Texture::Create(math::Vector3(1.0f, 1.0f, 1.0f), TextureType::Diffuse));
+
+  auto texture2 = Texture::Create(1, 1);
+  color         = 0xffffffff;
+  texture2->setData(&color, sizeof(color));
+  pointLightMeshComponent.mesh->addTexture(TextureType::Diffuse, texture2);
   pointLight.addComponent(pointLightMeshComponent);
 }
 
@@ -89,9 +97,6 @@ void Editor::tick(float dt) {
 
   _frameBuffer->bind();
 
-  RenderCommand::DepthTest(true);
-  RenderCommand::CullFace(true);
-  RenderCommand::Multisample(true);
   RenderCommand::ClearColor(math::Vector4(0.2f, 0.2f, 0.2f, 1.0f));
   RenderCommand::Clear();
 

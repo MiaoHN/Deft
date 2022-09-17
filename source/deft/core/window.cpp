@@ -41,7 +41,8 @@ Window::Window(int width, int height, const std::string& title)
 
   glfwSetWindowUserPointer(_window, &Application::Get());
 
-  _context = std::make_unique<GraphicContext>(_window);
+  _context = GraphicContext::Create(_window);
+  _context->init();
 }
 
 Window::~Window() {

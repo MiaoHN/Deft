@@ -1,15 +1,18 @@
 #ifndef __DEFT_VERTEX_ARRAY_H__
 #define __DEFT_VERTEX_ARRAY_H__
 
+#include <memory>
+
 namespace deft {
 
 class VertexArray {
  public:
-  VertexArray();
-  ~VertexArray();
+  virtual ~VertexArray() = default;
 
-  void bind() const;
-  void unBind() const;
+  virtual void bind() const   = 0;
+  virtual void unBind() const = 0;
+
+  static std::shared_ptr<VertexArray> Create();
 
  private:
   unsigned int _id;

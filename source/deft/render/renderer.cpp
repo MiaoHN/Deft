@@ -1,11 +1,12 @@
 #include "render/renderer.h"
 
-#include <glad/glad.h>
-
 #include "ecs/components/component.h"
+#include "render/render_command.h"
 #include "render/uniform_buffer.h"
 
 namespace deft {
+
+void Renderer::Init() { RenderCommand::Init(); }
 
 void Renderer::Begin(std::shared_ptr<Camera> camera) {
   auto& cameraUniform = UniformBufferLib::Get("cameraUniform");
@@ -20,7 +21,7 @@ void Renderer::Begin(std::shared_ptr<Camera> camera) {
   cameraUniform->setData(&cameraData, sizeof(cameraData));
 }
 
-void Renderer::Submit(const TransformComponent&               transform,
+void Renderer::Submit(const TransformComponent&      transform,
                       const MeshComponent&           meshComponent,
                       const std::shared_ptr<Shader>& shader,
                       const Entity&                  entity) {

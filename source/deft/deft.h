@@ -17,6 +17,7 @@
 #include "pch.h"
 #include "render/frame_buffer.h"
 #include "render/index_buffer.h"
+#include "render/render_api.h"
 #include "render/render_command.h"
 #include "render/shader.h"
 #include "render/texture.h"

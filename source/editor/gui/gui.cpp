@@ -91,6 +91,14 @@ void Gui::update(std::shared_ptr<FrameBuffer> buffer) {
 
   ImGui::Begin("Scene Detail");
   ImGui::Text("Scene fps: %d", Application::Get().getFps());
+  std::string renderAPIType = "UnKnown";
+  switch (RenderAPI::Get()) {
+    case RenderAPI::OpenGL: {
+      renderAPIType = "OpenGL";
+      break;
+    }
+  }
+  ImGui::Text("Render API: %s", renderAPIType.c_str());
   ImGui::End();
 
   // 绘制菜单栏

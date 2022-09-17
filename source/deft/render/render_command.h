@@ -4,12 +4,15 @@
 #include <memory>
 
 #include "math/math.h"
+#include "render/render_api.h"
 #include "render/vertex_array.h"
 
 namespace deft {
 
 class RenderCommand {
  public:
+  static void Init();
+
   static void ClearColor(const math::Vector4& color);
 
   static void Clear();
@@ -17,11 +20,8 @@ class RenderCommand {
   static void DrawIndex(const std::shared_ptr<VertexArray>& vertexArray,
                         unsigned int                        count);
 
-  static void DepthTest(bool flag);
-
-  static void CullFace(bool flag);
-
-  static void Multisample(bool flag);
+ private:
+  static std::unique_ptr<RenderAPI> _api;
 };
 
 }  // namespace deft

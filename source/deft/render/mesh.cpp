@@ -9,10 +9,10 @@ Mesh::Mesh() = default;
 Mesh::Mesh(const std::vector<float>&         vertices,
            const std::vector<BufferElement>& layouts,
            const std::vector<unsigned int>&  indices) {
-  _vao = std::make_shared<VertexArray>();
-  _vbo = std::make_shared<VertexBuffer>(vertices);
+  _vao = VertexArray::Create();
+  _vbo = VertexBuffer::Create(vertices);
   _vbo->setElements(layouts);
-  _ebo = std::make_shared<IndexBuffer>(indices);
+  _ebo = IndexBuffer::Create(indices);
 }
 
 Mesh::~Mesh() {}
@@ -43,18 +43,13 @@ void Mesh::draw(const TransformComponent&      transform,
   model = math::translate(model, transform.position);
 
   shader->setMatrix4("model", model);
-  for (int i = 0; i < _textures.size(); ++i) {
-    _textures[i]->bind(i);
-    switch (_textures[i]->getType()) {
-      case TextureType::Diffuse: {
-        shader->setInt("material.diffuse", i);
-        break;
-      }
-      case TextureType::Specular: {
-        shader->setInt("material.specular", i);
-        break;
-      }
-    }
+  if (_textures.find(TextureType::Diffuse) != _textures.end()) {
+    _textures[TextureType::Diffuse]->bind(0);
+    shader->setInt("material.diffuse", 0);
+  }
+  if (_textures.find(TextureType::Specular) != _textures.end()) {
+    _textures[TextureType::Specular]->bind(1);
+    shader->setInt("material.specular", 1);
   }
   shader->setFloat("material.shininess", 32);
 
@@ -63,11 +58,14 @@ void Mesh::draw(const TransformComponent&      transform,
 
 int Mesh::getCount() const { return _ebo->getCount(); }
 
-void Mesh::addTexture(const std::shared_ptr<Texture>& texture) {
-  _textures.push_back(texture);
+void Mesh::addTexture(TextureType                     type,
+                      const std::shared_ptr<Texture>& texture) {
+  _textures[type] = texture;
 }
 
-std::vector<std::shared_ptr<Texture>>& Mesh::getTextures() { return _textures; }
+std::unordered_map<TextureType, std::shared_ptr<Texture>>& Mesh::getTextures() {
+  return _textures;
+}
 
 std::shared_ptr<Mesh> Mesh::Create(const std::vector<float>&         vertices,
                                    const std::vector<BufferElement>& layouts,
