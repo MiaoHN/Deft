@@ -1,5 +1,7 @@
 #include "gui/hierarchy_panel.h"
 
+#include <imgui_internal.h>
+
 namespace deft {
 
 HierarchyPanel::HierarchyPanel(Registry* registry) : _registry(registry) {}
@@ -15,14 +17,14 @@ void HierarchyPanel::update() {
   for (auto& entity : _registry->getEntiesUsed()) {
     if (ImGui::Button(entity.getName().c_str())) {
       _selected       = true;
-      _selectedEntity = &entity;
+      _selectedEntity = entity;
     }
   }
 
   ImGui::End();
 }
 
-Entity* HierarchyPanel::getSelectedEntity() { return _selectedEntity; }
+Entity HierarchyPanel::getSelectedEntity() { return _selectedEntity; }
 
 bool HierarchyPanel::haveSelectedEntity() { return _selected; }
 

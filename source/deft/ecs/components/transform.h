@@ -10,7 +10,7 @@ class TransformComponent : public Component {
  public:
   math::Vector3 position;
   math::Vector3 rotation;
-  math::Vector3 scale;
+  math::Vector3 scale{1.0f, 1.0f, 1.0f};
 
   TransformComponent() = default;
   TransformComponent(const math::Vector3& position_) : position(position_) {}

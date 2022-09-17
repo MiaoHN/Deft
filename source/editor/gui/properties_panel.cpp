@@ -11,27 +11,47 @@ void PropertiesPanel::update(
   ImGui::Begin("Properties");
 
   if (hierarchyPanel->haveSelectedEntity()) {
-    Entity* entity = hierarchyPanel->getSelectedEntity();
+    Entity entity = hierarchyPanel->getSelectedEntity();
 
-    ImGui::LabelText("Entity Name", entity->getName().c_str());
+    ImGui::LabelText("Entity Name", entity.getName().c_str());
 
     char buf[128] = "";
     if (ImGui::InputText("Rename", buf, 128)) {
       std::string newName = std::string(buf, strlen(buf));
-      entity->setName(newName);
+      entity.setName(newName);
     }
 
-    // if (ImGui::Button("Add Component")) {
-    // }
+    if (ImGui::Button("Add Transform")) {
+      if (!entity.haveComponent<TransformComponent>()) {
+        entity.addComponent(TransformComponent());
+      }
+    }
+    if (ImGui::Button("Add Mesh(cube)")) {
+      if (!entity.haveComponent<MeshComponent>()) {
+        if (!entity.haveComponent<TransformComponent>()) {
+          entity.addComponent(TransformComponent());
+        }
+        MeshComponent meshComponent;
+        meshComponent.mesh = Mesh::Cube();
+        meshComponent.mesh->addTexture(
+            TextureType::Diffuse,
+            Texture::Create("assets/texture/container.jpg"));
+        unsigned int color   = 0xffffffff;
+        auto         texture = Texture::Create(1, 1);
+        texture->setData(&color, sizeof(color));
+        meshComponent.mesh->addTexture(TextureType::Specular, texture);
+        entity.addComponent(meshComponent);
+      }
+    }
 
     // 显示位置信息
-    showTransform(*entity);
+    showTransform(entity);
 
     // 显示材质信息
-    showMesh(*entity);
+    showMesh(entity);
 
     // 显示光照信息
-    showLight(*entity);
+    showLight(entity);
   }
   ImGui::End();
 }
