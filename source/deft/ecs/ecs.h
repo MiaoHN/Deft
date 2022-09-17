@@ -2,7 +2,6 @@
 #define __DEFT_ECS_H__
 
 // https://austinmorlan.com/posts/entity_component_system/#the-entity
-
 #include <algorithm>
 #include <array>
 #include <bitset>
@@ -14,6 +13,7 @@
 #include <unordered_map>
 #include <vector>
 
+#include "components/tag.h"
 #include "render/camera.h"
 
 namespace deft {
@@ -31,9 +31,6 @@ class Entity {
   EntityId getId() const { return _id; }
   void     setId(EntityId id) { _id = id; }
 
-  std::string getName() const { return _name; }
-  void        setName(const std::string& name) { _name = name; }
-
   template <typename T>
   T& getComponent();
 
@@ -43,13 +40,16 @@ class Entity {
   template <typename T>
   bool haveComponent();
 
+  std::string getName() { return getComponent<TagComponent>().name; }
+  void        setName(const std::string& name) {
+    getComponent<TagComponent>().name = name;
+  }
+
   bool operator==(const Entity& entity) const { return _id == entity.getId(); }
 
  private:
   EntityId  _id;
   Registry* _handled;
-
-  std::string _name = "Unknown Entity";
 };
 
 using ComponentType = std::uint8_t;
@@ -397,8 +397,10 @@ class Registry {
 
   // EntityId methods
   Entity createEntity(const std::string& name = "Unknown Entity") {
-    Entity entity = _entityManager->createEntity();
-    entity.setName(name);
+    Entity       entity = _entityManager->createEntity();
+    TagComponent tag;
+    tag.name = name;
+    addComponent(entity, tag);
     entity._handled = this;
     _entities.push_back(entity);
     return entity;

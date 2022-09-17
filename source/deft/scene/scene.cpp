@@ -3,6 +3,7 @@
 #include "core/application.h"
 #include "ecs/components/light.h"
 #include "ecs/components/mesh.h"
+#include "ecs/components/tag.h"
 #include "ecs/components/transform.h"
 #include "pch.h"
 
@@ -14,6 +15,7 @@ Scene::Scene() {
   _registry.registerComponent<MeshComponent>();
   _registry.registerComponent<TransformComponent>();
   _registry.registerComponent<LightComponent>();
+  _registry.registerComponent<TagComponent>();
 
   _renderSystem = _registry.registerSystem<RenderSystem>();
 }
