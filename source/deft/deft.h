@@ -6,7 +6,6 @@
 #include "controller/camera_controller.h"
 #include "core/application.h"
 #include "core/entry_point.h"
-#include "core/layer.h"
 #include "core/window.h"
 #include "ecs/components/component.h"
 #include "ecs/components/light.h"

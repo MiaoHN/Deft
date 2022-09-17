@@ -1,7 +1,10 @@
 #ifndef __DEFT_WINDOW_H__
 #define __DEFT_WINDOW_H__
 
+#include <memory>
 #include <string>
+
+#include "render/graphic_context.h"
 
 struct GLFWwindow;
 
@@ -23,10 +26,12 @@ class Window {
   std::string getTitle() const;
   void        setTitle(const std::string& title);
 
-  void pollEvents() const;
+  void tick() const;
 
  private:
   GLFWwindow* _window;
+
+  std::unique_ptr<GraphicContext> _context;
 
   int         _width;
   int         _height;

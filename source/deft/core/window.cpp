@@ -40,6 +40,8 @@ Window::Window(int width, int height, const std::string& title)
   glfwSetErrorCallback(GLFWErrorCallback);
 
   glfwSetWindowUserPointer(_window, &Application::Get());
+
+  _context = std::make_unique<GraphicContext>(_window);
 }
 
 Window::~Window() {
@@ -63,6 +65,9 @@ void Window::setTitle(const std::string& title) {
   glfwSetWindowTitle(_window, _title.c_str());
 }
 
-void Window::pollEvents() const { glfwPollEvents(); }
+void Window::tick() const {
+  glfwPollEvents();
+  _context->swapBuffers();
+}
 
 }  // namespace deft

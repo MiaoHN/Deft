@@ -23,6 +23,8 @@ class Gui {
 
   void draw();
 
+  bool isScenePanelHovered() { return _scenePanel->isHovered(); }
+
  private:
   void initStyle();
 

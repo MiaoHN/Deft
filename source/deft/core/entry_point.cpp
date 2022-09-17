@@ -3,6 +3,8 @@
 int main(int argc, char** argv) {
   auto app = deft::CreateApplication();
 
+  app->initialize();
+
   app->run();
 
   delete app;

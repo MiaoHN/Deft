@@ -4,9 +4,8 @@
 #include <memory>
 #include <vector>
 
-#include "core/layer.h"
+#include "core/timer.h"
 #include "core/window.h"
-#include "render/graphic_context.h"
 
 namespace deft {
 
@@ -17,23 +16,21 @@ class Application {
 
   void run();
 
+  virtual void initialize() = 0;
+  virtual void tick(float dt) {}
+
   static Application& Get();
 
   Window& getWindow();
 
-  void pushLayer(Layer* layer);
-
   int getFps();
 
  private:
-  std::vector<Layer*> _layers;
+  void makeInstance();
 
-  std::unique_ptr<Window>         _window;
-  std::unique_ptr<GraphicContext> _context;
-
-  float _lastSecond;
-  int   _frameCount;
-  int   _fps;
+ private:
+  std::unique_ptr<Window> _window;
+  std::unique_ptr<Timer>  _timer;
 
   static Application* _s_instance;
 };

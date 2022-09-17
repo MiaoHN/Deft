@@ -6,9 +6,9 @@
 
 namespace deft {
 
-class EditorLayer : public Layer {
+class Editor : public Application {
  public:
-  EditorLayer() {
+  void initialize() override {
     _scene                  = std::make_shared<Scene>();
     _gui                    = std::make_unique<Gui>(&_scene->getRegistry());
     _editorCameraController = std::make_shared<CameraController>();
@@ -22,9 +22,8 @@ class EditorLayer : public Layer {
                                                sizeof(CameraData), 0));
   }
 
-  void update(float dt) override {
-    // Logic update
-    if (_isHovered) {
+  void tick(float dt) override {
+    if (_gui->isScenePanelHovered()) {
       if (Input::IsMouseButtonPress(MouseButton::Right)) {
         _editorCameraController->setEnable(true);
       } else {
@@ -54,18 +53,10 @@ class EditorLayer : public Layer {
  private:
   std::shared_ptr<Scene> _scene;
 
-  math::Vector2 _sceneSize{992.0f, 558.0f};
-  bool          _isHovered;
-
   std::unique_ptr<Gui>              _gui;
   std::shared_ptr<CameraController> _editorCameraController;
 
   std::shared_ptr<FrameBuffer> _frameBuffer;
-};
-
-class Editor : public Application {
- public:
-  Editor() { pushLayer(new EditorLayer); }
 };
 
 Application* CreateApplication();
