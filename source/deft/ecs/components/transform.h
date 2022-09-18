@@ -12,41 +12,17 @@ class TransformComponent : public Component {
   math::Vector3 rotation;
   math::Vector3 scale{1.0f, 1.0f, 1.0f};
 
-  TransformComponent() = default;
-  TransformComponent(const math::Vector3& position_) : position(position_) {}
-};
-
-/// @brief Editor Camera 有用到，未来将移除
-struct CameraTransform : public TransformComponent {
-  float         yaw;
-  float         pitch;
-  float         fov;
-  math::Vector3 up;
-  math::Vector3 lookDirection;
-
-  void reCalculate() {
-    math::Vector3 front;
-    front.x       = cos(math::radians(yaw)) * cos(math::radians(pitch));
-    front.y       = sin(math::radians(pitch));
-    front.z       = sin(math::radians(yaw)) * cos(math::radians(pitch));
-    lookDirection = math::normalize(front);
-    auto right =
-        math::normalize(math::cross(lookDirection, {0.0f, 1.0f, 0.0f}));
-    up = math::normalize(math::cross(right, lookDirection));
+  inline math::Matrix4 getTransform() const {
+    return math::translate(math::Matrix4(1.0f), position) * getRotation() *
+           math::scale(math::Matrix4(1.0f), scale);
   }
 
-  CameraTransform(const math::Vector3& position_ = {0.0f, 0.0f, 0.0f},  //
+  inline math::Matrix4 getRotation() const {
+    return math::Quaternion(rotation).toMatrix4();
+  }
 
-                  float yaw_   = -90.0f,  //
-                  float pitch_ = 0.0f,    //
-
-                  const math::Vector3& up_            = {0.0f, 1.0f, 0.0f},
-                  const math::Vector3& lookDirection_ = {0.0f, 0.0f, -1.0f})
-      : TransformComponent(position_),
-        yaw(yaw_),
-        pitch(pitch_),
-        up(up_),
-        lookDirection(lookDirection_) {}
+  TransformComponent() = default;
+  TransformComponent(const math::Vector3& position_) : position(position_) {}
 };
 
 }  // namespace deft

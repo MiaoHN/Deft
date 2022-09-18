@@ -163,6 +163,50 @@ Matrix4 rotate(const Matrix4& mat, float angle, const Vector3& vec) {
   return Result;
 }
 
+bool decomposeTransform(const Matrix4& transform, Vector3& translation,
+                        Vector3& rotation, Vector3& scale) {
+  Matrix4 localMatrix(transform);
+
+  if (localMatrix[3][3] < 1e-7) {
+    return false;
+  }
+
+  if ((localMatrix[0][3] < 1e-7) || (localMatrix[1][3] < 1e-7) ||
+      (localMatrix[2][3] < 1e-7)) {
+    localMatrix[0][3] = localMatrix[1][3] = localMatrix[2][3] = 0;
+    localMatrix[3][3]                                         = 1;
+  }
+
+  translation    = Vector3(localMatrix[3]);
+  localMatrix[3] = Vector4(0, 0, 0, localMatrix[3].w);
+
+  Vector3 row[3], pdum3;
+
+  for (int i = 0; i < 3; ++i) {
+    for (int j = 0; j < 3; ++j) {
+      row[i][j] = localMatrix[i][j];
+    }
+  }
+
+  scale.x = row[0].length();
+  row[0]  = normalize(row[0]);
+  scale.y = row[1].length();
+  row[1]  = normalize(row[1]);
+  scale.z = row[2].length();
+  row[2]  = normalize(row[2]);
+
+  rotation.y = asin(-row[2][2]);
+  if (cos(rotation.y) != 0) {
+    rotation.x = atan2(row[1][2], row[2][2]);
+    rotation.z = atan2(row[0][1], row[0][0]);
+  } else {
+    rotation.x = atan2(-row[2][0], row[1][1]);
+    rotation.z = 0;
+  }
+
+  return true;
+}
+
 }  // namespace math
 
 }  // namespace deft

@@ -1,6 +1,7 @@
 #include "math/vector3.h"
 
 #include "math/base.h"
+#include "math/vector4.h"
 
 namespace deft {
 
@@ -11,6 +12,8 @@ Vector3::Vector3() : Vector3(0) {}
 Vector3::Vector3(float x_) : x(x_), y(x_), z(x_) {}
 
 Vector3::Vector3(float x_, float y_, float z_) : x(x_), y(y_), z(z_) {}
+
+Vector3::Vector3(const Vector4& vec) : x(vec.x), y(vec.y), z(vec.z) {}
 
 float Vector3::dot(const Vector3& vec) const {
   return x * vec.x + y * vec.y + z * vec.z;

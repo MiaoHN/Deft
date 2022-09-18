@@ -48,6 +48,9 @@ Matrix4 scale(const Matrix4& mat, const Vector3& vec);
 
 Matrix4 rotate(const Matrix4& mat, float angle, const Vector3& vec);
 
+bool decomposeTransform(const Matrix4& transform, Vector3& translation,
+                        Vector3& rotation, Vector3& scale);
+
 }  // namespace math
 
 }  // namespace deft

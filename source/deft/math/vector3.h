@@ -8,6 +8,8 @@ namespace deft {
 
 namespace math {
 
+class Vector4;
+
 class Vector3 {
  public:
   float x, y, z;
@@ -15,6 +17,7 @@ class Vector3 {
   Vector3();
   Vector3(float x_);
   Vector3(float x_, float y_, float z_);
+  Vector3(const Vector4& vec);
 
   float   dot(const Vector3& vec) const;
   Vector3 cross(const Vector3& vec) const;

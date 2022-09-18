@@ -10,14 +10,17 @@ namespace deft {
 
 class Camera {
  public:
-  Camera(const std::shared_ptr<CameraTransform>& transform);
+  Camera();
 
-  math::Matrix4 getView();
-  math::Matrix4 getProjection();
-  math::Vector3 getPosition();
+  const math::Matrix4& getProjection() const;
+  const math::Matrix4& getView() const;
+  const math::Vector3& getPosition() const;
 
- private:
-  std::shared_ptr<CameraTransform> _transform;
+ protected:
+  math::Matrix4 _projection;
+  math::Matrix4 _view;
+
+  math::Vector3 _position;
 };
 
 }  // namespace deft

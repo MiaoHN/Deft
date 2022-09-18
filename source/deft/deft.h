@@ -3,7 +3,6 @@
 
 #include <imgui.h>
 
-#include "controller/camera_controller.h"
 #include "core/application.h"
 #include "core/entry_point.h"
 #include "core/window.h"
@@ -15,6 +14,7 @@
 #include "input/input.h"
 #include "math/math.h"
 #include "pch.h"
+#include "render/camera.h"
 #include "render/frame_buffer.h"
 #include "render/index_buffer.h"
 #include "render/render_api.h"
