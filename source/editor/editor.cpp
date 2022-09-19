@@ -37,19 +37,29 @@ void Editor::initialize() {
   transform.rotation = {0.0f, 0.0f, 0.0f};
   box2.addComponent(transform);
 
-  MeshComponent meshComponent;
-  meshComponent.mesh = Mesh::Cube();
+  MeshComponent box1MeshComponent;
+  box1MeshComponent.mesh = Mesh::Cube();
 
-  meshComponent.mesh->addTexture(
+  box1MeshComponent.mesh->addTexture(
       TextureType::Diffuse, Texture::Create("assets/texture/container.jpg"));
 
   auto texture1 = Texture::Create(1, 1);
 
   unsigned int color = 0xffffffff;
   texture1->setData(&color, sizeof(color));
-  meshComponent.mesh->addTexture(TextureType::Specular, texture1);
-  box1.addComponent(meshComponent);
-  box2.addComponent(meshComponent);
+  box1MeshComponent.mesh->addTexture(TextureType::Specular, texture1);
+  box1.addComponent(box1MeshComponent);
+
+  MeshComponent box2MeshComponent;
+  box2MeshComponent.mesh = Mesh::Cube();
+
+  box2MeshComponent.mesh->addTexture(
+      TextureType::Diffuse, Texture::Create("assets/texture/container.jpg"));
+
+  auto texture2 = Texture::Create(1, 1);
+
+  texture2->setData(&color, sizeof(color));
+  box2.addComponent(box2MeshComponent);
 
   Entity directionLight = _registry.createEntity("Direction Light");
 
@@ -80,10 +90,10 @@ void Editor::initialize() {
   MeshComponent pointLightMeshComponent;
   pointLightMeshComponent.mesh = Mesh::Cube();
 
-  auto texture2 = Texture::Create(1, 1);
+  auto texture3 = Texture::Create(1, 1);
   color         = 0xffffffff;
-  texture2->setData(&color, sizeof(color));
-  pointLightMeshComponent.mesh->addTexture(TextureType::Diffuse, texture2);
+  texture3->setData(&color, sizeof(color));
+  pointLightMeshComponent.mesh->addTexture(TextureType::Diffuse, texture3);
   pointLight.addComponent(pointLightMeshComponent);
 
   const char* glsl_version = "#version 460";

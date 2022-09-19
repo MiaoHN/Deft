@@ -19,8 +19,8 @@ uniform mat4 model;
 void main() {
   gl_Position = viewProjection * model * vec4(aPos, 1.0f);
   TexCoord    = aTexCoord;
-  Normal      = aNormal;
-  // normal      = mat3(transpose(inverse(model))) * aNormal;
+  // Normal      = vec3(model * vec4(aNormal, 1.0f));
+  Normal  = mat3(transpose(inverse(model))) * aNormal;
   FragPos = vec3(model * vec4(aPos, 1.0f));
   ViewPos = cameraPosition;
 }
