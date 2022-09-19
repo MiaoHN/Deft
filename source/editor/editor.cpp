@@ -234,8 +234,8 @@ void Editor::tick(float dt) {
     ImGui::DockSpace(dockspace_id, ImVec2(0.0f, 0.0f), dockspace_flags);
   }
 
-  ImGui::Begin("Scene Detail");
-  ImGui::Text("Scene fps: %d", Application::Get().getFps());
+  ImGui::Begin("Renderer");
+  ImGui::Text("fps: %d", Application::Get().getFps());
   std::string renderAPIType = "UnKnown";
   switch (RenderAPI::Get()) {
     case RenderAPI::OpenGL: {

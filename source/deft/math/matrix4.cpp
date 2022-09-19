@@ -195,7 +195,7 @@ bool decomposeTransform(const Matrix4& transform, Vector3& translation,
   scale.z = row[2].length();
   row[2]  = normalize(row[2]);
 
-  rotation.y = asin(-row[2][2]);
+  rotation.y = asin(-row[0][2]);
   if (cos(rotation.y) != 0) {
     rotation.x = atan2(row[1][2], row[2][2]);
     rotation.z = atan2(row[0][1], row[0][0]);
