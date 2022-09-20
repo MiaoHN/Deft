@@ -4,8 +4,11 @@
 #include "ecs/components/light.h"
 #include "ecs/ecs.h"
 #include "render/camera.h"
+#include "render/render_command.h"
 #include "render/renderer.h"
 #include "render/shader.h"
+#include "render/texture.h"
+#include "render/uniform_buffer.h"
 
 namespace deft {
 
@@ -20,6 +23,25 @@ class RenderSystem : public System {
     Renderer::Begin(camera);
 
     auto& shader = ShaderLib::Get("default");
+
+    lightConfigurate(shader);
+
+    for (auto& entity : entities) {
+      if (entity.haveComponent<MeshComponent>()) {
+        auto& transform     = entity.getComponent<TransformComponent>();
+        auto& meshComponent = entity.getComponent<MeshComponent>();
+
+        Renderer::Submit(transform, meshComponent, shader, entity);
+      }
+    }
+
+    Renderer::End();
+  }
+
+ private:
+  void lightConfigurate(const std::shared_ptr<Shader>& shader) {
+    std::vector<Entity>& entities = _handled->getEntiesUsed();
+
     shader->bind();
 
     int directionLightCount = 0;
@@ -79,18 +101,6 @@ class RenderSystem : public System {
     shader->setInt("directionLightCount", directionLightCount);
     shader->setInt("pointLightCount", pointLightCount);
     shader->setInt("spotLightCount", spotLightCount);
-
-    for (auto& entity : entities) {
-      if (entity.haveComponent<MeshComponent>()) {
-        auto& transform     = entity.getComponent<TransformComponent>();
-        auto& meshComponent = entity.getComponent<MeshComponent>();
-
-        Renderer::Submit(transform, meshComponent, ShaderLib::Get("default"),
-                         entity);
-      }
-    }
-
-    Renderer::End();
   }
 };
 

@@ -36,6 +36,9 @@
 
 - glfw
 - glad
+- stb_image
+- ImGui
+- ImGuizmo
 
 ## 协议
 
