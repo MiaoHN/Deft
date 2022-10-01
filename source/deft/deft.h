@@ -12,6 +12,7 @@
 #include "ecs/components/transform.h"
 #include "ecs/ecs.h"
 #include "input/input.h"
+#include "library/library.h"
 #include "math/math.h"
 #include "pch.h"
 #include "render/camera.h"

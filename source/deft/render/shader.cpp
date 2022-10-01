@@ -1,22 +1,13 @@
 #include "render/shader.h"
 
+#include <memory>
+
+#include "library/library.h"
 #include "pch.h"
 #include "platform/render/opengl/opengl_shader.h"
 #include "render/render_api.h"
 
 namespace deft {
-
-std::unordered_map<std::string, std::shared_ptr<Shader>> ShaderLib::_map;
-
-void ShaderLib::Add(const std::string&             name,
-                    const std::shared_ptr<Shader>& shader) {
-  if (_map.find(name) != _map.end()) return;
-  _map[name] = shader;
-}
-
-std::shared_ptr<Shader>& ShaderLib::Get(const std::string& name) {
-  return _map[name];
-}
 
 std::shared_ptr<Shader> Shader::Create(const std::string& vertPath,
                                        const std::string& fragPath) {
@@ -28,6 +19,18 @@ std::shared_ptr<Shader> Shader::Create(const std::string& vertPath,
       exit(-1);
   }
   return nullptr;
+}
+
+template <>
+std::shared_ptr<Library<Shader>> Library<Shader>::GetInstance() {
+  static std::shared_ptr<Library<Shader>> s_instance = nullptr;
+  if (s_instance == nullptr) {
+    s_instance = std::make_shared<Library<Shader>>();
+
+    s_instance->_map["default"] = Shader::Create("assets/shader/default.vert",
+                                                 "assets/shader/default.frag");
+  }
+  return s_instance;
 }
 
 }  // namespace deft

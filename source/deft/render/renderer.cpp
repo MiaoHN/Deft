@@ -1,6 +1,7 @@
 #include "render/renderer.h"
 
 #include "ecs/components/component.h"
+#include "library/library.h"
 #include "render/render_command.h"
 #include "render/uniform_buffer.h"
 
@@ -9,7 +10,8 @@ namespace deft {
 void Renderer::Init() { RenderCommand::Init(); }
 
 void Renderer::Begin(std::shared_ptr<Camera> camera) {
-  auto& cameraUniform = UniformBufferLib::Get("cameraUniform");
+  auto cameraUniform =
+      Library<UniformBuffer>::GetInstance()->get("cameraUniform");
 
   auto projection = camera->getProjection();
   auto view       = camera->getView();

@@ -1,5 +1,6 @@
 #include "render/uniform_buffer.h"
 
+#include "library/library.h"
 #include "platform/render/opengl/opengl_uniform_buffer.h"
 #include "render/render_api.h"
 
@@ -17,7 +18,16 @@ std::shared_ptr<UniformBuffer> UniformBuffer::Create(unsigned int size,
   return nullptr;
 }
 
-std::unordered_map<std::string, std::shared_ptr<UniformBuffer>>
-    UniformBufferLib::_map;
+template <>
+std::shared_ptr<Library<UniformBuffer>> Library<UniformBuffer>::GetInstance() {
+  static std::shared_ptr<Library<UniformBuffer>> s_instance = nullptr;
+  if (s_instance == nullptr) {
+    s_instance = std::make_shared<Library<UniformBuffer>>();
+
+    s_instance->_map["cameraUniform"] =
+        UniformBuffer::Create(sizeof(CameraData), 0);
+  }
+  return s_instance;
+}
 
 }  // namespace deft

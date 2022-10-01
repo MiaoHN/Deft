@@ -17,11 +17,6 @@ void Editor::initialize() {
 
   _frameBuffer = FrameBuffer::Create(FrameBufferData(1600.0f, 900.0f));
 
-  ShaderLib::Add("default", Shader::Create("assets/shader/default.vert",
-                                           "assets/shader/default.frag"));
-  UniformBufferLib::Add("cameraUniform",
-                        UniformBuffer::Create(sizeof(CameraData), 0));
-
   auto& _registry = _scene->getRegistry();
 
   Entity box1 = _registry.createEntity("Box1");

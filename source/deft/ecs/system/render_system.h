@@ -3,6 +3,7 @@
 
 #include "ecs/components/light.h"
 #include "ecs/ecs.h"
+#include "library/library.h"
 #include "render/camera.h"
 #include "render/render_command.h"
 #include "render/renderer.h"
@@ -22,7 +23,7 @@ class RenderSystem : public System {
 
     Renderer::Begin(camera);
 
-    auto& shader = ShaderLib::Get("default");
+    auto shader = Library<Shader>::GetInstance()->get("default");
 
     lightConfigurate(shader);
 

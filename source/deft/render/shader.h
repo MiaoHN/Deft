@@ -26,17 +26,6 @@ class Shader {
                                         const std::string& fragPath);
 };
 
-class ShaderLib {
- public:
-  static void Add(const std::string&             name,
-                  const std::shared_ptr<Shader>& shader);
-
-  static std::shared_ptr<Shader>& Get(const std::string& name);
-
- private:
-  static std::unordered_map<std::string, std::shared_ptr<Shader>> _map;
-};
-
 }  // namespace deft
 
 #endif  // __DEFT_SHADER_H__
