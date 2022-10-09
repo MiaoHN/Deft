@@ -6,7 +6,7 @@
 #include "ecs/components/mesh.h"
 #include "ecs/components/transform.h"
 #include "ecs/ecs.h"
-#include "math/math.h"
+#include "core/math/math.h"
 #include "render/camera.h"
 #include "render/frame_buffer.h"
 #include "render/mesh.h"

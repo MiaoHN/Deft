@@ -1,9 +1,9 @@
 #ifndef __DEFT_INPUT_H__
 #define __DEFT_INPUT_H__
 
-#include "input/key_code.h"
-#include "input/mouse_button_code.h"
-#include "math/math.h"
+#include "core/input/key_code.h"
+#include "core/input/mouse_button_code.h"
+#include "core/math/math.h"
 
 namespace deft {
 

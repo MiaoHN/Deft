@@ -4,7 +4,7 @@
 #include <memory>
 
 #include "ecs/components/transform.h"
-#include "math/math.h"
+#include "core/math/math.h"
 
 namespace deft {
 

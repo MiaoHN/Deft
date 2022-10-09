@@ -2,7 +2,7 @@
 
 #include <memory>
 
-#include "library/library.h"
+#include "core/library/library.h"
 #include "pch.h"
 #include "platform/render/opengl/opengl_shader.h"
 #include "render/render_api.h"

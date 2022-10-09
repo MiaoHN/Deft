@@ -1,6 +1,6 @@
 #include "render/uniform_buffer.h"
 
-#include "library/library.h"
+#include "core/library/library.h"
 #include "platform/render/opengl/opengl_uniform_buffer.h"
 #include "render/render_api.h"
 

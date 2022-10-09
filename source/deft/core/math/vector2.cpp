@@ -1,6 +1,6 @@
-#include "math/vector2.h"
+#include "core/math/vector2.h"
 
-#include "math/base.h"
+#include "core/math/base.h"
 
 namespace deft {
 

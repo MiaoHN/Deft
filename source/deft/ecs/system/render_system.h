@@ -3,7 +3,7 @@
 
 #include "ecs/components/light.h"
 #include "ecs/ecs.h"
-#include "library/library.h"
+#include "core/library/library.h"
 #include "render/camera.h"
 #include "render/render_command.h"
 #include "render/renderer.h"

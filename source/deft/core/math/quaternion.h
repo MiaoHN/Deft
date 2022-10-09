@@ -1,8 +1,8 @@
 #ifndef __DEFT_QUATERNION_H__
 #define __DEFT_QUATERNION_H__
 
-#include "math/matrix4.h"
-#include "math/vector3.h"
+#include "core/math/matrix4.h"
+#include "core/math/vector3.h"
 
 namespace deft {
 

@@ -3,7 +3,7 @@
 
 #include <memory>
 
-#include "math/math.h"
+#include "core/math/math.h"
 #include "render/vertex_array.h"
 
 namespace deft {

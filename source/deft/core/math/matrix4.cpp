@@ -1,6 +1,6 @@
-#include "math/matrix4.h"
+#include "core/math/matrix4.h"
 
-#include "math/base.h"
+#include "core/math/base.h"
 #include "pch.h"
 
 namespace deft {

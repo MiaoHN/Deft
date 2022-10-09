@@ -4,7 +4,7 @@
 #include <sstream>
 #include <string>
 
-#include "math/base.h"
+#include "core/math/base.h"
 
 namespace deft {
 

@@ -1,7 +1,7 @@
 #include "render/renderer.h"
 
 #include "ecs/components/component.h"
-#include "library/library.h"
+#include "core/library/library.h"
 #include "render/render_command.h"
 #include "render/uniform_buffer.h"
 

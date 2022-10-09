@@ -4,7 +4,7 @@
 #include <memory>
 #include <string>
 
-#include "math/math.h"
+#include "core/math/math.h"
 
 namespace deft {
 

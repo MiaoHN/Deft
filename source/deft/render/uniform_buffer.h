@@ -5,7 +5,7 @@
 #include <string>
 #include <unordered_map>
 
-#include "math/math.h"
+#include "core/math/math.h"
 
 namespace deft {
 

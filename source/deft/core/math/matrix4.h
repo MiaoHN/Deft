@@ -4,8 +4,8 @@
 #include <sstream>
 #include <string>
 
-#include "math/vector3.h"
-#include "math/vector4.h"
+#include "core/math/vector3.h"
+#include "core/math/vector4.h"
 
 namespace deft {
 

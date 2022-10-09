@@ -1,4 +1,4 @@
-#include "input/input.h"
+#include "core/input/input.h"
 
 // clang-format off
 #include <glad/glad.h>
