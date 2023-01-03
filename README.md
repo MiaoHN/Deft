@@ -4,45 +4,28 @@
 
 # Deft
 
-玩具游戏引擎
+玩具游戏引擎，用于个人学习OpenGL和ImGui等库的使用，仅供参考。
 
 ## 截图
 
 <p align=center><img width=80% src="docs/images/screenshot.png"/></p>
 
-## TODO
+## 操作方式
 
-- [x] 数学库
-- [x] 简单编辑器
-- [x] ECS
-- [x] 光照（冯氏光照，Pbr 未完成）
-- [ ] 阴影
-- [ ] 读取 `.obj` 模型文件
-- [ ] 物理碰撞
-- [ ] 窗口大小变换
-- [ ] 2D 场景
-- [ ] 屏幕内物体选择
-- [ ] 游戏内 UI 组件
-- [ ] 游戏模式
-- [ ] 声音系统
-- [ ] vulkan 等多平台
-- [ ] 脚本支持
-- [ ] 网络支持
-- [ ] 动画
-
-~~说是 TODO 又不是一定要完成（~~
+1. 在 Scene 窗口长按鼠标右键可以移动视角和移动
+2. 在 Scene Hierarchy 窗口点击物体（非光源）后，可在 Scene 窗口对该物体进行平移、旋转和拉伸
 
 ## 第三方库
 
-- glfw
-- glad
-- stb_image
-- ImGui
-- ImGuizmo
+- [glfw](https://github.com/glfw/glfw.git)
+- [glad](https://github.com/Dav1dde/glad.git)
+- [stb](https://github.com/nothings/stb.git)
+- [ImGui](https://github.com/ocornut/imgui.git)
+- [ImGuizmo](https://github.com/CedricGuillemet/ImGuizmo.git)
 
 ## 协议
 
-MIT
+[MIT](./LICENSE)
 
 ## 参考
 
